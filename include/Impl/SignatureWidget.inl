@@ -43,14 +43,14 @@ inline SignatureWidget SignatureWidget::Create(PDFDoc& doc, const Rect& pos, con
 inline SignatureWidget SignatureWidget::Create(PDFDoc& doc, const Rect& pos, const Field& field)
 {
 	TRN_SignatureWidget result;
-	REX(TRN_SignatureWidgetCreateWithField(doc.mp_doc, (const TRN_Rect*)&pos, (TRN_Field*)&field, &result));
+	REX(TRN_SignatureWidgetCreateWithField(doc.mp_doc, (const TRN_Rect*)&pos, (const TRN_Field*)&field, &result));
 	return (SignatureWidget) result;
 }
 
 inline SignatureWidget SignatureWidget::Create(PDFDoc& doc, const Rect& pos, const DigitalSignatureField& field)
 {
 	TRN_SignatureWidget result;
-	REX(TRN_SignatureWidgetCreateWithDigitalSignatureField(doc.mp_doc, (const TRN_Rect*)&pos, (TRN_DigitalSignatureField*)&field.m_impl, &result));
+	REX(TRN_SignatureWidgetCreateWithDigitalSignatureField(doc.mp_doc, (const TRN_Rect*)&pos, (const TRN_DigitalSignatureField*)&field.m_impl, &result));
 	return (SignatureWidget) result;
 }
 		};// namespace Annots

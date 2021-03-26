@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 
@@ -876,6 +876,7 @@
 #define e_page_stop e_ptpage_stop
 #define e_ambient_string e_ptambient_string
 #define e_highlight e_pthighlight
+#define e_raw_text_search e_ptraw_text_search
 
 @compatibility_alias Action PTAction;
 @compatibility_alias Annot PTAnnot;

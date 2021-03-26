@@ -24,10 +24,13 @@ inline UString::UString(const std::string & str, TextEncoding enc )
 
 inline UString::UString( const std::wstring& value )
 {
-	if( sizeof(std::wstring::value_type)==2 ) {
+	// get around MSVC warning C4127 about constant conditionals
+	const bool has_2_byte_char = sizeof(std::wstring::value_type)==2;
+	const bool has_4_byte_char = sizeof(std::wstring::value_type)==4;
+	if( has_2_byte_char ) {
 		REX(TRN_UStringCreateFromSubstring((const TRN_Unicode*)(value.data()),(int)value.size(),&mp_impl));
 	}
-	else if( sizeof(std::wstring::value_type)==4 ) {
+	else if( has_4_byte_char ) {
 		REX(TRN_UStringCreateFromUtf32String( (const TRN_UInt32*)(value.data()), (int)value.size(), &mp_impl));
 	}
 }
@@ -176,15 +179,24 @@ inline int UString::ConvertToUtf32( UInt32* out_buf, int buf_sz, bool null_term 
 
 inline std::wstring UString::ConvertToNativeWString() const
 {
-	if(sizeof(std::wstring::value_type)==2) 
+	// get around MSVC warning C4127 about constant conditionals
+	const bool has_2_byte_char = sizeof(std::wstring::value_type)==2;
+	const bool has_4_byte_char = sizeof(std::wstring::value_type)==4;
+	if(has_2_byte_char) 
 	{
 		return std::wstring( this->GetBuffer(), this->GetBuffer() + this->GetLength() );
 	} 
 #if !(_MSC_VER == 1200) 
-	else if( sizeof(std::wstring::value_type)==4 ) 
+	else if( has_4_byte_char ) 
 	{
 		std::basic_string<UInt32> s = this->ConvertToUtf32();
-		return std::wstring(s.begin(), s.end());
+		if(s.size() > 0)
+		{
+			const std::wstring::value_type* begin = (const std::wstring::value_type*)&s[0];
+			const std::wstring::value_type* end = (const std::wstring::value_type*)(&s[s.size() - 1] + 1);
+			return std::wstring(begin, end);
+		}
+		return std::wstring();
 	}
 #endif
 }

@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFElementBuilder
@@ -11,6 +11,7 @@
 #include <PDF/Image.h>
 #include <PDF/Shading.h>
 #include <PDF/PDFDoc.h>
+#include <PDF/ShapedText.h>
 #include <C/PDF/TRN_ElementBuilder.h>
 
 namespace pdftron { 
@@ -178,6 +179,22 @@ public:
 	 Element CreateUnicodeTextRun(const Unicode* text_data, UInt32 text_data_sz);
 
 	/**
+	* Create a new text run from shaped text.
+	* Shaped Text can be created with an approriate Font, using the Font::GetShapedText() method. 
+	*
+	* @param text_data the shaped text data
+	*
+	* @note you must set the current Font and font size before calling this function 
+	* and the font must be created using Font::CreateCIDTrueTypeFont() method, and should
+	* be the same font used to generate the shaped text content.
+	*
+	* @note For best results, the font should be encoded using the e_Indices encoding scheme.
+	* 
+	* @note a text run can be created only within a text block
+	*/
+	 Element CreateShapedTextRun(ShapedText text_data);
+
+	/**
 	 * Create e_text_new_line Element (i.e. a Td operator in PDF content stream).
 	 * Move to the start of the next line, offset from the start of the current 
 	 * line by (dx , dy). dx and dy are numbers expressed in unscaled text space 
@@ -283,7 +300,7 @@ public:
 	 *
 	 * @param xr x radius for the arc
 	 * @param yr y radius for the arc
-	 * @param rx x-axis rotation in degrees
+	 * @param rx x-axis rotation in radians
 	 * @param isLargeArc indicates if smaller or larger arc is chosen
 	 *		1 - one of the two larger arc sweeps is chosen
 	 *		0 - one of the two smaller arc sweeps is chosen

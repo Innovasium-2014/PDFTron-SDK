@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 
@@ -9,6 +9,7 @@
 #include <C/PDF/TRN_ReflowProcessor.h>
 #include <PDF/JobRequest.h>
 #include <PDF/Page.h>
+#include <Common/UString.h>
 
 namespace pdftron {
 	namespace PDF {
@@ -70,6 +71,14 @@ public:
 	* clears the reflow disk cache.
 	*/
 	static void ClearCache();
+	/**
+	* sets the content when a page doesn't contain reflowable text
+	*/
+	static void SetNoReflowContent(const UString & utf8_content);
+	/**
+	* sets the content when it is failed to extract reflowable text
+	*/
+	static void SetReflowFailedContent(const UString & utf8_content);
 };
 
 #include <Impl/ReflowProcessor.inl>

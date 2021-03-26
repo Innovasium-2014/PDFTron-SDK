@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CCommonTypes
@@ -26,12 +26,29 @@ extern "C" {
 	#define TRN_API TRN_API_T(TRN_Exception)
 	#endif
 #elif EMSCRIPTEN
-#include <emscripten.h>
 	#define TRN_API_CALL
 	#ifdef TRN_API_EXPORT
 #ifdef PDFNET_LEAN
 	#define TRN_API_T(type) type TRN_API_CALL
 #else
+	typedef short __attribute__((aligned(1))) emscripten_align1_short;
+
+	typedef long long __attribute__((aligned(4))) emscripten_align4_int64;
+	typedef long long __attribute__((aligned(2))) emscripten_align2_int64;
+	typedef long long __attribute__((aligned(1))) emscripten_align1_int64;
+
+	typedef int __attribute__((aligned(2))) emscripten_align2_int;
+	typedef int __attribute__((aligned(1))) emscripten_align1_int;
+
+	typedef float __attribute__((aligned(2))) emscripten_align2_float;
+	typedef float __attribute__((aligned(1))) emscripten_align1_float;
+
+	typedef double __attribute__((aligned(4))) emscripten_align4_double;
+	typedef double __attribute__((aligned(2))) emscripten_align2_double;
+	typedef double __attribute__((aligned(1))) emscripten_align1_double;
+
+	#define EMSCRIPTEN_KEEPALIVE __attribute__((used))
+
 	#define TRN_API_T(type) EMSCRIPTEN_KEEPALIVE type TRN_API_CALL
 #endif
 	#define TRN_API TRN_API_T(TRN_Exception)
@@ -513,6 +530,34 @@ typedef struct TRN_ResultSnapshot_tag* TRN_ResultSnapshot;
 
 struct TRN_DocSnapshot_tag;
 typedef struct TRN_DocSnapshot_tag* TRN_DocSnapshot;
+
+struct TRN_TrustVerificationResult_tag
+{
+	void* mp_impl;
+};
+typedef struct TRN_TrustVerificationResult_tag* TRN_TrustVerificationResult;
+
+struct TRN_VerificationResult_tag;
+typedef struct TRN_VerificationResult_tag* TRN_VerificationResult;
+
+struct TRN_TimestampingTestResult_tag;
+typedef struct TRN_TimestampingTestResult_tag* TRN_TimestampingTestResult;
+
+struct TRN_TimestampingConfiguration_tag;
+typedef struct TRN_TimestampingConfiguration_tag* TRN_TimestampingConfiguration;
+
+struct TRN_EmbeddedTimestampVerificationResult_tag;
+typedef struct TRN_EmbeddedTimestampVerificationResult_tag* TRN_EmbeddedTimestampVerificationResult;
+
+struct TRN_appearancedocument
+{
+	TRN_PDFDoc doc;
+	TRN_UString id;
+};
+typedef struct TRN_appearancedocument TRN_AppearanceDocument;
+
+struct TRN_VerificationOptions_tag;
+typedef struct TRN_VerificationOptions_tag* TRN_VerificationOptions;
 
     enum TRN_PrinterModePaperSize {
 		e_PrinterMode_custom = 0,

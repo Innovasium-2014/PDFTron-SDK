@@ -21,7 +21,7 @@ UString OfficeToPDFOptions::GetLayoutResourcesPluginPath()
 	return "";
 }
 
-OfficeToPDFOptions& OfficeToPDFOptions::SetLayoutResourcesPluginPath(UString value)
+OfficeToPDFOptions& OfficeToPDFOptions::SetLayoutResourcesPluginPath(const UString& value)
 {
 	m_dict.PutText("LayoutResourcesPluginPath", value);
 	return *this;
@@ -38,12 +38,27 @@ UString OfficeToPDFOptions::GetResourceDocPath()
 	return "";
 }
 
-OfficeToPDFOptions& OfficeToPDFOptions::SetResourceDocPath(UString value)
+OfficeToPDFOptions& OfficeToPDFOptions::SetResourceDocPath(const UString& value)
 {
 	m_dict.PutText("ResourceDocPath", value);
 	return *this;
 }
 
+bool OfficeToPDFOptions::GetApplyPageBreaksToSheet()
+{
+	SDF::Obj found = m_dict.FindObj("ApplyPageBreaksToSheet");
+	if (!found.IsNull())
+	{
+		return true;
+	}
+	return false;
+}
+
+OfficeToPDFOptions& OfficeToPDFOptions::SetApplyPageBreaksToSheet()
+{
+	m_dict.PutBool("ApplyPageBreaksToSheet", true);
+	return *this;
+}
 
 UString OfficeToPDFOptions::GetSmartSubstitutionPluginPath()
 {
@@ -55,7 +70,7 @@ UString OfficeToPDFOptions::GetSmartSubstitutionPluginPath()
 	return "";
 }
 
-OfficeToPDFOptions& OfficeToPDFOptions::SetSmartSubstitutionPluginPath(UString value)
+OfficeToPDFOptions& OfficeToPDFOptions::SetSmartSubstitutionPluginPath(const UString& value)
 {
 	m_dict.PutText("SmartSubstitutionPluginPath", value);
 	return *this;
@@ -77,7 +92,11 @@ OfficeToPDFOptions& OfficeToPDFOptions::SetExcelDefaultCellBorderWidth(double va
 	return *this;
 }
 
-
+OfficeToPDFOptions& OfficeToPDFOptions::SetAutoFillDict(const UString& dict)
+{
+	m_dict.PutText("AutoFillDict", dict);
+	return *this;
+}
 
 }
 }

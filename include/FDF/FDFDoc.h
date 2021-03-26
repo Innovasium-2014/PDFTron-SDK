@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPFDFFDFDoc
@@ -122,23 +122,28 @@ public:
 	 * @param path - The full path name to which the file is saved.
 	 * 
 	 * @exception - if the file can't be opened for saving or if there is a problem during Save 
-	 *	an Exception object will be thrown.
+	 * an Exception object will be thrown.
 	 */
 	 void Save(const UString& path);
 
 	/**
-	 * Saves the document to a memory buffer. 
-	 * 
-	 * @param out_buf a pointer to the buffer containing the serialized version of the 
-	 * document. (C++ Note) The buffer is owned by a document and the client doesn't need to 
-	 * do any initialization or cleanup.
-	 * @param out_buf_size the size of the serialized document (i.e. out_buf) in bytes.
-	 * 
+	 * Saves the document to a memory buffer.
+	 *
 	 * @exception - if there is a problem during Save an Exception object will be thrown.
 	 */
 	 std::vector<unsigned char> Save();  
 
 #ifndef SWIG
+	 /**
+	  * Saves the document to a memory buffer.
+	  *
+	  * @param out_buf a pointer to the buffer containing the serialized version of the
+	  * document. (C++ Note) The buffer is owned by a document and the client doesn't need to
+	  * do any initialization or cleanup.
+	  * @param out_buf_size the size of the serialized document (i.e. out_buf) in bytes.
+	  *
+	  * @exception - if there is a problem during Save an Exception object will be thrown.
+	  */
 	 void Save(const char* &out_buf, size_t& out_buf_size);
 #endif
 
@@ -198,11 +203,27 @@ public:
 	 * The following methods are used to access and manipulate Interactive form 
 	 * fields (sometimes referred to as AcroForms).
 	 * 
-	 * @return an iterator to the first Filed in the document.
+	 * @return an iterator to the first FDFField in the document.
 	 * @note if the document has no AcroForms, HasNext() 
 	 * will return false. 
 	 */
 	 FDFFieldIterator GetFieldIterator();
+
+	 /**
+	 * An interactive form (sometimes referred to as an AcroForm) is a
+	 * collection of fields for gathering information interactively from
+	 * the user. A FDF document may contain any number of fields appearing
+	 * on any combination of pages, all of which make up a single, global
+	 * interactive form spanning the entire document.
+	 *
+	 * The following methods are used to access and manipulate Interactive form
+	 * fields (sometimes referred to as AcroForms).
+	 *
+	 * @param field_name String representing the name of the FDFField to get.
+	 * @return an iterator to the FDFField in the document.
+	 * @note if the document has no AcroForms, HasNext()
+	 * will return false.
+	 */
 	 FDFFieldIterator GetFieldIterator(const UString& field_name);
 
 

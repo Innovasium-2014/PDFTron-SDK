@@ -48,6 +48,11 @@ inline void ElementWriter::WritePlacedElement(Element element)
 	REX(TRN_ElementWriterWritePlacedElement(mp_writer,element.mp_elem));
 }
 
+inline void ElementWriter::WriteGStateChanges(Element element)
+{
+	REX(TRN_ElementWriterWriteGStateChanges(mp_writer, element.mp_elem));
+}
+
 inline void ElementWriter::Flush()
 {
 	REX(TRN_ElementWriterFlush(mp_writer));

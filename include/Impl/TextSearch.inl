@@ -99,3 +99,8 @@ inline int TextSearch::GetCurrentPage() const
 	REX(TRN_TextSearchGetCurrentPage(mp_textsearch, &page));
 	return page;
 }
+
+inline void TextSearch::SetOCGContext(OCG::Context* ctx)
+{
+	REX(TRN_TextSearchSetOCGContext(mp_textsearch, ctx->mp_obj));
+}

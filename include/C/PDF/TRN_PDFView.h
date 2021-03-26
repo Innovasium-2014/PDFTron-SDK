@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPDFPDFView
@@ -125,8 +125,12 @@ TRN_API TRN_PDFViewGetBuffer( const TRN_PDFView view, const char** result);
 TRN_API TRN_PDFViewGetBufferWidth( const TRN_PDFView view, int* result);
 TRN_API TRN_PDFViewGetBufferHeight( const TRN_PDFView view, int* result);
 TRN_API TRN_PDFViewGetBufferStride( const TRN_PDFView view, int* result);
+TRN_API TRN_PDFViewHideAnnotation(TRN_PDFView view, TRN_Annot annot);
+TRN_API TRN_PDFViewShowAnnotation(TRN_PDFView view, TRN_Annot annot);
 TRN_API TRN_PDFViewSetDrawAnnotations(TRN_PDFView view,  TRN_Bool render_annots);
 TRN_API TRN_PDFViewSetHighlightFields(TRN_PDFView view,  TRN_Bool highlight);
+TRN_API TRN_PDFViewSetRequiredFieldBorderColor(TRN_PDFView view, const TRN_ColorPt* col);
+
 TRN_API TRN_PDFViewSetGamma(TRN_PDFView view, double gamma);
 TRN_API TRN_PDFViewSetOverprint(TRN_PDFView view, enum TRN_PDFRasterizerOverprintPreviewMode op);
 TRN_API TRN_PDFViewSetAntiAliasing(TRN_PDFView view,  TRN_Bool enable_aa);
@@ -137,6 +141,7 @@ TRN_API TRN_PDFViewSetCaching(TRN_PDFView view,  TRN_Bool enabled);
 TRN_API TRN_PDFViewSetRightToLeftLanguage(TRN_PDFView view,  TRN_Bool enabled);
 TRN_API TRN_PDFViewSetRasterizerType (TRN_PDFView view,  enum TRN_PDFRasterizerType type);
 TRN_API TRN_PDFViewSetColorPostProcessColors (TRN_PDFView view, unsigned int white_color, unsigned int black_color);
+TRN_API TRN_PDFViewSetColorPostProcessMapFile (TRN_PDFView view, TRN_Filter no_own_stream);
 
 typedef void (*TRN_PDFViewRenderBeginEventProc) (void* data);
 typedef void (*TRN_PDFViewRenderFinishEventProc) (void* data, TRN_Bool canceled);
@@ -214,6 +219,7 @@ TRN_API TRN_PDFViewGetRotation( const TRN_PDFView view, enum TRN_PageRotate* res
 TRN_API TRN_SetDevicePixelDensity(const TRN_PDFView view, double dpi, double scale_factor);
 TRN_API TRN_PDFViewGetScreenRectForAnnot(const TRN_PDFView view, TRN_Annot annot, int page_num, TRN_Rect* result);
 TRN_API TRN_PDFViewGetAnnotationAt(const TRN_PDFView view, int x, int y, double distanceThreshold, double minimumLineWeight, TRN_Annot* result);
+TRN_API TRN_PDFViewGetAnnotationListAt(const TRN_PDFView view, int x1, int y1, int x2, int y2, TRN_Vector* result);
 
 //TRN_API TRN_PDFViewSetDownloadReportHandler( TRN_PDFView view, TRN_PDFViewPartDownloadedProc proc, void* data );
 

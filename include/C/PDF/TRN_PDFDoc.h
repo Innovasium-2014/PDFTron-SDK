@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPDFPDFDoc
@@ -35,6 +35,16 @@ enum TRN_PDFDocExtractFlag {
 	e_PDFDoc_both                      // extract both form fields and annots
 };
 
+enum TRN_PDFDocSignaturesVerificationStatus
+{
+	e_PDFDoc_unsigned,
+	// e_failure == bad doc, digest, or MDP (i.e. does not include trust issues, because those are flaky due to being network/config-related)
+	e_PDFDoc_failure,
+	e_PDFDoc_untrusted,
+	e_PDFDoc_unsupported,
+	// unsigned sigs skipped; parts of document may be unsigned (check GetByteRanges on signed sigs to find out)
+	e_PDFDoc_verified
+};
 struct TRN_downloadcontainer;
 typedef struct TRN_downloadcontainer* TRN_DownloadContainer;
 typedef TRN_Filter TRN_Downloader;
@@ -122,14 +132,15 @@ TRN_API TRN_PDFDocGetRoot(TRN_PDFDoc doc, TRN_Obj* result);
 TRN_API TRN_PDFDocJSContextInitialize(TRN_PDFDoc doc);
 TRN_API TRN_PDFDocGetPages(TRN_PDFDoc doc, TRN_Obj* result);
 TRN_API TRN_PDFDocGetPageCount (TRN_PDFDoc doc, int* result);
-TRN_API TRN_PDFGetDownloadedByteCount (TRN_PDFDoc doc, int* result);
-TRN_API TRN_PDFGetTotalRemoteByteCount (TRN_PDFDoc doc, int* result);
+TRN_API TRN_PDFDocGetDownloadedByteCount (TRN_PDFDoc doc, TRN_UInt64* result);
+TRN_API TRN_PDFDocGetTotalRemoteByteCount (TRN_PDFDoc doc, TRN_UInt64* result);
 TRN_API TRN_PDFDocGetFieldIteratorBegin(TRN_PDFDoc doc, TRN_Iterator* result);
 TRN_API TRN_PDFDocGetFieldIterator(TRN_PDFDoc doc, const TRN_UString field_name, TRN_Iterator* result);
 TRN_API TRN_PDFDocGetField(TRN_PDFDoc doc, const TRN_UString field_name, TRN_Field* result);
 TRN_API TRN_PDFDocFieldCreate(TRN_PDFDoc doc, const TRN_UString field_name, enum TRN_FieldType type, TRN_Obj field_value , TRN_Obj def_field_value, TRN_Field* result);
 TRN_API TRN_PDFDocFieldCreateFromStrings(TRN_PDFDoc doc, const TRN_UString field_name, enum TRN_FieldType type, TRN_UString field_value , TRN_UString def_field_value, TRN_Field* result);
 TRN_API TRN_PDFDocRefreshFieldAppearances(TRN_PDFDoc doc);
+TRN_API TRN_PDFDocRefreshAnnotAppearances(TRN_PDFDoc doc, const TRN_OptionBase* options);
 TRN_API TRN_PDFDocFlattenAnnotations(TRN_PDFDoc doc, TRN_Bool forms_only);
 TRN_API TRN_PDFDocFlattenAnnotationsAdvanced(TRN_PDFDoc doc, TRN_UInt32 flags);
 TRN_API TRN_PDFDocGetAcroForm(TRN_PDFDoc doc, TRN_Obj* result);
@@ -139,11 +150,12 @@ TRN_API TRN_PDFDocFDFExtractAnnots(TRN_PDFDoc doc, const TRN_Annot* annot_buf, i
 TRN_API TRN_PDFDocFDFExtractCommand(TRN_PDFDoc doc, const TRN_Annot* annot_added_buf, int annot_added_buf_size, const TRN_Annot* annot_modified_buf, int annot_modified_buf_size, const TRN_Annot* annot_deleted_buf, int annot_deleted_buf_size, TRN_FDFDoc* result);
 TRN_API TRN_PDFDocFDFMerge(TRN_PDFDoc doc, TRN_FDFDoc fdf_doc);
 TRN_API TRN_PDFDocFDFUpdate(TRN_PDFDoc doc, TRN_FDFDoc fdf_doc);
+TRN_API TRN_PDFDocFDFUpdateAppearanceDocs(TRN_PDFDoc doc, TRN_FDFDoc fdf_doc, TRN_AppearanceDocument* doc_list, int doc_list_size);
 TRN_API TRN_PDFDocGetOpenAction(TRN_PDFDoc doc, TRN_Action* result);
 TRN_API TRN_PDFDocSetOpenAction(TRN_PDFDoc doc, const TRN_Action action);
 TRN_API TRN_PDFDocAddFileAttachment(TRN_PDFDoc doc, const TRN_UString file_key, TRN_FileSpec embedded_file);
 TRN_API TRN_PDFDocGetPageLabel(TRN_PDFDoc doc, int page_num, TRN_PageLabel* result);
-TRN_API TRN_PDFDocSetPageLabel(TRN_PDFDoc doc, int page_num, TRN_PageLabel* label);
+TRN_API TRN_PDFDocSetPageLabel(TRN_PDFDoc doc, int page_num, const TRN_PageLabel* label);
 TRN_API TRN_PDFDocRemovePageLabel(TRN_PDFDoc doc, int page_num);
 TRN_API TRN_PDFDocGetStructTree(TRN_PDFDoc doc, TRN_STree* result);
 TRN_API TRN_PDFDocHasOC(TRN_PDFDoc doc, TRN_Bool* result);
@@ -179,13 +191,16 @@ TRN_API TRN_PDFDocRemoveSignatureHandler(TRN_PDFDoc doc, const TRN_SignatureHand
 TRN_API TRN_PDFDocGetSignatureHandler(TRN_PDFDoc doc, const TRN_SignatureHandlerId signature_handler_id, TRN_SignatureHandler* result);
 TRN_API TRN_PDFDocGenerateThumbnails(TRN_PDFDoc doc, TRN_UInt32 size);
 TRN_API TRN_PDFDocAppendVisualDiffWithOptsObj(TRN_PDFDoc doc, TRN_Page p1, TRN_Page p2, TRN_Obj opts_dict);
-TRN_API TRN_PDFDocAppendVisualDiff(TRN_PDFDoc doc, TRN_Page p1, TRN_Page p2, TRN_OptionBase* opts);
+TRN_API TRN_PDFDocAppendVisualDiff(TRN_PDFDoc doc, TRN_Page p1, TRN_Page p2, const TRN_OptionBase* opts);
 TRN_API TRN_PDFDocGetGeometryCollectionForPage(TRN_PDFDoc in_pdfdoc, int page_num, TRN_GeometryCollection* result);
 TRN_API TRN_PDFDocGetUndoManager(TRN_PDFDoc doc, TRN_UndoManager* result);
 TRN_API TRN_PDFDocCreateDigitalSignatureField(TRN_PDFDoc doc, const TRN_UString in_sig_field_name, TRN_DigitalSignatureField* result);
-TRN_API TRN_PDFDocGetDigitalSignatureFieldBegin(TRN_PDFDoc doc, TRN_Iterator* result);
+TRN_API TRN_PDFDocGetDigitalSignatureField(TRN_PDFDoc doc, const TRN_UString field_name, TRN_DigitalSignatureField* result);
+TRN_API TRN_PDFDocGetDigitalSignatureFieldIteratorBegin(TRN_PDFDoc doc, TRN_Iterator* result);
 TRN_API TRN_PDFDocGetDigitalSignaturePermissions(TRN_PDFDoc doc, enum TRN_DigitalSignatureField_DocumentPermissions* result);
-
+TRN_API TRN_PDFDocSaveViewerOptimized(TRN_PDFDoc doc, const TRN_UString path, const TRN_Obj opts);
+TRN_API TRN_PDFDocSaveViewerOptimizedBuffer(TRN_PDFDoc doc, const char** out_buf, TRN_Size* out_buf_size, const TRN_Obj opts);
+TRN_API TRN_PDFDocVerifySignedDigitalSignatures(TRN_PDFDoc doc, TRN_VerificationOptions opts, enum TRN_PDFDocSignaturesVerificationStatus* result);
 // #define JDM 1
 #ifdef JDM
 	struct TRN_displist_;

@@ -27,7 +27,7 @@ namespace pdftron {
 			inline ListBoxWidget ListBoxWidget::Create(PDFDoc& doc, const Rect& pos, const Field& field)
 			{
 				TRN_Annot result;
-				REX(TRN_ListBoxWidgetCreateWithField(doc.mp_doc, (const TRN_Rect*)&pos, (TRN_Field*)&field, &result));
+				REX(TRN_ListBoxWidgetCreateWithField(doc.mp_doc, (const TRN_Rect*)&pos, (const TRN_Field*)&field, &result));
 				return ListBoxWidget(result);
 			}
 
@@ -129,14 +129,14 @@ namespace pdftron {
 			{
 				// UString class contains only a TRN_UString and no virtual functions, so an array of UStrings is also an array of TRN_UStrings
 				TRN_UString* tmp = opts.size() > 0 ? (TRN_UString*)&opts[0] : NULL;
-				REX(TRN_ListBoxWidgetAddOptions(mp_annot, tmp, (UInt32)opts.size()));
+				REX(TRN_ListBoxWidgetAddOptions(mp_annot, tmp, (TRN_UInt32)opts.size()));
 			}
 
 			inline void ListBoxWidget::SetSelectedOptions(const std::vector<UString>& opts)
 			{
 				// UString class contains only a TRN_UString and no virtual functions, so an array of UStrings is also an array of TRN_UStrings
 				TRN_UString* tmp = opts.size() > 0 ? (TRN_UString*)&opts[0] : NULL;
-				REX(TRN_ListBoxWidgetSetSelectedOptions(mp_annot, tmp, opts.size()));
+				REX(TRN_ListBoxWidgetSetSelectedOptions(mp_annot, tmp, (TRN_UInt32)opts.size()));
 			}
 
 			inline std::vector<UString> ListBoxWidget::GetSelectedOptions()

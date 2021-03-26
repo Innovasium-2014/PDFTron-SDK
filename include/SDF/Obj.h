@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPSDFSDFObj
@@ -736,7 +736,7 @@ public:
 	 * @return A newly created array object.
 	 * @exception An Exception is thrown if this is not an Obj::Type::e_array
  	 */
-	 Obj InsertMatrix(size_t pos, Common::Matrix2D& value);
+	 Obj InsertMatrix(size_t pos, const Common::Matrix2D& value);
 
 	/**
 	 * Appends a new Obj::Type::e_name object at the end of the array.
@@ -838,7 +838,7 @@ public:
 	 * @return A newly appended array object.
 	 * @exception An Exception is thrown if this is not an Obj::Type::e_array
 	 */
-	 Obj PushBackMatrix(Common::Matrix2D& value);
+	 Obj PushBackMatrix(const Common::Matrix2D& value);
 	
 	/**
 	 * Checks whether the position is within the array bounds and then removes it from the 

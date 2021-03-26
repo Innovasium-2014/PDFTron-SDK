@@ -17,7 +17,7 @@ inline void DocSnapshot::Destroy()
 {
 	if(m_owner)
 	{
-		DREX(m_impl, TRN_DocSnapshotDestroy(&m_impl));
+		DREX(m_impl, TRN_DocSnapshotDestroy(m_impl));
 		m_owner = false;
 	}
 }

@@ -301,7 +301,7 @@ inline Obj Obj::PutRect (const char* key, double x1, double y1, double x2, doubl
 }
 
 inline Obj Obj::PutMatrix(const char* key, const Common::Matrix2D& value) {
-	RetObj(TRN_ObjPutMatrix(mp_obj,key, (TRN_Matrix2D*)&value, &result));
+	RetObj(TRN_ObjPutMatrix(mp_obj,key, (const TRN_Matrix2D*)&value, &result));
 }
 
 inline void Obj::Erase (const char* key) {
@@ -367,8 +367,8 @@ inline Obj Obj::InsertRect (size_t pos, double x1, double y1, double x2, double 
 	RetObj(TRN_ObjInsertRect(mp_obj,pos,x1,y1,x2,y2,&result));
 }
 
-inline Obj Obj::InsertMatrix(size_t pos, Common::Matrix2D& value) {
-	RetObj(TRN_ObjInsertMatrix(mp_obj,pos,(TRN_Matrix2D*)&value,&result));
+inline Obj Obj::InsertMatrix(size_t pos, const Common::Matrix2D& value) {
+	RetObj(TRN_ObjInsertMatrix(mp_obj,pos,(const TRN_Matrix2D*)&value,&result));
 }
 
 inline Obj Obj::PushBackName (const char* name) {
@@ -415,8 +415,8 @@ inline Obj Obj::PushBackRect (double x1, double y1, double x2, double y2) {
 	RetObj(TRN_ObjPushBackRect(mp_obj,x1,y1,x2,y2,&result));
 }
 
-inline Obj Obj::PushBackMatrix(Common::Matrix2D& value) {
-	RetObj(TRN_ObjPushBackMatrix(mp_obj,(TRN_Matrix2D*)&value,&result));
+inline Obj Obj::PushBackMatrix(const Common::Matrix2D& value) {
+	RetObj(TRN_ObjPushBackMatrix(mp_obj,(const TRN_Matrix2D*)&value,&result));
 }
 
 inline void Obj::EraseAt (size_t pos) {
@@ -596,6 +596,37 @@ inline std::vector<Obj> SDFDoc::ImportObjs(const std::vector<Obj>& obj_list) {
 		for (i=0; i<sz; ++i) ret.push_back(Obj(arr[i]));
 	}
 	return ret;
+}
+        
+inline std::vector<Obj> SDFDoc::ImportObjs(const std::vector<Obj>& obj_list, const std::vector<Obj>& exclude_list) {
+    size_t sz = obj_list.size();
+    std::vector<TRN_Obj> arr;
+    size_t i;
+    if(sz>0) {
+        size_t i;
+        arr.resize(sz);
+        for (i=0; i<sz; ++i) arr[i] = obj_list[i].mp_obj;
+    }
+    
+    size_t ex_sz = exclude_list.size();
+    std::vector<TRN_Obj> ex_arr;
+    if(ex_sz>0) {
+        
+
+        ex_arr.resize(ex_sz);
+        for (i=0; i<ex_sz; ++i) ex_arr[i] = exclude_list[i].mp_obj;
+    }
+    
+    
+    std::vector<Obj> ret;
+    if(sz>0) {
+        REX(TRN_SDFDocImportObjsWithExcludeList(mp_doc, &arr[0], int(sz), &ex_arr[0], int(ex_sz), &arr[0]));
+    
+        
+        for (i=0; i<sz; ++i) ret.push_back(Obj(arr[i]));
+    }
+    
+    return ret;
 }
 
 inline UInt32 SDFDoc::XRefSize () const {

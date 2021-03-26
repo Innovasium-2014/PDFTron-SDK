@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFTextExtractor
@@ -10,6 +10,7 @@
 #include <Common/UString.h>
 #include <C/PDF/TRN_TextExtractor.h>
 #include <vector>
+#include<PDF/OCG/Context.h>
 
 namespace pdftron { 
 	namespace PDF {
@@ -144,7 +145,10 @@ public:
 		// Invisible text is usually used in 'PDF Searchable Images' (i.e. scanned 
 		// pages with a corresponding OCR text). As a result, invisible text 
 		// will be extracted by default.
-		e_no_invisible_text = 16
+		e_no_invisible_text = 16,
+
+		// Enables removal of text that is marked as part of a Watermark layer
+		e_no_watermarks = 128
 	};
 
 	/**
@@ -158,6 +162,18 @@ public:
 	*/
 	 void Begin(Page page, const Rect* clip_ptr = 0, UInt32 flags = 0);
 
+	/**
+	* Sets the Optional Content Group (OCG) context that should be used when
+	* processing the document. This function can be used to change the current
+	* OCG context. Optional content (such as PDF layers) will be selectively
+	* processed based on the states of optional content groups in the given
+	* context.
+	*
+	* @param ctx Optional Content Group (OCG) context, or NULL if TextExtractor
+	* should process all content on the page.
+	*/
+	void SetOCGContext(OCG::Context* ctx);
+	
 	/** 
 	* @return the number of words on the page.
 	*/ 
@@ -362,8 +378,8 @@ public:
 	void GetColor(UInt8 rgb[3]);
 #endif
 
-	bool operator== (const Style& s);
-	bool operator!= (const Style& s);
+	bool operator== (const Style& s) const;
+	bool operator!= (const Style& s) const;
 
 	Style();
 
@@ -464,8 +480,8 @@ public:
 		*/
 	bool IsValid();
 
-	bool operator== (const Word&);
-	bool operator!= (const Word&);
+	bool operator== (const Word&) const;
+	bool operator!= (const Word&) const;
 	Word();
 
 	// @cond PRIVATE_DOC 
@@ -569,8 +585,8 @@ public:
 		*/
 	bool IsValid();
 
-	bool operator== (const Line&);
-	bool operator!= (const Line&);
+	bool operator== (const Line&) const;
+	bool operator!= (const Line&) const;
 	Line();
 
 	// @cond PRIVATE_DOC 

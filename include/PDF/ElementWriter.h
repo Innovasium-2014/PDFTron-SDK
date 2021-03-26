@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.	 
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFElementWriter
@@ -160,6 +160,13 @@ public:
 	 * @param str String to write to the content stream.
 	 */
 	 void WriteString(const char* str);
+
+ 	/**
+	 * Write only the graphics state changes applied to this element and skip writing the element itself.
+	 * This is especially useful when rewriting page content, but with the intention to skip certain elements.
+	 * @param element The element for which to write graphics state changes.
+	 */
+	 void WriteGStateChanges(Element element);
 
 	/**
 	 * This method is used to initialize ElementWriter state with the state of a given ElementReader.

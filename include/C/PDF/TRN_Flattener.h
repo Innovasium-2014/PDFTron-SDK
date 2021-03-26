@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPDFFlattener
@@ -16,17 +16,17 @@ TRN_API TRN_FlattenerDestroy(TRN_Flattener flattener);
 
 enum TRN_FlattenerThreshold
 {
-	e_Flattener_threshold_very_strict,
-	e_Flattener_threshold_strict,
-	e_Flattener_threshold_default,
-	e_Flattener_threshold_keep_most,
-	e_Flattener_threshold_keep_all
+	e_Flattener_very_strict,
+	e_Flattener_strict,
+	e_Flattener_default,
+	e_Flattener_keep_most,
+	e_Flattener_keep_all
 };
 
 enum TRN_FlattenerMode
 {
-	e_Flattener_mode_simple,
-	e_Flattener_mode_fast
+	e_Flattener_simple,
+	e_Flattener_fast
 };
 
 TRN_API TRN_FlattenerSetDPI(TRN_Flattener flattener, TRN_UInt32 dpi);

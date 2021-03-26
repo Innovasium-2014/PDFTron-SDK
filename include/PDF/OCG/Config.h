@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFOCGConfig
@@ -40,7 +40,7 @@ public:
 	 * Creates a new optional-content configuration object in the document.
 	 * @param doc The document in which the new OCG::Config will be created.
 	 * @param default_config If true, the configuration will be set as the 
-	 * default OCG configuration (i.e. listed as a D entry under 'OCProperies' 
+	 * default OCG configuration (i.e. listed as a D entry under 'OCProperties' 
 	 * dictionary).
 	 * @return The newly created configuration object.
 	 */

@@ -1,12 +1,12 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFPDFAPDFACompliance
 #define PDFTRON_H_CPPPDFPDFAPDFACompliance
 
 #include <vector>
-
+#include <PDF/PDFDoc.h>
 #include <C/PDF/PDFA/TRN_PDFACompliance.h>
 #include <Common/UString.h>
 
@@ -399,6 +399,13 @@ public:
 	 * @return A descriptive error message for the given error identifier.
 	 */
 	static const char* GetPDFAErrorMessage(ErrorCode id);
+
+	/**
+	* Retrieves whether document's XMP metadata claims PDF/A conformance and to what part and level.
+	* @param in_doc the document
+	* @return Presumptive PDFA part number and conformance level, as an enumerated value.
+	*/
+	static PDFACompliance::Conformance GetDeclaredConformance(const PDF::PDFDoc& in_doc);
 
 	/**
 	 *	Destructor

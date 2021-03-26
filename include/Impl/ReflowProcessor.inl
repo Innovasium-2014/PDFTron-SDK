@@ -27,3 +27,13 @@ inline void ReflowProcessor::ClearCache()
 {
 	REX(TRN_ReflowProcessorClearCache());
 }
+
+inline void ReflowProcessor::SetNoReflowContent(const UString& content)
+{
+	REX(TRN_SetNoReflowContent(content.mp_impl));
+}
+
+inline void ReflowProcessor::SetReflowFailedContent(const UString& content)
+{
+	REX(TRN_SetReflowFailedContent(content.mp_impl));
+}

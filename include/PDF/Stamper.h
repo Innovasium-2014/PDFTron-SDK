@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFStamper
@@ -235,6 +235,8 @@ public:
 	 *
 	 *		-e_font_size: This type only applies to text stamps. 'a' sets the font
 	 *		size. 'b' is ignored.
+	 * @param a Generally the horizontal component of the size. See size_type for more details.
+	 * @param b Generally the vertical component of the size. See size_type for more details.
 	 */
 	void SetSize(SizeType size_type, double a, double b);
 
@@ -258,13 +260,16 @@ public:
 	 * Frees the native memory of the object.
 	 */
 	 void Destroy();
-
-// @cond PRIVATE_DOC
+
+
+// @cond PRIVATE_DOC
+
 #ifndef SWIGHIDDEN
 	Stamper(TRN_Stamper impl);
 	TRN_Stamper mp_impl;
 #endif
-// @endcond
+// @endcond
+
 
 };
 

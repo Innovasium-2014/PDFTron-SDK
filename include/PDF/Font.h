@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFFont
@@ -10,6 +10,7 @@
 #include <Common/Iterator.h>
 #include <PDF/Rect.h>
 #include <PDF/PathData.h>
+#include <PDF/ShapedText.h>
 #include <C/PDF/TRN_Font.h>
 #include <C/SDF/TRN_SDFDoc.h>
 #include <vector>
@@ -376,6 +377,30 @@ public:
 	PathData GetGlyphPath(UInt32 char_code,
 					  bool conics2cubics, 
 					  Common::Matrix2D* transform = 0);
+
+
+	/**
+	 * Creates a set of positioned glyphs corresponding to the visual representation
+	 * of the provided text string.
+	 *
+	 * The shaped text will take into  account any advanced positioning and
+	 * substitution features provided by an underylying embedded font file. 
+	 * For example, these features could include kerning, ligatures, and diacritic
+	 * positioning. Typically the resulting shaped text would be fed into 
+	 * ElementBuilder.CreateShapedTextRun()
+	 *
+	 * @param text_to_shape the string to be shaped.
+	 *
+	 * @return A ShapedText object representing the result of the shaping operation.
+	 * 
+	 * @note Shaping requires a Type0 font with an embedded font file which 
+	 * covers all the unicode codepoints in the source text. For best results,
+	 * this font should use the e_Indices encoding scheme, as shaping features
+	 * that combine multiple codepoints into one glyph (ligatures, for example)
+	 * will not work well in non-index encoded fonts.
+	 *
+	 */
+	ShapedText GetShapedText(const UString& text_to_shape);
 
 	/**
 	 * Maps the encoding specific 'charcode' to Unicode. Conversion of 'charcode' 

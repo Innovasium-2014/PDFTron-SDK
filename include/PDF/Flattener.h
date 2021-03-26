@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFFlattener
@@ -99,13 +99,6 @@ public:
 #endif // SWIG
 	};
 
-    /**
-     * Used to control how precise or relaxed text flattening is. When some text is 
-     * preserved (not flattened to image) the visual appearance of the document may be altered.
-     * @param threshold the threshold setting to use.
-     */
-    void SetThreshold(enum Threshold threshold);
-
 	enum FlattenMode
 	{
 		/** 
@@ -122,6 +115,13 @@ public:
 		 */
 		e_fast
 	};
+
+	/**
+	 * Used to control how precise or relaxed text flattening is. When some text is
+	 * preserved (not flattened to image) the visual appearance of the document may be altered.
+	 * @param threshold the threshold setting to use.
+	 */
+	void SetThreshold(enum Threshold threshold);
 
 	/**
 	 * Enable or disable path hinting.
@@ -152,7 +152,8 @@ public:
 	 */
 	 void Destroy();
 
-	// @cond PRIVATE_DOC
+	// @cond PRIVATE_DOC
+
 	#ifndef SWIGHIDDEN
 	TRN_Flattener mp_impl;
 	#endif
@@ -161,7 +162,8 @@ private:
 	// ElementBuilder should not be copied
 	Flattener(const Flattener&);
 	Flattener& operator= (const Flattener&);
-	// @endcond
+	// @endcond
+
 };
 
 #include <Impl/Flattener.inl>

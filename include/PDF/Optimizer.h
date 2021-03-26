@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFOptimizer
@@ -60,12 +60,14 @@ public:
 	static void Optimize(PDFDoc& doc, const OptimizerSettings& settings);
 	static void Optimize(PDFDoc& doc);
 
-	// @cond PRIVATE_DOC
+	// @cond PRIVATE_DOC
+
 #ifndef SWIGHIDDEN
 private:
 	Optimizer() {};
 #endif
-	// @endcond
+	// @endcond
+
 };
 
 
@@ -155,7 +157,8 @@ public:
 	{
 		e_jbig2,
 		e_flate,
-		e_none
+		e_none,
+		e_ccitt
 	};
 
 	enum DownsampleMode
@@ -181,7 +184,7 @@ public:
 
 	  /**
 		* Sets the output compression mode for monochrome images
-		* The default value is e_jbig2
+		* The default value is e_ccitt (CCITT group 4 compression)
 		* @param mode the compression mode to set
 		*/
 	void SetCompressionMode(enum CompressionMode mode);

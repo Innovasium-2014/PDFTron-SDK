@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFPathData
@@ -129,8 +129,10 @@ public:
 		return glyph_index;
 	}
 
-	
-// @cond PRIVATE_DOC
+	
+
+// @cond PRIVATE_DOC
+
 #ifndef SWIGHIDDEN
 	bool is_def;
 	int glyph_index;
@@ -138,7 +140,8 @@ public:
 	std::vector<double> pts;
 	PathData(bool i, int gi, const std::vector<unsigned char>& o, const std::vector<double>& d) : is_def(i), glyph_index(gi), oprs(o), pts(d) {}
 #endif
-// @endcond
+// @endcond
+
 };
 
 	};	// namespace PDF

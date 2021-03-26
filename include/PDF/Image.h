@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.	 
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFImage
@@ -48,6 +48,8 @@ public:
 	 *  - /JBIG2; SDF::Name("JBIG2"), An SDF::Name Object with value equal to "JBIG2". If the 
 	 *	image is monochrome (i.e. bpc == 1), the encoder will compress the image using JBIG2Decode 
 	 *	filter.
+	 *	Note that JBIG2 compression is not recommended for use on scanned text/financial documents or equivalent
+	 *  since its lossless nature can lead to similar looking numbers or characters being replaced.
 	 *
 	 *  - [/JBIG2 /Threshold 0.6 /SharePages 50] - Compress a monochrome image using lossy JBIG2Decode 
 	 *  compression with the given image threshold and by sharing segments from a specified number 
@@ -57,6 +59,10 @@ public:
 	 *  pages sharing a common 'JBIG2Globals' segment stream. Increasing the value of this parameter 
 	 *  improves compression ratio at the expense of memory usage.
 	 *
+	 *	- [/CCITT] - Compress a monochrome (i.e. bpc == 1) image using CCITT Group 4 compression. This algorithm typically produces 
+	 *				larger output than JBIG2, but is lossless. This makes it much more suitable for scanned text documents.
+	 *				CCITT is the best option for more general monochrome compression use cases, since JBIG2 has potential to change image content. 
+	 *	
 	 *  - [/JPEG] - Use JPEG compression with default compression. 
 	 *  - [/JPEG /Quality 60] - Use JPEG compression with given quality setting. The "Quality" 
 	 *	value is expressed on the 0..100 scale.

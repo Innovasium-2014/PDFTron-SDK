@@ -34,6 +34,13 @@ inline OCROptions& OCROptions::AddTextZonesForPage(const RectCollection& regions
 }
 
 
+inline OCROptions& OCROptions::AddDPI(int dpi)
+{
+	OptionsBase::PutNumber(m_dict, "DPI", dpi);
+	return *this;
+}
+
+
 inline SDF::Obj& OCROptions::GetInternalObj()
 {
 	return m_dict;

@@ -119,6 +119,12 @@ inline void PDFView::SetColorPostProcessColors(unsigned int white_color, unsigne
     REX(TRN_PDFViewSetColorPostProcessColors(mp_view, white_color, black_color));
 }
 
+inline void PDFView::SetColorPostProcessMapFile(Filters::Filter filter)
+{
+    filter.m_owner = false;
+    REX(TRN_PDFViewSetColorPostProcessMapFile(mp_view, filter.m_impl));
+}
+
 inline PDFRasterizer::ColorPostProcessMode PDFView::GetColorPostProcessMode() const
 {
 	enum TRN_PDFRasterizerColorPostProcessMode result;
@@ -502,6 +508,16 @@ inline int PDFView::GetBufferStride() const
 	RetInt(TRN_PDFViewGetBufferStride(mp_view,&result));
 }
 
+inline void PDFView::HideAnnotation(PDF::Annot annot)
+{
+	REX(TRN_PDFViewHideAnnotation(mp_view, annot.mp_annot));
+}
+
+inline void PDFView::ShowAnnotation(PDF::Annot annot)
+{
+	REX(TRN_PDFViewShowAnnotation(mp_view, annot.mp_annot));
+}
+
 inline void PDFView::SetDrawAnnotations(bool render_annots)
 {
 	REX(TRN_PDFViewSetDrawAnnotations(mp_view,BToTB(render_annots)));
@@ -510,6 +526,11 @@ inline void PDFView::SetDrawAnnotations(bool render_annots)
 inline void PDFView::SetHighlightFields(bool highlight)
 {
 	REX(TRN_PDFViewSetHighlightFields(mp_view,BToTB(highlight)));
+}
+
+inline void PDFView::SetRequiredFieldBorderColor(const ColorPt& new_border_color)
+{
+	REX(TRN_PDFViewSetRequiredFieldBorderColor(mp_view, &new_border_color.m_c));
 }
 
 inline void PDFView::SetGamma(double exp)
@@ -860,6 +881,25 @@ inline ExternalAnnotManager PDFView::GetExternalAnnotManager(const UString& auth
     return ExternalAnnotManager(result);
 }
 
+inline std::vector<Annot> PDFView::GetAnnotationListAt(int x1, int y1, int x2, int y2)
+{
+	TRN_Vector annots_vec = NULL;
+    REX(TRN_PDFViewGetAnnotationListAt(mp_view, x1, y1, x2, y2, (TRN_Vector*)&annots_vec));
+    
+    TRN_UInt32 annots_vec_size;
+    TRN_VectorGetSize(annots_vec, &annots_vec_size);
+    
+    std::vector<Annot> result;
+    for (TRN_UInt32 i = 0; i < annots_vec_size; i++)
+    {
+        TRN_Annot current_annot = NULL;
+        TRN_VectorGetAt(annots_vec, i, (void**)&current_annot);
+        result.push_back(Annot(current_annot));
+    }
+    
+    TRN_VectorDestroyKeepContents(annots_vec);
+    return result;
+}
 
 inline std::vector<Annot> PDFView::GetAnnotationsOnPage(int page_num)
 {
@@ -903,6 +943,18 @@ inline void PDFView::HTTPRequestOptions::RestrictDownloadUsage(bool restrict)
 {
 	TRN_Obj result;
 	REX(TRN_ObjPutBool(m_obj,"MINIMAL_DOWNLOAD", BToTB(restrict), &result));
+}
+
+inline void PDFView::HTTPRequestOptions::SkipByteRangeTest(bool skip)
+{
+	TRN_Obj result;
+	REX(TRN_ObjPutBool(m_obj,"SKIP_BYTE_RANGE_TEST", BToTB(skip), &result));
+}
+
+inline void PDFView::HTTPRequestOptions::UseRemoteFileSize(Int64 size_in_bytes)
+{
+	TRN_Obj result;
+	REX(TRN_ObjPutNumber(m_obj,"FORCE_REMOTE_SIZE", static_cast<double>(size_in_bytes), &result));
 }
 
 inline void PDFView::OpenURLAsync(const char* url, UString cache_file, const char* password, const HTTPRequestOptions* options)

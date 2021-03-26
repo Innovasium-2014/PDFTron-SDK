@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFAnnotsPolyLine
@@ -98,7 +98,7 @@ class PolyLine : public Line
 	/**
 	 * Returns the intent name as a value of the "IntentName" enumeration type.
 	 * 
-	 * @returns The intent type of the annotation.
+	 * @return The intent type of the annotation.
 	 * @see IntentType
 	*/
 	IntentType GetIntentName() const;

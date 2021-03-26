@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CCommonMatrix2D
@@ -18,6 +18,8 @@ TRN_API	TRN_Matrix2DEquals(const TRN_Matrix2D* m1, const TRN_Matrix2D* m2, TRN_B
 TRN_API	TRN_Matrix2DMult(const TRN_Matrix2D* matrix, double* in_out_x, double* in_out_y);
 TRN_API	TRN_Matrix2DInverse (const TRN_Matrix2D* matrix, TRN_Matrix2D* result);
 TRN_API	TRN_Matrix2DTranslate (TRN_Matrix2D* matrix, double h, double v);
+TRN_API	TRN_Matrix2DPreTranslate(TRN_Matrix2D* matrix, double h, double v);
+TRN_API	TRN_Matrix2DPostTranslate(TRN_Matrix2D* matrix, double h, double v);
 TRN_API	TRN_Matrix2DScale (TRN_Matrix2D* matrix, double h, double v);
 TRN_API	TRN_Matrix2DCreateZeroMatrix (TRN_Matrix2D* result);	
 TRN_API	TRN_Matrix2DCreateIdentityMatrix (TRN_Matrix2D* result);	

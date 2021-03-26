@@ -457,7 +457,7 @@ inline PDF::DigitalSignatureField PDFDoc::CreateDigitalSignatureField(const UStr
 inline PDF::DigitalSignatureFieldIterator PDFDoc::GetDigitalSignatureFieldIterator()
 {
 	TRN_Iterator result;
-	REX(TRN_PDFDocGetDigitalSignatureFieldBegin(mp_doc, &result));
+	REX(TRN_PDFDocGetDigitalSignatureFieldIteratorBegin(mp_doc, &result));
 	Common::Iterator<PDF::DigitalSignatureField> t(result);
 	return t;
 }
@@ -492,7 +492,7 @@ inline void PDFDoc::Save(const UString& path, UInt32 flags) {
 }
 
 #ifndef SWIG
-inline void PDFDoc::Save(const UString& path, UInt32 flags, Common::ProgressMonitor* progress) {
+inline void PDFDoc::Save(const UString& path, UInt32 flags, Common::ProgressMonitor*) {
 	REX(TRN_PDFDocSave(mp_doc, path.mp_impl,flags));
 }
 #endif
@@ -508,7 +508,7 @@ inline std::vector<unsigned char> PDFDoc::Save(UInt32 flags) {
 }
 
 #ifndef SWIG
-inline void PDFDoc::Save(const char* &out_buf, size_t& out_buf_size, UInt32 flags, Common::ProgressMonitor* progress) {
+inline void PDFDoc::Save(const char* &out_buf, size_t& out_buf_size, UInt32 flags, Common::ProgressMonitor*) {
 	REX(TRN_PDFDocSaveMemoryBuffer(mp_doc, flags, &out_buf, &out_buf_size));
 }
 #endif
@@ -662,15 +662,15 @@ inline int PDFDoc::GetPageCount () {
 	return result;
 }
         
-inline int PDFDoc::GetDownloadedByteCount () {
-    int result;
-    REX(TRN_PDFGetDownloadedByteCount(mp_doc, &result));
+inline TRN_UInt64 PDFDoc::GetDownloadedByteCount () {
+    TRN_UInt64 result;
+    REX(TRN_PDFDocGetDownloadedByteCount(mp_doc, &result));
     return result;
 }
 
-inline int PDFDoc::GetTotalRemoteByteCount () {
-    int result;
-    REX(TRN_PDFGetTotalRemoteByteCount(mp_doc, &result));
+inline TRN_UInt64 PDFDoc::GetTotalRemoteByteCount () {
+    TRN_UInt64 result;
+    REX(TRN_PDFDocGetTotalRemoteByteCount(mp_doc, &result));
     return result;
 }
 
@@ -709,6 +709,15 @@ inline Field PDFDoc::FieldCreate(const UString& field_name, Field::Type type, co
 
 inline void PDFDoc::RefreshFieldAppearances() {
 	REX(TRN_PDFDocRefreshFieldAppearances(mp_doc));
+}
+
+inline void PDFDoc::RefreshAnnotAppearances(const RefreshOptions* opts)
+{
+	TRN_optionbase opt_in;
+	opt_in.type = e_option_type_sdf;
+	RefreshOptions* opt = const_cast<RefreshOptions*>(opts);
+	opt_in.impl = opt ? opt->GetInternalObj().mp_obj : 0;
+	REX(TRN_PDFDocRefreshAnnotAppearances(mp_doc, &opt_in));
 }
 
 inline void PDFDoc::FlattenAnnotations(bool forms_only) {
@@ -955,6 +964,24 @@ inline bool PDFDoc::IsTagged() {
 	REX(TRN_PDFDocIsTagged(mp_doc, &result));
 	return TBToB(result);
 }
+
+inline void PDFDoc::SaveViewerOptimized(const UString& path, const ViewerOptimizedOptions& opts)
+{
+	REX(TRN_PDFDocSaveViewerOptimized(mp_doc, path.mp_impl, opts.m_obj));
+}
+
+inline void PDFDoc::SaveViewerOptimized(const char* &out_buf, size_t& out_buf_size, const ViewerOptimizedOptions& opts)
+{
+	REX(TRN_PDFDocSaveViewerOptimizedBuffer(mp_doc, &out_buf, &out_buf_size, opts.m_obj));
+}
+
+inline PDFDoc::SignaturesVerificationStatus PDFDoc::VerifySignedDigitalSignatures(const VerificationOptions& in_opts) const
+{
+	TRN_PDFDocSignaturesVerificationStatus result;
+	REX(TRN_PDFDocVerifySignedDigitalSignatures(mp_doc, in_opts.m_impl, &result));
+	return (SignaturesVerificationStatus)result;
+}
+
 
 //for xamarin use only
 inline PDFDoc* PDFDoc::CreateInternal(ptrdiff_t impl) {

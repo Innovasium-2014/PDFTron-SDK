@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFAnnot
@@ -14,10 +14,10 @@
 #include <PDF/FileSpec.h>
 #include <PDF/Page.h>
 #include <C/PDF/TRN_Annot.h>
+#include <PDF/RefreshOptions.h>
 
 namespace pdftron { 
 	namespace PDF {
-
 class BorderStyle;
 /** 
  * Annot is a base class for different types of annotations. For annotation 
@@ -584,19 +584,13 @@ public:
 	UString GetContents() const;
 
 	/**
-	* @note The functionality documented below is part of the appearance characteristics dictionary, the dictionary
-	* that shall be used in constructing a dynamic appearance stream specifying the annotation's visual
-	* presentation on the page.
-	*/
-
-	/**
 	* Returns the rotation value of the annotation. The Rotation specifies the number of degrees by which the
 	* annotation shall be rotated counterclockwise relative to the page.
 	* The value shall be a multiple of 90.
 	*
 	* @return An integer representing the rotation value of the annotation.
 	* @note This property is part of the appearance characteristics dictionary, this dictionary
-	* that shall be used in constructing a dynamic appearance stream specifying the annotation’s visual
+	* that shall be used in constructing a dynamic appearance stream specifying the annotation's visual
 	* presentation on the page.
 	*/
 	int GetRotation() const;
@@ -609,7 +603,7 @@ public:
 	*
 	* @param angle An integer representing the rotation value of the annotation.
 	* @note This property is part of the appearance characteristics dictionary, this dictionary
-	* that shall be used in constructing a dynamic appearance stream specifying the annotation’s visual
+	* that shall be used in constructing a dynamic appearance stream specifying the annotation's visual
 	* presentation on the page.
 	*/
 	void SetRotation(int angle);
@@ -632,6 +626,35 @@ public:
 	* rotated correctly, from the users perspective.
 	*/
 	void RefreshAppearance();
+
+	/**
+	* A version of RefreshAppearance allowing custom options to make slight tweaks in behaviour.
+	* @param options The RefreshOptions.
+	*/
+	void RefreshAppearance(const RefreshOptions& options);
+
+	/**
+	* Returns custom data associated with the given key.
+	*
+	* @param key The key for which to retrieve the associated data.
+	* @return the custom data string. If no data is available an empty string is returned.
+	*/
+	UString GetCustomData(const UString& key) const;
+
+	/**
+	* Sets the custom data associated with the specified key.
+	*
+	* @param key The key under which to store this custom data
+	* @param value The custom data string to store
+	*/
+	void SetCustomData(const UString& key, const UString& value);
+
+	/**
+	* Deletes custom data associated with the given key.
+	*
+	* @param key The key for which to delete the associated data.
+	*/
+	void DeleteCustomData(const UString& key);
 
 	/**
 	* Scales the geometry of the annotation so that its appearance would now fit a new

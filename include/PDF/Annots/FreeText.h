@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFAnnotsFreeText
@@ -116,6 +116,19 @@ class FreeText : public Markup
 		Point GetCalloutLinePoint3() const;
 
 #ifndef SWIG
+		/**
+		 * Returns the callout line points of the FreeText annotation.
+		 * (PDF 1.6)
+		 *
+		 * @param p1 The target point. (where the ending style is used)
+		 * @param p2 The ending point.
+		 * @param p3 The knee point.
+		 * @return Three point objects if the line is bent or two point objects if
+		 * the line is straight.
+		 * @note If the line is straight, i.e. only has two points,
+		 * two points will be returned in p1 and p2, and p3 will be the same as p2.
+		 * The coordinates are given in default user space.
+		*/
 		void GetCalloutLinePoints(Point& p1, Point& p2, Point& p3) const;
 #endif
 		
@@ -156,7 +169,7 @@ class FreeText : public Markup
 		 * Returns Intent name of the FreeText annotation. 
 		 * (PDF 1.4)
 		 * 
-		 * @returns The intent name of the annotation as 
+		 * @return The intent name of the annotation as 
 		 * an entry from the enum "IntentName".
 		*/
 		IntentName GetIntentName() const;
@@ -226,10 +239,6 @@ class FreeText : public Markup
 		/** 
 		 * Returns the text color of the FreeText Annotation.
 		 * 
-		 * @param color reference to ColorPt object, where results will be saved.
-		 * @param col_comp reference to an integer, 
-		 * where number of colorant components will be written.
-		 *
 		 * @note Current implementation of this method uses a non-standard
 		 * entry in the annotation dictionary and will not return meaningful
 		 * results when called on annotations not created with PDFTron software.
@@ -239,7 +248,18 @@ class FreeText : public Markup
 		int GetTextColorCompNum();
 
 #ifndef SWIG
-		void GetTextColor(  ColorPt& color, int& col_comp );
+		/**
+		 * Returns the text color of the FreeText Annotation.
+		 *
+		 * @param color reference to ColorPt object, where results will be saved.
+		 * @param col_comp reference to an integer,
+		 * where number of colorant components will be written.
+		 *
+		 * @note Current implementation of this method uses a non-standard
+		 * entry in the annotation dictionary and will not return meaningful
+		 * results when called on annotations not created with PDFTron software.
+		 */
+		void GetTextColor( ColorPt& color, int& col_comp );
 #endif
 
 		/** 
@@ -271,6 +291,17 @@ class FreeText : public Markup
 		int GetLineColorCompNum();
 
 #ifndef SWIG
+		/**
+		 * Returns the line and border color of the FreeText Annotation.
+		 *
+		 * @param color reference to ColorPt object, where results will be saved.
+		 * @param col_comp reference to an integer,
+		 * where number of colorant components will be written.
+		 *
+		 * @note Current implementation of this method uses a non-standard
+		 * entry in the annotation dictionary and will not return meaningful
+		 * results when called on annotations not created with PDFTron software.
+		 */
 		void GetLineColor(  ColorPt& color, int& col_comp );
 #endif
 		/**
@@ -288,7 +319,7 @@ class FreeText : public Markup
 		 * size used, call RefreshAppearance and then use ElementReader
 		 * on the content stream of this annotation.
 		 *
-		 * @returns the default font size, where a value of zero indicates
+		 * @return the default font size, where a value of zero indicates
 		 * auto sizing.
 		 */
 		double GetFontSize();

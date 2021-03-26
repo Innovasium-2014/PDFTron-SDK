@@ -139,6 +139,12 @@ inline Element ElementBuilder::CreateUnicodeTextRun(const Unicode* text_data, UI
 	return Element(result);
 }
 
+inline Element ElementBuilder::CreateShapedTextRun(ShapedText shaped_text) {
+	TRN_Element result;
+	REX(TRN_ElementBuilderCreateShapedTextRun(mp_builder, shaped_text.m_impl, &result));
+	return Element(result);
+}
+
 inline Element ElementBuilder::CreateTextNewLine(double dx, double dy) {
 	TRN_Element result;
 	REX(TRN_ElementBuilderCreateTextNewLineWithOffset(mp_builder,dx,dy,&result));

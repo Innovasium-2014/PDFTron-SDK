@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPDFCONVERT
@@ -47,19 +47,20 @@ TRN_API TRN_ConversionMonitorDestroy(TRN_ConversionMonitor conversionMonitor);
 
 TRN_API TRN_ConvertWordToPdf(TRN_PDFDoc in_pdfdoc, TRN_UString in_filename, TRN_Obj options);
 TRN_API TRN_ConvertWordToPdfConversion(TRN_PDFDoc* in_pdfdoc, TRN_UString in_filename,  TRN_Obj options, TRN_DocumentConversion* result);
-TRN_API TRN_ConvertWordToPdfWithFilter(TRN_PDFDoc in_pdfdoc, TRN_Filter no_own_in_data, TRN_Obj options);
-TRN_API TRN_ConvertWordToPdfConversionWithFilter(TRN_PDFDoc* in_pdfdoc, TRN_Filter no_own_in_data, TRN_Obj options, TRN_DocumentConversion* result);
+TRN_API TRN_ConvertWordToPdfWithFilter(TRN_PDFDoc in_pdfdoc, TRN_Filter no_own_in_stream, TRN_Obj options);
+TRN_API TRN_ConvertWordToPdfConversionWithFilter(TRN_PDFDoc* in_pdfdoc, TRN_Filter in_stream, TRN_Obj options, TRN_DocumentConversion* result);
 
 TRN_API TRN_ConvertOfficeToPdfWithPath(TRN_PDFDoc in_pdfdoc, TRN_UString in_filename, TRN_Obj options);
 TRN_API TRN_ConvertStreamingPdfConversionWithPath(TRN_UString in_filename, TRN_Obj options, TRN_DocumentConversion* result);
 TRN_API TRN_ConvertStreamingPdfConversionWithPdfAndPath(TRN_PDFDoc* in_pdfdoc, TRN_UString in_filename, TRN_Obj options, TRN_DocumentConversion* result);
-TRN_API TRN_ConvertOfficeToPdfWithFilter(TRN_PDFDoc in_pdfdoc, TRN_Filter no_own_in_data, TRN_Obj options);
-TRN_API TRN_ConvertStreamingPdfConversionWithFilter(TRN_Filter no_own_in_data, TRN_Obj options, TRN_DocumentConversion* result);
-TRN_API TRN_ConvertStreamingPdfConversionWithPdfAndFilter(TRN_PDFDoc* in_pdfdoc, TRN_Filter no_own_in_data, TRN_Obj options, TRN_DocumentConversion* result);
+TRN_API TRN_ConvertOfficeToPdfWithFilter(TRN_PDFDoc in_pdfdoc, TRN_Filter no_own_in_stream, TRN_Obj options);
+TRN_API TRN_ConvertStreamingPdfConversionWithFilter(TRN_Filter in_stream, TRN_Obj options, TRN_DocumentConversion* result);
+TRN_API TRN_ConvertStreamingPdfConversionWithPdfAndFilter(TRN_PDFDoc* in_pdfdoc, TRN_Filter in_stream, TRN_Obj options, TRN_DocumentConversion* result);
 
 
 TRN_API TRN_ConvertToPdf(TRN_PDFDoc in_pdfdoc, TRN_UString in_filename);
-TRN_API TRN_ConvertFromCAD(TRN_PDFDoc in_pdfdoc, TRN_UString in_filename, TRN_Obj options);
+TRN_API TRN_ConvertFromCAD(TRN_PDFDoc in_pdfdoc, TRN_UString in_filename, TRN_Obj opts);
+TRN_API TRN_ConvertFromTiff(TRN_PDFDoc in_pdfdoc, TRN_Filter in_data);
 TRN_API TRN_ConvertRequiresPrinter (TRN_UString in_filename, TRN_Bool *result );
 
 TRN_API TRN_ConvertPrinterInstall (TRN_UString in_printerName );
@@ -69,16 +70,17 @@ TRN_API TRN_ConvertPrinterSetPrinterName(TRN_UString in_printerName);
 TRN_API TRN_ConvertPrinterIsInstalled (TRN_UString in_printerName, TRN_Bool *result );
 enum TRN_ConvertPrinterMode
 {
-	e_Printermode_auto = 0,
-	e_Printermode_interop_only,
-	e_Printermode_printer_only,
-	e_Printermode_prefer_builtin_converter
+	e_Convert_auto = 0,
+	e_Convert_interop_only,
+	e_Convert_printer_only,
+	e_Convert_prefer_builtin_converter
 };
-TRN_API TRN_ConvertPrinterSetMode(enum TRN_ConvertPrinterMode mode);
+TRN_API TRN_ConvertPrinterSetMode(enum TRN_ConvertPrinterMode print_mode);
 TRN_API TRN_ConvertPrinterGetMode(enum TRN_ConvertPrinterMode *result);
 
-TRN_API TRN_ConvertFileToHtml (TRN_UString in_inputFilename, TRN_UString in_outputFilename, TRN_Obj options);
-TRN_API TRN_ConvertToHtml (TRN_PDFDoc in_pdfdoc, TRN_UString in_outputFilename, TRN_Obj options);
+TRN_API TRN_ConvertPageToHtml(TRN_Page page, TRN_UString* result);
+TRN_API TRN_ConvertFileToHtml (TRN_UString in_inputFilename, TRN_UString in_outputPath, TRN_Obj options);
+TRN_API TRN_ConvertToHtml (TRN_PDFDoc in_pdfdoc, TRN_UString in_outputPath, TRN_Obj options);
 TRN_API TRN_ConvertFileToEpub (TRN_UString in_inputFilename, TRN_UString in_outputFilename, TRN_Obj html_options, TRN_Obj epub_options);
 TRN_API TRN_ConvertToEpub (TRN_PDFDoc in_pdfdoc, TRN_UString in_outputFilename, TRN_Obj html_options, TRN_Obj epub_options);
 

@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPDFPDFAPDFACompliance
@@ -234,6 +234,7 @@ TRN_API TRN_PDFAComplianceGetError(TRN_PDFACompliance pdfac, int idx, enum TRN_P
 TRN_API TRN_PDFAComplianceGetRefObjCount(TRN_PDFACompliance pdfac, enum TRN_PDFAComplianceErrorCode id, int* result);
 TRN_API TRN_PDFAComplianceGetRefObj(TRN_PDFACompliance pdfac, enum TRN_PDFAComplianceErrorCode id, int err_idx, int* result);
 TRN_API TRN_PDFAComplianceGetPDFAErrorMessage(enum TRN_PDFAComplianceErrorCode id, const char** result);
+TRN_API TRN_PDFAComplianceGetDeclaredConformance(TRN_PDFDoc doc, TRN_PDFAComplianceConformance* result);
 TRN_API TRN_PDFAComplianceSaveAsFromFileName(TRN_PDFACompliance pdfac, TRN_UString file_path, TRN_Bool linearized);
 TRN_API TRN_PDFAComplianceSaveAsFromBuffer(TRN_PDFACompliance pdfac, const char** out_buf, TRN_Size* out_buf_size, TRN_Bool linearized);
 

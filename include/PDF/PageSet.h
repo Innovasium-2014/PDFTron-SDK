@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFPageSet
@@ -80,12 +80,14 @@ public:
 	 */
 	 void Destroy();
 
-	// @cond PRIVATE_DOC
+	// @cond PRIVATE_DOC
+
 	#ifndef SWIGHIDDEN
 	PageSet(TRN_PageSet impl);
 	TRN_PageSet mp_impl;
 	#endif
-	// @endcond
+	// @endcond
+
 	private : 
 		PageSet(Filter filter);
 };

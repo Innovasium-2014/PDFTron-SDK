@@ -15,7 +15,7 @@ public:
 
 	
 
-	/*
+	/**
 	* Adds a collection of ignorable regions for the given page,
 	* an optional list of page areas not to be included in analysis
 	* @param regions: the zones to be added to the ignore list
@@ -26,9 +26,9 @@ public:
 
 	
 
-	/*
+	/**
 	* Adds a language to the list of to be considered when 
-	* procecessing this document
+	* processing this document
 	* @param lang: the new language to be added to the language list
 	* @return this object, for call chaining
 	*/
@@ -36,7 +36,7 @@ public:
 
 	
 
-	/*
+	/**
 	* Adds a collection of text regions of interest for the given page,
 	* an optional list of known text zones that will be used to improve OCR quality
 	* @param regions: the zones to be added to the text region list
@@ -44,6 +44,17 @@ public:
 	* @return this object, for call chaining
 	*/
 	OCROptions& AddTextZonesForPage(const RectCollection& regions, int page_num);
+
+
+	/**
+	* Knowing proper image resolution is important, 
+	* as it enables the OCR engine to translate pixel heights of characters to their respective font sizes. 
+	* We do our best to retrieve resolution information from the input's metadata, however it occasionally can be corrupt or missing. 
+	* Hence we allow manual override of source's resolution, which supersedes any metadata found (both explicit as in image metadata and implicit as in PDF).
+	* @param dpi: image resolution
+	* @return this object, for call chaining
+	*/
+	OCROptions& AddDPI(int dpi);
 
 	
 	// @cond PRIVATE_DOC
@@ -55,6 +66,7 @@ private:
 	SDF::ObjSet m_obj_set;
 	SDF::Obj m_dict;
 	#endif
+	// @endcond
 };
 
 }

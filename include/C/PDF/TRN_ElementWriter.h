@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPDFElementWriter
@@ -29,6 +29,7 @@ TRN_API TRN_ElementWriterFlush(TRN_ElementWriter w);
 TRN_API TRN_ElementWriterWriteBuffer(TRN_ElementWriter w, const char* data, int data_sz);
 TRN_API TRN_ElementWriterWriteString(TRN_ElementWriter w, const char* str);
 TRN_API TRN_ElementWriterSetDefaultGState(TRN_ElementWriter w, TRN_ElementReader r);
+TRN_API TRN_ElementWriterWriteGStateChanges(TRN_ElementWriter w, TRN_Element element);
 
 
 #ifdef __cplusplus

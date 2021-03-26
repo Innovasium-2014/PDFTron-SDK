@@ -207,6 +207,13 @@ inline PathData Font::GetGlyphPath(UInt32 char_code,
 	return PathData(TBToB(result), glyph_idx, out_oprs, out_data);
 }
 
+inline ShapedText Font::GetShapedText(const UString& text_to_shape)
+{
+	TRN_ShapedText result;
+	REX(TRN_FontGetShapedText(mp_font, text_to_shape.mp_impl, &result));
+	return ShapedText(result);
+}
+
 inline UString Font::MapToUnicode(UInt32 char_code)
 {
 	Unicode out_uni_arr[8];

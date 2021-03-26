@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CCommonBasicTypes
@@ -46,6 +46,13 @@ struct TRN_matrix2d
 };
 
 typedef struct TRN_matrix2d TRN_Matrix2D;
+
+struct TRN_byterange
+{
+	TRN_UInt64 m_offset;
+	TRN_UInt64 m_size;
+};
+typedef struct TRN_byterange TRN_ByteRange;
 
 struct TRN_rect {
 	double x1; 

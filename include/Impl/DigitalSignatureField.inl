@@ -67,14 +67,14 @@ inline UString DigitalSignatureField::GetContactInfo() const
 	return UString(result);
 }
 
-inline std::vector<unsigned char> DigitalSignatureField::GetCert(UInt32 in_index) const {
+inline std::vector<UChar> DigitalSignatureField::GetCert(UInt32 in_index) const {
 	TRN_Vector cvector;
 	REX(TRN_DigitalSignatureFieldGetCert(&m_impl, in_index, &cvector));
 	void* arr;
 	UInt32 size;
 	REX(TRN_VectorGetData(cvector, &arr));
 	REX(TRN_VectorGetSize(cvector, &size));
-	std::vector<unsigned char> result(size);
+	std::vector<UChar> result(size);
 	memcpy(&result[0], arr, size);
 	TRN_VectorDestroy(cvector);
 	return result;
@@ -136,6 +136,12 @@ inline void DigitalSignatureField::SetFieldPermissions(const FieldPermissions in
 	TRN_UString* tmp = in_field_names.size() > 0? (TRN_UString*) &in_field_names[0] : NULL;
 	REX(TRN_DigitalSignatureFieldSetFieldPermissions(&m_impl, (enum TRN_DigitalSignatureField_FieldPermissions) in_action, tmp, (TRN_UInt32)in_field_names.size()));
 }
+inline void DigitalSignatureField::SetFieldPermissions(const FieldPermissions in_action, const UString* in_field_names, const size_t in_field_names_num_elems)
+{
+	// UString class contains only a TRN_UString and no virtual functions, so an array of UStrings is also an array of TRN_UStrings
+	TRN_UString* tmp = (TRN_UString*)&in_field_names[0];
+	REX(TRN_DigitalSignatureFieldSetFieldPermissions(&m_impl, (enum TRN_DigitalSignatureField_FieldPermissions) in_action, tmp, (TRN_UInt32)in_field_names_num_elems));
+}
 #endif
 
 inline void DigitalSignatureField::SetDocumentPermissions(DigitalSignatureField::DocumentPermissions in_perms)
@@ -148,10 +154,9 @@ inline void DigitalSignatureField::SignOnNextSave(const UString& in_pkcs12_keyfi
 	REX(TRN_DigitalSignatureFieldSignOnNextSave(&m_impl, in_pkcs12_keyfile_path.mp_impl, in_password.mp_impl));
 }
 
-inline void DigitalSignatureField::SignOnNextSave(const std::vector<unsigned char>& in_pkcs12_buffer, const UString& in_password)
+inline void DigitalSignatureField::SignOnNextSave(const UChar* in_pkcs12_buffer, size_t in_buf_size, const UString& in_password)
 {
-	TRN_UInt8* tmp = in_pkcs12_buffer.size() > 0? (TRN_UInt8*) &in_pkcs12_buffer[0] : NULL;
-	REX(TRN_DigitalSignatureFieldSignOnNextSaveFromBuffer(&m_impl, tmp, (TRN_UInt32) in_pkcs12_buffer.size(), in_password.mp_impl));
+	REX(TRN_DigitalSignatureFieldSignOnNextSaveFromBuffer(&m_impl, (const TRN_UChar*)in_pkcs12_buffer, (TRN_UInt32)in_buf_size, in_password.mp_impl));
 }
 
 inline void DigitalSignatureField::SignOnNextSaveWithCustomHandler(const SDF::SignatureHandlerId in_signature_handler_id)
@@ -164,10 +169,9 @@ inline void DigitalSignatureField::CertifyOnNextSave(const UString& in_pkcs12_ke
 	REX(TRN_DigitalSignatureFieldCertifyOnNextSave(&m_impl, in_pkcs12_keyfile_path.mp_impl, in_password.mp_impl));
 }
 
-inline void DigitalSignatureField::CertifyOnNextSave(const std::vector<unsigned char>& in_pkcs12_buffer, const UString& in_password)
+inline void DigitalSignatureField::CertifyOnNextSave(const UChar* in_pkcs12_buffer, size_t in_buf_size, const UString& in_password)
 {
-	TRN_UInt8* tmp = in_pkcs12_buffer.size() > 0? (TRN_UInt8*) &in_pkcs12_buffer[0] : NULL;
-	REX(TRN_DigitalSignatureFieldCertifyOnNextSaveFromBuffer(&m_impl, tmp, (TRN_UInt32) in_pkcs12_buffer.size(), in_password.mp_impl));
+	REX(TRN_DigitalSignatureFieldCertifyOnNextSaveFromBuffer(&m_impl, (const TRN_UChar*)in_pkcs12_buffer, (TRN_UInt32)in_buf_size, in_password.mp_impl));
 }
 
 inline void DigitalSignatureField::CertifyOnNextSaveWithCustomHandler(const SDF::SignatureHandlerId in_signature_handler_id)
@@ -245,5 +249,96 @@ inline DigitalSignatureField::DocumentPermissions DigitalSignatureField::GetDocu
 inline void DigitalSignatureField::ClearSignature()
 {
 	REX(TRN_DigitalSignatureFieldClearSignature(&m_impl));
+}
+
+inline VerificationResult DigitalSignatureField::Verify(const VerificationOptions& in_opts) const
+{
+	TRN_VerificationResult tmp;
+	REX(TRN_DigitalSignatureFieldVerify(&m_impl, (const TRN_VerificationOptions)in_opts.m_impl, (TRN_VerificationResult*) &tmp));
+	return VerificationResult(tmp);
+}
+
+inline bool DigitalSignatureField::IsCertification() const
+{
+	TRN_Bool result = 0;
+	REX(TRN_DigitalSignatureFieldIsCertification(&m_impl, &result));
+	return result != 0;
+}
+
+inline X509Certificate DigitalSignatureField::GetSignerCertFromCMS() const
+{
+	TRN_X509Certificate result;
+	REX(TRN_DigitalSignatureFieldGetSignerCertFromCMS((TRN_DigitalSignatureField*)&m_impl, (TRN_X509Certificate*) &result));
+	return X509Certificate(result);
+}
+
+
+inline std::vector<Common::ByteRange> DigitalSignatureField::GetByteRanges() const
+{
+	TRN_Vector vec = NULL;
+	REX(TRN_DigitalSignatureFieldGetByteRanges(&m_impl, (TRN_Vector*)&vec));
+
+	TRN_UInt32 size;
+	TRN_VectorGetSize(vec, &size);
+
+	std::vector< Common::ByteRange > result(size);
+	for (UInt32 i = 0; i < size; ++i)
+	{
+		TRN_ByteRange* current;
+		TRN_VectorGetAt(vec, i, (void**)& current);
+		memcpy(&result[i], current, sizeof(TRN_ByteRange));
+	}
+
+	TRN_VectorDestroyKeepContents(vec);
+	return result;
+}
+
+
+inline std::vector<std::vector<X509Certificate> > DigitalSignatureField::GetCertPathsFromCMS() const
+{
+	// Broadly similar to PDFDraw::GetSeparationBitmaps implementation
+	
+	TRN_UInt32 outer_vec_size;
+	REX(TRN_DigitalSignatureFieldGetCertPathsFromCMS_GetOutterVecSize((TRN_DigitalSignatureField*)&m_impl, (TRN_UInt32*)&outer_vec_size));
+
+	std::vector < std::vector<X509Certificate> > ret;
+	for (TRN_UInt32 m = 0; m < outer_vec_size; m++)
+	{
+		TRN_Vector vec = NULL;
+		REX(TRN_DigitalSignatureFieldGetCertPathsFromCMS((TRN_DigitalSignatureField*)&m_impl, (TRN_Vector*)&vec, m));
+
+		TRN_UInt32 vec_size;
+		TRN_VectorGetSize(vec, &vec_size);
+
+		std::vector<X509Certificate> result;
+		for (TRN_UInt32 i = 0; i < vec_size; i++)
+		{
+			TRN_X509Certificate current = NULL;
+			TRN_VectorGetAt(vec, i, (void**)&current);
+			result.push_back(X509Certificate(current));
+		}
+		ret.push_back(result);
+		TRN_VectorDestroyKeepContents(vec);
+	}
+
+	return ret;
+}
+
+inline bool DigitalSignatureField::EnableLTVOfflineVerification(const VerificationResult& in_verification_result) const
+{
+	TRN_Bool result = 0;
+	REX(TRN_DigitalSignatureFieldEnableLTVOfflineVerification((TRN_DigitalSignatureField*)&m_impl, (TRN_VerificationResult)in_verification_result.m_impl, &result));
+	return result != 0;
+}
+
+inline void DigitalSignatureField::TimestampOnNextSave(const TimestampingConfiguration& in_timestamping_config,
+	const VerificationOptions& in_timestamp_response_verification_options)
+{
+	REX(TRN_DigitalSignatureFieldTimestampOnNextSave((TRN_DigitalSignatureField*)&m_impl, in_timestamping_config.m_impl, in_timestamp_response_verification_options.m_impl));
+}
+
+inline void DigitalSignatureField::UseSubFilter(SubFilterType in_subfilter_type, bool in_make_mandatory)
+{
+	REX(TRN_DigitalSignatureFieldUseSubFilter((TRN_DigitalSignatureField*)&m_impl, (enum TRN_DigitalSignatureField_SubFilterType) in_subfilter_type, in_make_mandatory));
 }
 

@@ -73,7 +73,7 @@ inline void MonoImageSettings::ForceChanges(bool force)
 
 inline void MonoImageSettings::SetJBIG2Threshold(double jbig2_threshold)
 {
-	m_jbig2_threshold = jbig2_threshold;
+	m_jbig2_threshold = jbig2_threshold / 10;
 }
 
 inline TextSettings::TextSettings()

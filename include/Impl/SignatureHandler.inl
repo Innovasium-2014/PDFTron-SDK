@@ -16,7 +16,7 @@ inline UString SignatureHandler::GetName() const
     throw (pdftron::Common::Exception("pdftron::SDF::SignatureHandler::GetName not implemented.", __LINE__, __FILE__, __FUNCTION__, "pdftron::SDF::SignatureHandler::GetName not implemented."));
 }
 
-inline void SignatureHandler::AppendData(const std::vector<pdftron::UInt8>& in_data)
+inline void SignatureHandler::AppendData(const std::vector<pdftron::UInt8>&)
 {
     throw (pdftron::Common::Exception("pdftron::SDF::SignatureHandler::AppendData not implemented.", __LINE__, __FILE__, __FUNCTION__, "pdftron::SDF::SignatureHandler::AppendData not implemented."));
 }
@@ -28,7 +28,7 @@ inline bool SignatureHandler::Reset()
 
 inline std::vector<pdftron::UInt8> SignatureHandler::CreateSignature()
 {
-    throw (pdftron::Common::Exception("pdftron::SDF::SignatureHandler::CreateSignature not implemented.", __LINE__, __FILE__, __FUNCTION__, "pdftron::SDF::SignatureHandler::Generate not implemented."));
+    throw (pdftron::Common::Exception("pdftron::SDF::SignatureHandler::CreateSignature not implemented.", __LINE__, __FILE__, __FUNCTION__, "pdftron::SDF::SignatureHandler::CreateSignature not implemented."));
 }
 /*
 inline SignatureHandler::ValidateSignatureResult SignatureHandler::ValidateSignature(const SDF::Obj& in_sig_dict)

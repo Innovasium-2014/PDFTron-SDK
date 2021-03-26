@@ -17,7 +17,7 @@ inline void ResultSnapshot::Destroy()
 {
 	if(m_owner)
 	{
-		DREX(m_impl, TRN_ResultSnapshotDestroy(&m_impl));
+		DREX(m_impl, TRN_ResultSnapshotDestroy(m_impl));
 		m_owner = false;
 	}
 }

@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 
@@ -110,6 +110,10 @@ TRN_API TRN_AnnotResize(TRN_Annot annot, const TRN_Rect* newrect) ;
 TRN_API TRN_AnnotSetContents(TRN_Annot annot, const TRN_UString contents);
 TRN_API TRN_AnnotGetContents(TRN_Annot annot, TRN_UString* result );
 TRN_API TRN_AnnotGetTriggerAction(TRN_Annot annot, enum TRN_AnnotEventType trigger, TRN_Obj* result);
+TRN_API TRN_AnnotGetCustomData(TRN_Annot annot, TRN_UString key, TRN_UString* result);
+TRN_API TRN_AnnotSetCustomData(TRN_Annot annot, TRN_UString key, TRN_UString value);
+TRN_API TRN_AnnotDeleteCustomData(TRN_Annot annot, TRN_UString key);
+
 //---------------------------------------------------------------------------------------
 //TRN_API TRN_AnnotUpdateRect(TRN_Annot annot, const TRN_Rect* pos);
 //---------------------------------------------------------------------------------------
@@ -145,6 +149,7 @@ TRN_API TRN_AnnotSetStructParent(TRN_Annot annot, int parkeyval);
 TRN_API TRN_AnnotGetOptionalContent(TRN_Annot annot, TRN_Obj* result);
 TRN_API TRN_AnnotSetOptionalContent(TRN_Annot annot, const TRN_Obj content);
 TRN_API TRN_AnnotRefreshAppearance(TRN_Annot annot);
+TRN_API TRN_AnnotRefreshAppearanceRefreshOptions(TRN_Annot annot, const TRN_OptionBase* options);
 TRN_API TRN_AnnotGetRotation(const TRN_Annot annot, int* result);
 TRN_API TRN_AnnotSetRotation(TRN_Annot annot, int angle);
 TRN_API TRN_AnnotBorderStyleCopy(const TRN_AnnotBorderStyle bs,TRN_AnnotBorderStyle* result);
@@ -284,7 +289,7 @@ TRN_API TRN_FreeTextAnnotGetDefaultAppearance(TRN_FreeTextAnnot ft, TRN_UString*
 TRN_API TRN_FreeTextAnnotSetDefaultAppearance(TRN_FreeTextAnnot ft, const char* app_str);
 TRN_API TRN_FreeTextAnnotGetQuaddingFormat(TRN_FreeTextAnnot ft, int* result);
 TRN_API TRN_FreeTextAnnotSetQuaddingFormat(TRN_FreeTextAnnot ft, int format);
-TRN_API TRN_FreeTextAnnotGetCalloutLinePoints(TRN_FreeTextAnnot ft, const TRN_Point* p1, const TRN_Point* p2, const TRN_Point* p3);
+TRN_API TRN_FreeTextAnnotGetCalloutLinePoints(TRN_FreeTextAnnot ft, const TRN_Point* out_p1, const TRN_Point* out_p2, const TRN_Point* out_p3);
 TRN_API TRN_FreeTextAnnotSetCalloutLinePoints(TRN_FreeTextAnnot ft, const TRN_Point* p1, const TRN_Point* p2, const TRN_Point* p3);
 TRN_API TRN_FreeTextAnnotSetCalloutLinePointsTwo(TRN_FreeTextAnnot ft, const TRN_Point* p1, const TRN_Point* p2);
 TRN_API TRN_FreeTextAnnotGetIntentName(TRN_FreeTextAnnot ft, enum TRN_FreeTextAnnotIntentName* result);
@@ -294,9 +299,9 @@ TRN_API TRN_FreeTextAnnotGetEndingStyle(TRN_FreeTextAnnot ft, enum TRN_LineAnnot
 TRN_API TRN_FreeTextAnnotSetEndingStyle(TRN_FreeTextAnnot ft, enum TRN_LineAnnotEndingStyle style);
 TRN_API TRN_FreeTextAnnotSetEndingStyleName(TRN_FreeTextAnnot ft, const char* est);
 TRN_API TRN_FreeTextAnnotSetTextColor(TRN_FreeTextAnnot ft, const TRN_ColorPt* color, int col_comp);
-TRN_API TRN_FreeTextAnnotGetTextColor(TRN_FreeTextAnnot ft, TRN_ColorPt* out_color, int* col_comp);
+TRN_API TRN_FreeTextAnnotGetTextColor(TRN_FreeTextAnnot ft, TRN_ColorPt* out_color, int* out_col_comp);
 TRN_API TRN_FreeTextAnnotSetLineColor(TRN_FreeTextAnnot ft, const TRN_ColorPt* color, int col_comp);
-TRN_API TRN_FreeTextAnnotGetLineColor(TRN_FreeTextAnnot ft, TRN_ColorPt* out_color, int* col_comp);
+TRN_API TRN_FreeTextAnnotGetLineColor(TRN_FreeTextAnnot ft, TRN_ColorPt* out_color, int* out_col_comp);
 TRN_API TRN_FreeTextAnnotSetFontSize( TRN_FreeTextAnnot ft, double font_size );
 TRN_API TRN_FreeTextAnnotGetFontSize( TRN_FreeTextAnnot ft, double* result );
 
@@ -313,6 +318,8 @@ TRN_API TRN_InkAnnotGetPointCount(TRN_InkAnnot ink, int pathindex, int* result);
 TRN_API TRN_InkAnnotGetPoint(TRN_InkAnnot ink, unsigned int pathindex, unsigned int pointindex, TRN_Point* result);
 TRN_API TRN_InkAnnotSetPoint(TRN_InkAnnot ink, unsigned int pathindex, unsigned int pointindex, const TRN_Point* pt);
 TRN_API TRN_InkAnnotErase(TRN_InkAnnot ink, const TRN_Point* pt1, const TRN_Point* pt2, double width, TRN_Bool* result);
+TRN_API TRN_InkAnnotGetHighlightIntent(TRN_InkAnnot ink, TRN_Bool* result);
+TRN_API TRN_InkAnnotSetHighlightIntent(TRN_InkAnnot ink, TRN_Bool highlight);
 
 enum TRN_LinkAnnotHighlightingMode 
 {
@@ -465,6 +472,7 @@ enum TRN_RubberStampAnnotIcon
 TRN_API TRN_RubberStampAnnotCreateFromObj(TRN_Obj d, TRN_RubberStampAnnot* result);
 TRN_API TRN_RubberStampAnnotCreateFromAnnot(TRN_Annot ann, TRN_RubberStampAnnot* result);
 TRN_API TRN_RubberStampAnnotCreate(TRN_SDFDoc doc, const TRN_Rect* pos, TRN_RubberStampAnnot* result);
+TRN_API TRN_RubberStampAnnotCreateCustom(TRN_SDFDoc doc, const TRN_Rect* pos, TRN_Obj formxo, TRN_RubberStampAnnot* result);
 TRN_API TRN_RubberStampAnnotGetIcon(TRN_RubberStampAnnot stamp, enum TRN_RubberStampAnnotIcon* result);
 TRN_API TRN_RubberStampAnnotSetIcon(TRN_RubberStampAnnot stamp, enum TRN_RubberStampAnnotIcon type); 
 TRN_API TRN_RubberStampAnnotSetIconDefault(TRN_RubberStampAnnot stamp);
@@ -698,55 +706,55 @@ TRN_API TRN_WidgetAnnotSetFontSize(TRN_WidgetAnnot widget, double font_size);
 TRN_API TRN_WidgetAnnotSetTextColor(TRN_WidgetAnnot widget, const TRN_ColorPt* col, int col_comp);
 TRN_API TRN_WidgetAnnotSetFont(TRN_WidgetAnnot widget, const TRN_Font font);
 TRN_API TRN_WidgetAnnotGetFontSize(TRN_WidgetAnnot widget, double* result);
-TRN_API TRN_WidgetAnnotGetTextColor(TRN_WidgetAnnot widget, TRN_ColorPt* col, int* col_comp);
+TRN_API TRN_WidgetAnnotGetTextColor(TRN_WidgetAnnot widget, TRN_ColorPt* out_col, int* out_col_comp);
 TRN_API TRN_WidgetAnnotGetFont(TRN_WidgetAnnot widget, TRN_Font* result);
 
 TRN_API TRN_SignatureWidgetCreate(TRN_PDFDoc doc, const TRN_Rect* pos, TRN_UString field_name, TRN_SignatureWidget* result);
-TRN_API TRN_SignatureWidgetCreateWithField(TRN_PDFDoc doc, const TRN_Rect* pos, TRN_Field* field, TRN_SignatureWidget* result);
-TRN_API TRN_SignatureWidgetCreateWithDigitalSignatureField(TRN_PDFDoc doc, const TRN_Rect* pos, TRN_DigitalSignatureField* field, TRN_SignatureWidget* result);
+TRN_API TRN_SignatureWidgetCreateWithField(TRN_PDFDoc doc, const TRN_Rect* pos, const TRN_Field* field, TRN_SignatureWidget* result);
+TRN_API TRN_SignatureWidgetCreateWithDigitalSignatureField(TRN_PDFDoc doc, const TRN_Rect* pos, const TRN_DigitalSignatureField* field, TRN_SignatureWidget* result);
 TRN_API TRN_SignatureWidgetCreateFromObj(TRN_Obj obj, TRN_SignatureWidget* result);
 TRN_API TRN_SignatureWidgetCreateFromAnnot(TRN_Annot annot, TRN_SignatureWidget* result);
 TRN_API TRN_SignatureWidgetCreateSignatureAppearance(TRN_SignatureWidget self, TRN_Image img);
 TRN_API TRN_SignatureWidgetGetDigitalSignatureField(TRN_SignatureWidget self, TRN_DigitalSignatureField* result);
 
 TRN_API TRN_ComboBoxWidgetCreate(TRN_PDFDoc doc, const TRN_Rect* pos, TRN_UString field_name, TRN_ComboBoxWidget* result);
-TRN_API TRN_ComboBoxWidgetCreateWithField(TRN_PDFDoc doc, const TRN_Rect* pos, TRN_Field* field, TRN_ComboBoxWidget* result);
+TRN_API TRN_ComboBoxWidgetCreateWithField(TRN_PDFDoc doc, const TRN_Rect* pos, const TRN_Field* field, TRN_ComboBoxWidget* result);
 TRN_API TRN_ComboBoxWidgetCreateFromObj(TRN_Obj obj, TRN_ComboBoxWidget* result);
 TRN_API TRN_ComboBoxWidgetCreateFromAnnot(TRN_Annot annot, TRN_ComboBoxWidget* result);
 TRN_API TRN_ComboBoxWidgetAddOption(TRN_ComboBoxWidget combobox, TRN_UString value);
-TRN_API TRN_ComboBoxWidgetAddOptions(TRN_ComboBoxWidget combobox, TRN_UString* options, TRN_UInt32 options_size);
+TRN_API TRN_ComboBoxWidgetAddOptions(TRN_ComboBoxWidget combobox, TRN_UString* option_list, TRN_UInt32 option_list_size);
 TRN_API TRN_ComboBoxWidgetSetSelectedOption(TRN_ComboBoxWidget combobox, TRN_UString value);
 TRN_API TRN_ComboBoxWidgetGetSelectedOption(TRN_ComboBoxWidget combobox, TRN_UString* result);
 TRN_API TRN_ComboBoxWidgetGetOptions(TRN_ComboBoxWidget combobox, TRN_Vector* result);
-TRN_API TRN_ComboBoxWidgetReplaceOptions(TRN_ComboBoxWidget combobox, TRN_UString* options, TRN_UInt32 options_size);
+TRN_API TRN_ComboBoxWidgetReplaceOptions(TRN_ComboBoxWidget combobox, TRN_UString* option_list, TRN_UInt32 option_list_size);
 TRN_API TRN_ComboBoxWidgetRemoveOption(TRN_ComboBoxWidget combobox, TRN_UString value);
 
 TRN_API TRN_ListBoxWidgetCreate(TRN_PDFDoc doc, const TRN_Rect* pos, TRN_UString field_name, TRN_ListBoxWidget* result);
-TRN_API TRN_ListBoxWidgetCreateWithField(TRN_PDFDoc doc, const TRN_Rect* pos, TRN_Field* field, TRN_ListBoxWidget* result);
+TRN_API TRN_ListBoxWidgetCreateWithField(TRN_PDFDoc doc, const TRN_Rect* pos, const TRN_Field* field, TRN_ListBoxWidget* result);
 TRN_API TRN_ListBoxWidgetCreateFromObj(TRN_Obj obj, TRN_ListBoxWidget* result);
 TRN_API TRN_ListBoxWidgetCreateFromAnnot(TRN_Annot annot, TRN_ListBoxWidget* result);
 TRN_API TRN_ListBoxWidgetAddOption(TRN_ListBoxWidget listbox, TRN_UString value);
-TRN_API TRN_ListBoxWidgetAddOptions(TRN_ListBoxWidget listbox, TRN_UString* options, TRN_UInt32 options_size);
-TRN_API TRN_ListBoxWidgetSetSelectedOptions(TRN_ListBoxWidget listbox, TRN_UString* options, TRN_UInt32 options_size);
+TRN_API TRN_ListBoxWidgetAddOptions(TRN_ListBoxWidget listbox, TRN_UString* option_list, TRN_UInt32 option_list_size);
+TRN_API TRN_ListBoxWidgetSetSelectedOptions(TRN_ListBoxWidget listbox, TRN_UString* option_list, TRN_UInt32 option_list_size);
 TRN_API TRN_ListBoxWidgetGetSelectedOptions(TRN_ListBoxWidget listbox, TRN_Vector* result);
 TRN_API TRN_ListBoxWidgetGetOptions(TRN_ListBoxWidget listbox, TRN_Vector* result);
-TRN_API TRN_ListBoxWidgetReplaceOptions(TRN_ListBoxWidget listbox, TRN_UString* options, TRN_UInt32 options_size);
+TRN_API TRN_ListBoxWidgetReplaceOptions(TRN_ListBoxWidget listbox, TRN_UString* option_list, TRN_UInt32 option_list_size);
 TRN_API TRN_ListBoxWidgetRemoveOption(TRN_ListBoxWidget listbox, TRN_UString value);
 
 
 TRN_API TRN_TextWidgetCreate(TRN_PDFDoc doc, const TRN_Rect* pos, TRN_UString field_name, TRN_TextWidget* result);
-TRN_API TRN_TextWidgetCreateWithField(TRN_PDFDoc doc, const TRN_Rect* pos, TRN_Field* field, TRN_TextWidget* result);
+TRN_API TRN_TextWidgetCreateWithField(TRN_PDFDoc doc, const TRN_Rect* pos, const TRN_Field* field, TRN_TextWidget* result);
 TRN_API TRN_TextWidgetCreateFromObj(TRN_Obj obj, TRN_TextWidget* result);
 TRN_API TRN_TextWidgetCreateFromAnnot(TRN_Annot annot, TRN_TextWidget* result);
 TRN_API TRN_TextWidgetSetText(TRN_TextWidget widget, TRN_UString text);
 TRN_API TRN_TextWidgetGetText(TRN_TextWidget widget, TRN_UString* result);
 
 TRN_API TRN_CheckBoxWidgetCreate(TRN_PDFDoc doc, const TRN_Rect* pos, TRN_UString field_name, TRN_CheckBoxWidget* result);
-TRN_API TRN_CheckBoxWidgetCreateWithField(TRN_PDFDoc doc, const TRN_Rect* pos, TRN_Field* field, TRN_CheckBoxWidget* result);
+TRN_API TRN_CheckBoxWidgetCreateWithField(TRN_PDFDoc doc, const TRN_Rect* pos, const TRN_Field* field, TRN_CheckBoxWidget* result);
 TRN_API TRN_CheckBoxWidgetCreateFromObj(TRN_Obj obj, TRN_CheckBoxWidget* result);
 TRN_API TRN_CheckBoxWidgetCreateFromAnnot(TRN_Annot annot, TRN_CheckBoxWidget* result);
 TRN_API TRN_CheckBoxWidgetIsChecked(TRN_CheckBoxWidget button, TRN_Bool* result);
-TRN_API TRN_CheckBoxWidgetSetChecked(TRN_CheckBoxWidget button, TRN_Bool result);
+TRN_API TRN_CheckBoxWidgetSetChecked(TRN_CheckBoxWidget button, TRN_Bool checked);
 
 TRN_API TRN_RadioButtonWidgetCreateFromObj(TRN_Obj obj, TRN_RadioButtonWidget* result);
 TRN_API TRN_RadioButtonWidgetCreateFromAnnot(TRN_Annot annot, TRN_RadioButtonWidget* result);
@@ -755,7 +763,7 @@ TRN_API TRN_RadioButtonWidgetEnableButton(TRN_RadioButtonWidget button);
 TRN_API TRN_RadioButtonWidgetGetGroup(TRN_RadioButtonWidget button, TRN_RadioButtonGroup* result);
 
 TRN_API TRN_PushButtonWidgetCreate(TRN_PDFDoc doc, const TRN_Rect* pos, TRN_UString field_name, TRN_PushButtonWidget* result);
-TRN_API TRN_PushButtonWidgetCreateWithField(TRN_PDFDoc doc, const TRN_Rect* pos, TRN_Field* field, TRN_PushButtonWidget* result);
+TRN_API TRN_PushButtonWidgetCreateWithField(TRN_PDFDoc doc, const TRN_Rect* pos, const TRN_Field* field, TRN_PushButtonWidget* result);
 TRN_API TRN_PushButtonWidgetCreateFromObj(TRN_Obj obj, TRN_PushButtonWidget* result);
 TRN_API TRN_PushButtonWidgetCreateFromAnnot(TRN_Annot annot, TRN_PushButtonWidget* result);
 

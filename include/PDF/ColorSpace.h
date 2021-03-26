@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFColorSpace
@@ -27,6 +27,8 @@ public:
 	 * @param y initialized value of second color value (eg. green for rgb colorspace);
 	 * @param z initialized value of third color value (eg. blue for rgb colorspace);
 	 * @param w initialized value of fourth color value (eg. when using CMYK);
+	 * @note All colorants should be in the range [0..1], so colors in the range [0..255]
+	 * should be divided by 255.0 first.
 	 */
 	explicit ColorPt(double x = 0, double y = 0, double z = 0, double w = 0);
 	ColorPt(const ColorPt& co);
@@ -46,8 +48,9 @@ public:
 	 * @param y initialized value of second color value (eg. green for rgb colorspace);
 	 * @param z initialized value of third color value (eg. blue for rgb colorspace);
 	 * @param w initialized value of fourth color value (eg. when using CMYK);
-	 * @note All colorants should be in the range [0..1].
 	 * @note color.Set(gray) is equivalent to Set(0, gray);
+	 * @note All colorants should be in the range [0..1], so colors in the range [0..255]
+	 * should be divided by 255.0 first.
 	 */
 	void Set(double x = 0, double y = 0, double z = 0, double w = 0);
 
@@ -75,6 +78,8 @@ public:
 	 * 
 	 * @note If a color point has more than 4 colorants, SetColorantNum(num_colorants)
 	 * must be called before getting or setting tint values.
+	 * @note All colorants should be in the range [0..1], so colors in the range [0..255]
+	 * should be divided by 255.0 first.
 	 */
 	void Set(int colorant_index, double colorant_value);
 

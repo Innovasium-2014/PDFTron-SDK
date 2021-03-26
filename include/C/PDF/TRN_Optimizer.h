@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPDFOptimizer
@@ -47,7 +47,8 @@ enum TRN_Optimizer_MonoImageSettings_CompressionMode
 {
 	e_Optimizer_MonoImageSettings_jbig2,
 	e_Optimizer_MonoImageSettings_flate,
-	e_Optimizer_MonoImageSettings_none
+	e_Optimizer_MonoImageSettings_none,
+	e_Optimizer_MonoImageSettings_ccitt
 };
 
 enum TRN_Optimizer_MonoImageSettings_DownsampleMode

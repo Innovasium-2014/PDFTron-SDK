@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CSDFSDFDoc
@@ -53,7 +53,9 @@ extern "C" {
 	TRN_API TRN_SDFDocImportObj(TRN_SDFDoc doc, TRN_Obj obj,
 		TRN_Bool deep_copy, TRN_Obj* result);
 
-	TRN_API TRN_SDFDocImportObjs(TRN_SDFDoc doc, TRN_Obj* obj_list, int length, TRN_Obj* result);
+	TRN_API TRN_SDFDocImportObjs(TRN_SDFDoc doc, TRN_Obj* obj_list, int obj_list_size, TRN_Obj* result);
+    
+    TRN_API TRN_SDFDocImportObjsWithExcludeList(TRN_SDFDoc doc, TRN_Obj* obj_list, int obj_list_size, TRN_Obj* exclude_list, int exclude_list_size, TRN_Obj* result);
 
 	TRN_API TRN_SDFDocXRefSize(TRN_SDFDoc const doc, TRN_UInt32* result);
 
@@ -75,6 +77,9 @@ extern "C" {
 
 	TRN_API TRN_SDFDocSaveMemory(TRN_SDFDoc doc, const char** out_buf, TRN_Size* out_buf_size,
 		TRN_UInt32 flags, TRN_ProgressMonitor progress, const char* header);
+	
+	TRN_API TRN_SDFDocCustomQuery(TRN_SDFDoc doc, const char* in_json, TRN_Size in_json_size,
+		const char** out_json, TRN_Size* out_json_size);
 
 	TRN_API TRN_SDFDocSaveStream(TRN_SDFDoc doc, TRN_Filter stream, TRN_UInt32 flags, const char* header);
 

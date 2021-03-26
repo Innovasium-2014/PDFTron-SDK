@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFAnnotsInk
@@ -100,6 +100,20 @@ class Ink : public Markup
 	 * @return Whether an ink stroke was erased
 	 */
 	bool Erase(const Point& pt1, const Point& pt2, double width);
+
+	/**
+	* Retrieves whether the Ink will draw like a highlighter.
+	* @return true if the Ink will draw like a highlighter. (multiply blend mode)
+	* If false it will draw in normal mode. (normal blend mode)
+	*/
+	bool GetHighlightIntent();
+
+	/**
+	 * Enables or disables the Ink drawing like a highlighter.
+	 * @param highlight true if the Ink will draw like a highlighter. (multiply blend mode)
+	 * If false it will draw in normal mode. (normal blend mode)
+	 */
+	void SetHighlightIntent(bool highlight);
 
 // @cond PRIVATE_DOC
 #ifndef SWIGHIDDEN

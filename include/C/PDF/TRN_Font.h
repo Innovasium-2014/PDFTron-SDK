@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPDFFont
@@ -11,6 +11,7 @@ extern "C" {
 
 #include <C/Common/TRN_Types.h>
 #include <C/Common/TRN_Exception.h>
+#include <C/PDF/TRN_ShapedText.h>
 
 
 enum TRN_FontStandardType1Font
@@ -52,7 +53,7 @@ TRN_API TRN_FontCreateTrueTypeFont2(TRN_SDFDoc doc , const void* type,
 #endif
 
 
-TRN_API TRN_FontCreateCIDTrueTypeFont(TRN_SDFDoc doc , TRN_UString type,
+TRN_API TRN_FontCreateCIDTrueTypeFont(TRN_SDFDoc doc , TRN_UString font_path,
 									  TRN_Bool embed, TRN_Bool subset, enum TRN_FontEncoding encoding,
 									  TRN_UInt32 ttc_font_index, TRN_Font* result);
 
@@ -108,6 +109,7 @@ TRN_API TRN_FontGetGlyphPath(TRN_Font font, TRN_UInt32 char_code,
 							 TRN_Bool conics2cubics,
 							 TRN_Matrix2D* transform, TRN_Bool* result);
 
+TRN_API TRN_FontGetShapedText(TRN_Font font, const TRN_UString text_to_shape, TRN_ShapedText* result);
 TRN_API TRN_FontMapToUnicode(TRN_Font font, TRN_UInt32 char_code,
 							 TRN_Unicode* out_uni_arr, const int in_uni_sz,
 							 int* out_chars, TRN_Bool* result);

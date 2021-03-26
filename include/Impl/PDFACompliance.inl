@@ -74,6 +74,13 @@ namespace pdftron {
 		return result;
 	}
 
+	inline PDFACompliance::Conformance PDFACompliance::GetDeclaredConformance(const PDFDoc& in_doc)
+	{
+		enum TRN_PDFAComplianceConformance result;
+		REX(TRN_PDFAComplianceGetDeclaredConformance(in_doc.mp_doc, &result));
+		return (PDFACompliance::Conformance)result;
+	}
+
 	inline PDFACompliance::~PDFACompliance() {
 		DREX(mp_pdfac, TRN_PDFAComplianceDestroy(mp_pdfac));
 	}

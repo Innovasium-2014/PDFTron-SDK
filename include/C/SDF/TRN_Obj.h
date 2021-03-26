@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CSDFSDFObj
@@ -69,7 +69,7 @@ TRN_API TRN_ObjPutText(TRN_Obj o, const char* key, const TRN_UString t, TRN_Obj*
 TRN_API TRN_ObjPutNull (TRN_Obj o, const char* key);
 TRN_API TRN_ObjPut(TRN_Obj o, const char* key, TRN_Obj input_obj, TRN_Obj* result);
 TRN_API TRN_ObjPutRect(TRN_Obj o, const char* key, double x1, double y1, double x2, double y2, TRN_Obj* result);
-TRN_API TRN_ObjPutMatrix(TRN_Obj o, const char* key, TRN_Matrix2D* mtx, TRN_Obj* result);
+TRN_API TRN_ObjPutMatrix(TRN_Obj o, const char* key, const TRN_Matrix2D* mtx, TRN_Obj* result);
 TRN_API TRN_ObjEraseFromKey (TRN_Obj o, const char* key);
 TRN_API TRN_ObjErase (TRN_Obj o, TRN_DictIterator pos);
 TRN_API TRN_ObjRename (TRN_Obj o, const char* old_key, const char* new_key, TRN_Bool* result);
@@ -86,7 +86,7 @@ TRN_API TRN_ObjInsertText (TRN_Obj o, TRN_Size pos, const TRN_UString t, TRN_Obj
 TRN_API TRN_ObjInsertNull(TRN_Obj o, TRN_Size pos, TRN_Obj* result);
 TRN_API TRN_ObjInsert(TRN_Obj o, TRN_Size pos, TRN_Obj input_obj, TRN_Obj* result);
 TRN_API TRN_ObjInsertRect(TRN_Obj o, TRN_Size pos, double x1, double y1, double x2, double y2, TRN_Obj* result);
-TRN_API TRN_ObjInsertMatrix(TRN_Obj o, TRN_Size pos, TRN_Matrix2D* mtx, TRN_Obj* result);
+TRN_API TRN_ObjInsertMatrix(TRN_Obj o, TRN_Size pos, const TRN_Matrix2D* mtx, TRN_Obj* result);
 TRN_API TRN_ObjPushBackName (TRN_Obj o, const char* name, TRN_Obj* result);
 TRN_API TRN_ObjPushBackArray (TRN_Obj o, TRN_Obj* result);
 TRN_API TRN_ObjPushBackBool (TRN_Obj o, TRN_Bool value, TRN_Obj* result);
@@ -98,7 +98,7 @@ TRN_API TRN_ObjPushBackText (TRN_Obj o, const TRN_UString t, TRN_Obj* result);
 TRN_API TRN_ObjPushBackNull (TRN_Obj o, TRN_Obj* result);
 TRN_API TRN_ObjPushBack(TRN_Obj o, TRN_Obj input_obj, TRN_Obj* result);
 TRN_API TRN_ObjPushBackRect(TRN_Obj o, double x1, double y1, double x2, double y2, TRN_Obj* result);
-TRN_API TRN_ObjPushBackMatrix(TRN_Obj o, TRN_Matrix2D* mtx, TRN_Obj* result);
+TRN_API TRN_ObjPushBackMatrix(TRN_Obj o, const TRN_Matrix2D* mtx, TRN_Obj* result);
 TRN_API TRN_ObjEraseAt (TRN_Obj o, TRN_Size pos);
 TRN_API TRN_ObjIsStream (const TRN_Obj o, TRN_Bool* result);
 TRN_API TRN_ObjGetRawStreamLength (const TRN_Obj o, TRN_Size* result);

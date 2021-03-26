@@ -27,7 +27,7 @@ namespace pdftron {
 			inline PushButtonWidget PushButtonWidget::Create(PDFDoc& doc, const Rect& pos, const Field& field)
 			{
 				TRN_Annot result;
-				REX(TRN_PushButtonWidgetCreateWithField(doc.mp_doc, (const TRN_Rect*)&pos, (TRN_Field*)&field, &result));
+				REX(TRN_PushButtonWidgetCreateWithField(doc.mp_doc, (const TRN_Rect*)&pos, (const TRN_Field*)&field, &result));
 				return PushButtonWidget(result);
 			}
 

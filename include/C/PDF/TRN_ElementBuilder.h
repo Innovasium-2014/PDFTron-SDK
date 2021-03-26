@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPDFElementBuilder
@@ -10,6 +10,7 @@ extern "C" {
 #endif
 
 #include <C/Common/TRN_Types.h>
+#include <C/PDF/TRN_ShapedText.h>
 
 TRN_API TRN_ElementBuilderCreate(TRN_ElementBuilder* result);
 TRN_API TRN_ElementBuilderDestroy(TRN_ElementBuilder b);
@@ -35,6 +36,7 @@ TRN_API TRN_ElementBuilderCreateNewTextRun(TRN_ElementBuilder b, const char* tex
 TRN_API TRN_ElementBuilderCreateNewTextRunWithSize(TRN_ElementBuilder b, const char* text_data, TRN_UInt32 text_data_sz, TRN_Element* result);
 TRN_API TRN_ElementBuilderCreateNewTextRunUnsigned(TRN_ElementBuilder b, TRN_String text_data, TRN_Element* result);
 TRN_API TRN_ElementBuilderCreateUnicodeTextRun(TRN_ElementBuilder b, const TRN_Unicode* text_data, TRN_UInt32 text_data_sz, TRN_Element* result);
+TRN_API TRN_ElementBuilderCreateShapedTextRun(TRN_ElementBuilder b, const TRN_ShapedText text_data, TRN_Element* result);
 TRN_API TRN_ElementBuilderCreateTextNewLineWithOffset(TRN_ElementBuilder b, double dx, double dy, TRN_Element* result);
 TRN_API TRN_ElementBuilderCreateTextNewLine(TRN_ElementBuilder b, TRN_Element* result);
 TRN_API TRN_ElementBuilderCreatePath(TRN_ElementBuilder b, const double* buf_points, int buf_points_size, const char* buf_seg_types, int buf_seg_types_size, TRN_Element* result);

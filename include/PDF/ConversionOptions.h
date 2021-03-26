@@ -10,6 +10,7 @@ class ConversionOptions
 {
 public:
 	ConversionOptions();
+	ConversionOptions(const UString& value);
 
 	virtual ~ConversionOptions();
 

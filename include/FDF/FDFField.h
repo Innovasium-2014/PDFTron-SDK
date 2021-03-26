@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPFDFFDFField
@@ -34,9 +34,6 @@ public:
 	/** 
 	 * Sets the value of the FDFField (the value of the field's /V key).
 	 * @param value - the value to set the FDFField to
-	 * @return the value of the field (the value of its /V key) or NULL if the 
-	 * value is not specified. 
-	 * The format of field's value varies depending on the field type.
 	 *
 	 * @note in order to remove/erase the existing value use SetValue(SDF::Null)
 	 */

@@ -13,6 +13,63 @@ inline CADConvertOptions::~CADConvertOptions()
 }
 
 
+inline bool CADConvertOptions::GetAllowThinLines()
+{
+	SDF::Obj found = m_dict.FindObj("Thin-lines");
+	if(found.IsValid())
+	{
+		return (found.GetBool());
+	}
+	return (true);
+}
+
+inline CADConvertOptions& CADConvertOptions::SetAllowThinLines(bool value)
+{
+	OptionsBase::PutBool(m_dict, "Thin-lines", (value));
+	return *this;
+}
+
+
+inline bool CADConvertOptions::GetAutoRotate()
+{
+	SDF::Obj found = m_dict.FindObj("Auto-rotate");
+	if(found.IsValid())
+	{
+		return (found.GetBool());
+	}
+	return (false);
+}
+
+inline CADConvertOptions& CADConvertOptions::SetAutoRotate(bool value)
+{
+	OptionsBase::PutBool(m_dict, "Auto-rotate", (value));
+	return *this;
+}
+
+
+inline ColorPt CADConvertOptions::GetBackgroundColor()
+{
+	SDF::Obj found = m_dict.FindObj("Background-color");
+	if(found.IsValid())
+	{
+		return OptionsBase::ColorPtFromNumber(found.GetNumber());
+	}
+	return OptionsBase::ColorPtFromNumber(0xFFFFFFFF);
+}
+
+inline CADConvertOptions& CADConvertOptions::SetBackgroundColor(ColorPt value)
+{
+	OptionsBase::PutNumber(m_dict, "Background-color", OptionsBase::ColorPtToNumber(value));
+	return *this;
+}
+
+inline CADConvertOptions& CADConvertOptions::SetColorMode(const UString& value)
+{
+	OptionsBase::PutText(m_dict, "ColorMode", (value));
+	return *this;
+}
+
+
 inline double CADConvertOptions::GetPageHeight()
 {
 	SDF::Obj found = m_dict.FindObj("Page-height");
@@ -64,7 +121,7 @@ inline CADConvertOptions& CADConvertOptions::SetRasterDPI(double value)
 }
 
 
-inline CADConvertOptions& CADConvertOptions::AddSheets(UString value)
+inline CADConvertOptions& CADConvertOptions::AddSheets(const UString& value)
 {
 	OptionsBase::PushBackText(m_dict, "Sheets", (value));
 	return *this;

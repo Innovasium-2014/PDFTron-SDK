@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPDFPDFNet
@@ -32,6 +32,8 @@ enum TRN_PDFNetCMSType
 TRN_API TRN_PDFNetSetColorManagement(enum TRN_PDFNetCMSType t);
 TRN_API TRN_PDFNetSetDefaultDeviceCMYKProfile(const TRN_UString icc_filename);
 TRN_API TRN_PDFNetSetDefaultDeviceRGBProfile(const TRN_UString icc_filename);
+TRN_API TRN_PDFNetSetDefaultDeviceCMYKProfileFromFilter(TRN_Filter stream);
+TRN_API TRN_PDFNetSetDefaultDeviceRGBProfileFromFilter(TRN_Filter stream);
 TRN_API TRN_PDFNetSetDefaultDiskCachingEnabled( TRN_Bool use_disk );
 TRN_API TRN_PDFNetSetDefaultFlateCompressionLevel(int level);
 TRN_API TRN_PDFNetSetViewerCache(TRN_Size max_cache_size, TRN_Bool on_disk);
@@ -68,6 +70,7 @@ enum TRN_PDFNetLogLevel {
 };
 
 TRN_API TRN_PDFNetSetLogLevel(enum TRN_PDFNetLogLevel level);
+TRN_API TRN_PDFNetGetSystemFontList(TRN_UString* result);
 
 #ifdef __cplusplus
 } //extern C

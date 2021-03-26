@@ -19,6 +19,11 @@ inline void TextExtractor::Begin(Page page, const Rect* clip_ptr, UInt32 flags)
 	REX(TRN_TextExtractorBegin(mp_extractor,page.mp_page,(TRN_Rect*)clip_ptr,(int)flags));
 }
 
+inline void TextExtractor::SetOCGContext(OCG::Context* ctx)
+{
+	REX(TRN_TextExtractorSetOCGContext(mp_extractor, ctx->mp_obj));
+}
+
 inline int TextExtractor::GetWordCount()
 {
 	RetInt(TRN_TextExtractorGetWordCount(mp_extractor,&result));
@@ -127,12 +132,12 @@ inline void Style::GetColor(UInt8 rgb[3])
 }
 #endif
 
-inline bool Style::operator== (const Style& s)
+inline bool Style::operator== (const Style& s) const
 {
 	RetBool(TRN_TextExtractorStyleCompare(&mp_style,(TRN_TextExtractorStyle*)&(s.mp_style),&result));
 }
 
-inline bool Style::operator!= (const Style& s)
+inline bool Style::operator!= (const Style& s) const
 {
 	return !operator==(s);
 }
@@ -256,12 +261,12 @@ inline int Word::GetCurrentNum()
 	return result;
 }
 
-inline bool Word::operator== (const Word& w)
+inline bool Word::operator== (const Word& w) const
 {
 	RetBool(TRN_TextExtractorWordCompare(&mp_word, (TRN_TextExtractorWord*)&(w.mp_word), &result));
 }
 
-inline bool Word::operator!= (const Word& w)
+inline bool Word::operator!= (const Word& w) const
 {
 	return !this->operator==(w);
 }
@@ -374,12 +379,12 @@ inline bool Line::EndsWithHyphen()
 	RetBool(TRN_TextExtractorLineEndsWithHyphen(&mp_line, &result));
 }
 
-inline bool Line::operator== (const Line& l)
+inline bool Line::operator== (const Line& l) const
 {
 	RetBool(TRN_TextExtractorLineCompare(&mp_line, (TRN_TextExtractorLine*)&(l.mp_line),&result));
 }
 
-inline bool Line::operator!= (const Line& l)
+inline bool Line::operator!= (const Line& l) const
 {
 	return !this->operator==(l);
 }

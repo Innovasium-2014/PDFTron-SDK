@@ -33,3 +33,16 @@ inline PDFDoc PDFDocGenerator::GenerateMusicPaperDoc(double width, double height
 	return result;
 }
 
+inline PDFDoc PDFDocGenerator::GenerateDottedPaperDoc(double width, double height, double dot_spacing, double dot_size, double red, double green, double blue, double background_red, double background_green, double background_blue)
+{
+	PDFDoc result;
+	REX(TRN_PDFDocGeneratorGenerateDottedPaperDoc(width, height, dot_spacing, dot_size, red, green, blue, background_red, background_green, background_blue, (TRN_PDFDoc*)&result.mp_doc));
+	return result;
+}
+
+inline PDFDoc PDFDocGenerator::GenerateIsometricDottedPaperDoc(double width, double height, double dot_spacing, double dot_size, double red, double green, double blue, double background_red, double background_green, double background_blue)
+{
+	PDFDoc result;
+	REX(TRN_PDFDocGeneratorGenerateIsometricDottedPaperDoc(width, height, dot_spacing, dot_size, red, green, blue, background_red, background_green, background_blue, (TRN_PDFDoc*)&result.mp_doc));
+	return result;
+}

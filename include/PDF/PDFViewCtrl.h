@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFPDFViewCtrl
@@ -281,13 +281,13 @@ public:
 	 * This event structure will be returned when a user tries to edit an annotation.
 	 */
 	struct AnnotationEditPermissionEvent {
-		Annot& m_annot;
+		TRN_Annot m_annot;
 		// identifies  the type of event
 		enum ControlEventType m_event_type;
 		// this helps you identify which window emitted the event
 		enum WindowID m_event_window;
 
-		AnnotationEditPermissionEvent( PDFViewCtrl::WindowID id, ControlEventType tp, Annot& annot )
+		AnnotationEditPermissionEvent(PDFViewCtrl::WindowID id, ControlEventType tp, TRN_Annot annot)
 			: m_annot(annot),
 			  m_event_type(tp),
 			  m_event_window(id)
@@ -1145,6 +1145,18 @@ public:
 	void UpdatePageLayout();
 
 	/**
+	 * Disable rendering of a particular annotation. This does not change the annotation itself, just how it is displayed in this viewer instance.
+	 * @param annot The annotation object to cease drawing for.
+	 */
+	void HideAnnotation(const Annot& annot);
+
+	/**
+	 * Enable rendering of a particular annotation. Only has an effect if HideAnnotation() has previously been called on the same annot.
+	 * @param annot The annotation object to resume rendering. 
+	 */
+	void ShowAnnotation(const Annot& annot);
+
+	/**
 	* Returns the width of the main view in pixels.
 	* @note this method is typically used only in PDFNet for C++
 	*/
@@ -1199,6 +1211,16 @@ public:
 	 * @param highlight_fields true to highlight, false otherwise. 
 	 */
 	void SetHighlightFields(bool highlight_fields);
+	
+	/**
+	* Set the border color for required fields 
+	* 
+	* This option only has an effect if field highlighting is turned on using
+	* `SetHighlightFields(true)`. 
+	* 
+	* @param new_border_color the new border color, in rgba form.
+	*/
+	void SetRequiredFieldBorderColor(const ColorPt& new_border_color);
 
 	/**
 	* Enable or disable anti-aliasing. 

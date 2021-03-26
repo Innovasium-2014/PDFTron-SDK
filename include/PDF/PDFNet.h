@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFPDFNet
@@ -8,6 +8,7 @@
 #include <C/PDF/TRN_PDFNet.h>
 #include <Common/UString.h>
 #include <Common/Iterator.h>
+#include <Filters/Filter.h>
 
 namespace pdftron { 
 
@@ -30,7 +31,7 @@ public:
 	* the library
 	* 
 	* @param license_key Optional license key used to activate the product.
-	 * If the license_key is not specified or is null, the product will work in the 
+	 * If the license_key is not specified or is null, the product will work in 
 	 * demo mode.
 	 *
 	 * @exception If the license_key is invalid, the function will throw an exception.
@@ -128,6 +129,19 @@ public:
 	 */
 	 static void SetDefaultDeviceCMYKProfile(const UString& icc_filename);
 
+	 /** 
+	 * Sets the default ICC color profile for DeviceCMYK color space. 
+	 * 
+	 * @note You can use this method to override default PDFNet settings.
+	 * For more information on default color spaces please refer to 
+	 * section 'Default Color Spaces' in Chapter 4.5.4 of PDF Reference Manual.
+	 * 
+	 * @exception the function will throw Exception if the ICC profile 
+	 * fails to open.
+	 */
+	 static void SetDefaultDeviceCMYKProfile(Filters::Filter stream);
+	 
+
 	/** 
 	 * Sets the default ICC color profile for DeviceRGB color space. 
 	 * 
@@ -139,6 +153,18 @@ public:
 	 * can't be found or if it fails to open.
 	 */
 	 static void SetDefaultDeviceRGBProfile(const UString& icc_filename);
+
+	 /** 
+	 * Sets the default ICC color profile for DeviceRGB color space. 
+	 * 
+	 * @note You can use this method to override default PDFNet settings.
+	 * For more information on default color spaces please refer to 
+	 * section 'Default Color Spaces' in Chapter 4.5.4 of PDF Reference Manual.
+	 * 
+	 * @exception the function will throw Exception if the ICC profile 
+	 * fails to open.
+	 */
+	 static void SetDefaultDeviceRGBProfile(Filters::Filter stream);
 
 	/** 
 	 * Sets the default policy on using temporary files.
@@ -274,6 +300,13 @@ public:
 	 */ 
 	 static void SetPersistentCachePath(const UString& persistent_path);
 
+	/**
+	 * Get available fonts on the system.
+	 *
+	 * @return A JSON list of fonts accessible to PDFNet
+	 */
+	static UString GetSystemFontList();
+
 #ifndef SWIG
 	/**
 	 * CreateSecurityHandler is a function pointer and a factory method used to create 
@@ -350,7 +383,11 @@ public:
 
 	static void SetLogLevel(LogLevel level = e_LogLevel_Fatal);
 	//! @endcond
+
+
+
 };
+
 
 
 #include <Impl/PDFNet.inl>

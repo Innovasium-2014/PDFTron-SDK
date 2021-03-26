@@ -1,10 +1,11 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFPDFDoc
 #define PDFTRON_H_CPPPDFPDFDoc
 
+#include <Common/BasicTypes.h>
 #include <FDF/FDFDoc.h>
 #include <PDF/PDFDocInfo.h>
 #include <PDF/PageLabel.h>
@@ -20,6 +21,8 @@
 #include <SDF/SignatureHandler.h>
 #include <SDF/UndoManager.h>
 #include <PDF/DigitalSignatureField.h>
+#include <PDF/ViewerOptimizedOptions.h>
+#include <PDF/RefreshOptions.h>
 
 namespace pdftron {
 	namespace PDF {
@@ -52,8 +55,8 @@ typedef Common::Iterator<DigitalSignatureField> DigitalSignatureFieldIterator;
  * open existing PDF documents, or to create new PDF documents from scratch.
  * 
  * The class offers a number of entry points into the document. For example,
- *  - To access pages use pdfdoc.GetPageIterator() or pdfdoc.PageFind(page_num).
- *  - To access form fields use pdfdoc.GetFieldIterator() or pdfdoc.FieldFind(name).
+ *  - To access pages use pdfdoc.GetPageIterator() or pdfdoc.GetPage(page_num).
+ *  - To access form fields use pdfdoc.GetFieldIterator(), pdfdoc.GetFieldIterator(name) or pdfdoc.GetField(name).
  *  - To access document's meta-data use pdfdoc.GetDocInfo().
  *  - To access the outline tree use pdfdoc.GetFirstBookmark().
  *  - To access low-level Document Catalog use pdfdoc.GetRoot().
@@ -471,7 +474,7 @@ public:
      * @exception if 'HasDownloader()` returns False, calling this method will result
      * in an exception.
      */
-    int GetDownloadedByteCount ();
+    UInt64 GetDownloadedByteCount ();
     
     /**
      *
@@ -482,7 +485,7 @@ public:
      * @exception if 'HasDownloader()` returns False, calling this method will result
      * in an exception.
      */
-    int GetTotalRemoteByteCount ();
+    UInt64 GetTotalRemoteByteCount ();
 
 	/**
 	 * Saves the document to a file. 
@@ -499,8 +502,7 @@ public:
 	 * e_incremental flag bit should be set. 
 	 * 
 	 * @param path - The full path name to which the file is saved.
-	 * @param flags - A bit field composed of an OR of SDFDoc::SaveOptions values. 
-	 * @param progress - A pointer to the progress interface. NULL if progress tracking is not required.
+	 * @param flags - A bit field composed of an OR of SDFDoc::SaveOptions values.
 	 * 
 	 * @exception - if the file can't be opened for saving or if there is a problem during Save 
 	 *	an Exception object will be thrown.
@@ -508,38 +510,65 @@ public:
 	 * @note - Save will modify the PDFDoc object's internal representation.  As such, 
 	 *			  the user should acquire a write lock before calling save.
 	 *
-	 * @note - If the original pdf has a corrupt xref table (see HasRepairedXref or
-	 * http://www.pdftron.com/kb_corrupt_xref), then it can not be saved using the e_incremental flag.
+	 * @note - If the original pdf has a corrupt xref table (see HasRepairedXref), then
+	 * it can not be saved using the e_incremental flag.
 	 */
 	 void Save(const UString& path, UInt32 flags);
 
 #ifndef SWIG
+	 /**
+	  * Saves the document to a file.
+	  *
+	  * If a full save is requested to the original path, the file is saved to a file
+	  * system-determined temporary file, the old file is deleted, and the temporary file
+	  * is renamed to path.
+	  *
+	  * A full save with remove unused or linearization option may re-arrange object in
+	  * the cross reference table. Therefore all pointers and references to document objects
+	  * and resources should be re acquired in order to continue document editing.
+	  *
+	  * In order to use incremental save the specified path must match original path and
+	  * e_incremental flag bit should be set.
+	  *
+	  * @param path - The full path name to which the file is saved.
+	  * @param flags - A bit field composed of an OR of SDFDoc::SaveOptions values.
+	  * @param progress - A pointer to the progress interface. NULL if progress tracking is not required.
+	  *
+	  * @exception - if the file can't be opened for saving or if there is a problem during Save
+	  *	an Exception object will be thrown.
+	  *
+	  * @note - Save will modify the PDFDoc object's internal representation.  As such,
+	  *			  the user should acquire a write lock before calling save.
+	  *
+	  * @note - If the original pdf has a corrupt xref table (see HasRepairedXref), then
+	  * it can not be saved using the e_incremental flag.
+	  */
 	 void Save(const UString& path, UInt32 flags, Common::ProgressMonitor* progress);
 #endif
 	 
-	/**
-	 * Saves the document to a memory buffer. 
-	 * 
-	 * @param out_buf a pointer to the buffer containing the serialized version of the 
-	 * document. (C++ Note) The buffer is owned by a document and the client doesn't need to 
-	 * do any initialization or cleanup.
-	 * @param out_buf_size the size of the serialized document (i.e. out_buf) in bytes.
-	 * 
-	 * @param flags - A bit field composed of an OR of SDFDoc::SaveOptions values. Note that 
-	 * this method ignores e_incremental flag. 
-	 * @param progress - A pointer to the progress interface. NULL if progress tracking is not required.
-	 *
-	 * @exception - if there is a problem during Save an Exception object will be thrown.
-	 *
-	 * @note - Save will modify the PDFDoc object's internal representation.  As such, 
-	 *			  the user should acquire a write lock before calling save.
-	 *
-	 * @note - If the original pdf has a corrupt xref table (see HasRepairedXref or
-	 * http://www.pdftron.com/kb_corrupt_xref), then it can not be saved using the e_incremental flag.
-	 */
 	 std::vector<unsigned char> Save(UInt32 flags);
 
 #ifndef SWIG
+	 /**
+	  * Saves the document to a memory buffer.
+	  *
+	  * @param out_buf a pointer to the buffer containing the serialized version of the
+	  * document. (C++ Note) The buffer is owned by a document and the client doesn't need to
+	  * do any initialization or cleanup.
+	  * @param out_buf_size the size of the serialized document (i.e. out_buf) in bytes.
+	  *
+	  * @param flags - A bit field composed of an OR of SDFDoc::SaveOptions values. Note that
+	  * this method ignores e_incremental flag.
+	  * @param progress - A pointer to the progress interface. NULL if progress tracking is not required.
+	  *
+	  * @exception - if there is a problem during Save an Exception object will be thrown.
+	  *
+	  * @note - Save will modify the PDFDoc object's internal representation.  As such,
+	  *			  the user should acquire a write lock before calling save.
+	  *
+	  * @note - If the original pdf has a corrupt xref table (see HasRepairedXref), then
+	  * it can not be saved using the e_incremental flag.
+	  */
 	 void Save(const char* &out_buf, size_t& out_buf_size, UInt32 flags, Common::ProgressMonitor* progress);  
 #endif
 
@@ -548,16 +577,14 @@ public:
 	 * 
 	 * @param stream The output stream where to write data.
 	 * @param flags - A bit field composed of an OR of the SDFDoc::SaveOptions values. 
-	 * @param progress - A pointer to the progress interface. NULL if progress tracking is not required.
-	 * @param header - File header. A new file header is set only during full save. See also GetHeader()
 	 *
 	 * @exception - if there is a problem during Save an Exception object will be thrown.
 	 *
 	 * @note - Save will modify the PDFDoc object's internal representation.  As such, 
 	 *			  the user should acquire a write lock before calling save.
 	 *
-	 * @note - If the original pdf has a corrupt xref table (see HasRepairedXref or
-	 * http://www.pdftron.com/kb_corrupt_xref), then it can not be saved using the e_incremental flag.
+	 * @note - If the original pdf has a corrupt xref table (see HasRepairedXref), then
+	 * it can not be saved using the e_incremental flag.
 	 */
 	 void Save(Filters::Filter& stream, UInt32 flags); 
 
@@ -596,7 +623,7 @@ public:
 
 	/**
 	 * @param page_itr - the PageIterator to the page that should be removed
-	 * A PageIterator for the given page can be obtained using PDFDoc::Find(page_num) 
+	 * A PageIterator for the given page can be obtained using PDFDoc::GetPageIterator(page_num) 
 	 * or using direct iteration through document's page sequence.
 	 */
 	 void PageRemove(const PageIterator& page_itr);
@@ -866,9 +893,25 @@ public:
 	 *  }
  	 * @endcode 
 	 * 
-	 * For a full sample, please refer to 'InteractiveForms' sample project.
+	 * For a sample, please refer to 'InteractiveForms' sample project.
 	 */
 	 FieldIterator GetFieldIterator();
+
+	 /**
+	  * An interactive form (sometimes referred to as an AcroForm) is a
+	  * collection of fields for gathering information interactively from
+	  * the user. A PDF document may contain any number of fields appearing
+	  * on any combination of pages, all of which make up a single, global
+	  * interactive form spanning the entire document.
+	  *
+	  * The following methods are used to access and manipulate Interactive form
+	  * fields (sometimes referred to as AcroForms).
+	  *
+	  * @param field_name String representing the name of the field to get.
+	  * @return an iterator to the Field in the document.
+	  *
+	  * For a sample, please refer to 'InteractiveForms' sample project.
+	  */
 	 FieldIterator GetFieldIterator(const UString& field_name);
 
 	/**
@@ -880,7 +923,7 @@ public:
 	 * not found itr.HasNext() will return false. For example:
 	 * 
 	 * @code
-	 * FieldIterator itr = pdfdoc.FieldFind("name");
+	 * FieldIterator itr = pdfdoc.GetFieldIterator("name");
 	 * if (itr.HasNext()) {
 	 *   Console.WriteLine("Field name: {0}", itr.Current().GetName());
 	 * }
@@ -891,16 +934,15 @@ public:
 
 	/**
 	 * Create a new interactive form Field.
-	 * @return the new form Field.
 	 *
 	 * @param field_name a string representing the fully qualified name of the 
 	 * field (e.g. "employee.name.first"). field_name must be either a unique name or 
 	 * equal to an existing terminal field name. 
-
 	 * @param type field type (e.g. Field::e_text, Field::e_button, etc.)
 	 * @param field_value
 	 * @param def_field_value
-	 * 
+	 * @return the new form Field.
+	 *
 	 * @exception if 'field_name' is equal to an existing non-terminal field name an 
 	 * exception is thrown. 
 	 */ 
@@ -909,6 +951,20 @@ public:
 		SDF::Obj field_value = 0, 
 		SDF::Obj def_field_value = 0);
 
+	 /**
+	  * Create a new interactive form Field.
+	  *
+	  * @param field_name a string representing the fully qualified name of the
+	  * field (e.g. "employee.name.first"). field_name must be either a unique name or
+	  * equal to an existing terminal field name.
+	  * @param type field type (e.g. Field::e_text, Field::e_button, etc.)
+	  * @param field_value
+	  * @param def_field_value
+	  * @return the new form Field.
+	  *
+	  * @exception if 'field_name' is equal to an existing non-terminal field name an
+	  * exception is thrown.
+	  */
 	 Field FieldCreate(const UString& field_name,
 		 Field::Type type,
 		 const UString& field_value,
@@ -921,6 +977,13 @@ public:
 	 */
 	 void RefreshFieldAppearances();
 
+	/**
+	* Generates the appearance stream for annotations in the document using the specified options. A common use case is to generate appearances
+	* only for missing annotations, which can be accomplished using the default options.
+	* @param options Options that can be used to adjust this generation process.
+	*/
+	void RefreshAnnotAppearances(const RefreshOptions* options = 0);
+	
 	/**
 	 * Flatten all annotations in the document.
 	 * @param forms_only if false flatten all annotations, otherwise flatten
@@ -1261,10 +1324,59 @@ public:
     void GenerateThumbnails(UInt32 size);
 	
 	/**
-	* Generates a PDF diff of the given pages by overlaying and blending them on top of each other.
-	*/
+	 * Generates a PDF diff of the given pages by overlaying and blending them on top of each other.
+	 * @param p1 one of the two pages for comparing.
+	 * @param p2 the other page for comparing.
+	 * @param opts options for comparison results.
+	 */
 	void AppendVisualDiff(Page p1, Page p2, DiffOptions* opts);
 	
+	/**
+	 * Applies optimizations to improve viewing speed and saves the document to the specified file.
+	 * The main optimizations used are linearization and embedding thumbnails for the
+	 * first page and any complex pages.
+	 *
+	 * @param path The full path name to which the file is saved.
+	 * @param opts The optimization options
+	 *
+	 * @exception if the file can't be opened for saving or if there is a problem during Save
+	 * an Exception object will be thrown.
+	 */
+	void SaveViewerOptimized(const UString& path, const ViewerOptimizedOptions& opts);
+
+	/**
+	* Applies optimizations to improve viewing speed and saves the document to a memory buffer.
+	* The main optimizations used are linearization and embedding thumbnails for the
+	* first page and any other pages that are slow to render.
+	*
+	* @param out_buf a pointer to the buffer containing the serialized version of the
+	* document. (C++ Note) The buffer is owned by a document and the client doesn't need to
+	* do any initialization or cleanup.
+	* @param out_buf_size the size of the serialized document (i.e. out_buf) in bytes.
+	* @param opts - The optimization options
+	*
+	* @exception - if the file can't be opened for saving or if there is a problem during Save
+	*	an Exception object will be thrown.
+	*/
+	void SaveViewerOptimized(const char* &out_buf, size_t& out_buf_size, const ViewerOptimizedOptions& opts);
+
+	 enum SignaturesVerificationStatus
+	 {
+		 e_unsigned,
+		 // e_failure == bad doc, digest, or MDP (i.e. does not include trust issues, because those are flaky due to being network/config-related)
+		 e_failure,
+		 e_untrusted,
+		 e_unsupported,
+		 // unsigned sigs skipped; parts of document may be unsigned (check GetByteRanges on signed sigs to find out)
+		 e_verified
+	 };
+
+	 /**
+	  * Attempts to verify all signed cryptographic digital signatures in the document, ignoring unsigned signatures.
+	  *
+	  * @return an enumeration value representing the state of the document's signatures
+	 */
+	 SignaturesVerificationStatus VerifySignedDigitalSignatures(const VerificationOptions& in_opts) const;
 
     //for xamarin use only
     static PDFDoc* CreateInternal(ptrdiff_t impl);

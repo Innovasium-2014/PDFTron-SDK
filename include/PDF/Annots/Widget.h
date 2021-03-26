@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFAnnotsWidget
@@ -521,7 +521,7 @@ class Widget : public Annot
 	/**
 	 * Returns the text color of the Widget Annotation.
 	 *
-	 * @returns the text color. 
+	 * @return the text color. 
 	 * @note the color can be in different color spaces: Gray, RGB, or CMYK. Call "GetTextColorCompNum"
 	 * to access the color space information corresponding to the border color.
 	 */
@@ -530,7 +530,7 @@ class Widget : public Annot
 	/**
 	 * Returns the number of color components in the text color of the Widget Annotation.
 	 *
-	 * @returns An integer indicating a color space value from the ColorSpace::Type enum. That is,
+	 * @return An integer indicating a color space value from the ColorSpace::Type enum. That is,
 	 * 1 corresponding to "e_device_gray", 3 corresponding to "e_device_rgb", and 4 corresponding to "e_device_cmyk" 
 	 * if color space is applicable.
 	 */
@@ -548,7 +548,7 @@ class Widget : public Annot
 	/**
 	 * Returns the font size used in this Widget Annotation.
 	 *
-	 * @returns the font size
+	 * @return the font size
 	 * @note A font size of 0 specifies that the text should be autosized to fit in the Widget.
 	 */
 	double GetFontSize() const;
@@ -564,7 +564,7 @@ class Widget : public Annot
 	/**
 	 * Retrieves the font used for displaying text in this Widget.
 	 *
-	 * @returns the font used by this Widget.
+	 * @return the font used by this Widget.
 	 */
 	Font GetFont() const;
 

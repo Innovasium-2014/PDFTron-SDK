@@ -313,6 +313,16 @@ inline void PDFViewCtrl::UpdatePageLayout()
 	REX(TRN_PDFViewCtrlUpdatePageLayout(mp_view));
 }
 
+inline void PDFViewCtrl::HideAnnotation(const Annot& annot)
+{
+	REX(TRN_PDFViewCtrlHideAnnotation(mp_view, annot.mp_annot));
+}
+
+inline void PDFViewCtrl::ShowAnnotation(const Annot& annot)
+{
+	REX(TRN_PDFViewCtrlShowAnnotation(mp_view, annot.mp_annot));
+}
+
 inline void PDFViewCtrl::SetDrawAnnotations(bool render_annots)
 {
 	REX(TRN_PDFViewCtrlSetDrawAnnotations(mp_view,BToTB(render_annots)));
@@ -321,6 +331,11 @@ inline void PDFViewCtrl::SetDrawAnnotations(bool render_annots)
 inline void PDFViewCtrl::SetHighlightFields(bool highlight)
 {
 	REX(TRN_PDFViewCtrlSetHighlightFields(mp_view,BToTB(highlight)));
+}
+
+inline void PDFViewCtrl::SetRequiredFieldBorderColor(const ColorPt& new_border_color)
+{
+	REX(TRN_PDFViewCtrlSetRequiredFieldBorderColor(mp_view, &new_border_color.m_c));
 }
 
 inline void PDFViewCtrl::SetGamma(double exp)

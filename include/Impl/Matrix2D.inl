@@ -76,6 +76,14 @@ inline void Matrix2D::Translate (double h, double v) {
 	TRN_Matrix2DTranslate(this,h,v);
 }
 
+inline void Matrix2D::PreTranslate(double h, double v) {
+	TRN_Matrix2DPreTranslate(this, h, v);
+}
+
+inline void Matrix2D::PostTranslate(double h, double v) {
+	TRN_Matrix2DPostTranslate(this, h, v);
+}
+
 inline void Matrix2D::Scale (double h, double v) {
 	TRN_Matrix2DScale(this,h,v);
 }

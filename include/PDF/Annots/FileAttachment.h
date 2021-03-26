@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFAnnotsFileAttachment
@@ -72,6 +72,7 @@ class FileAttachment : public Markup
 	 *
 	 * @param doc A document to which the annotation is added.
 	 * @param pos A rectangle specifying the annotation's bounds, in user space coordinates.
+	 * @param path The path to the file which should be attached	 
 	 * @param icon_name An icon to be used in displaying the annotation, default is PushPin.
 	 * @note PDF Viewer applications should provide predefined icon appearances for at least 
 	 * the following standard names: Graph PushPin Paperclip Tag. Additional names may 
@@ -90,7 +91,7 @@ class FileAttachment : public Markup
 	 *
 	 * @param doc A document to which the annotation is added.
 	 * @param pos A rectangle specifying the annotation's bounds, in user space coordinates.
-	 * @param path
+	 * @param path The path to the file which should be attached
 	 * @param icon_name The name of an icon to be used in displaying the annotation.
 	 * @note PDF Viewer applications should provide predefined icon appearances for at least 
 	 * the following standard names: Graph PushPin Paperclip Tag. Additional names may 

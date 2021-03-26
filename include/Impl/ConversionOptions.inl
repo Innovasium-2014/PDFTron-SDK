@@ -8,6 +8,14 @@ ConversionOptions::ConversionOptions()
 	m_dict = m_obj_set.CreateDict();
 }
 
+ConversionOptions::ConversionOptions(const UString& json)
+	: m_obj_set()
+	, m_dict()
+{
+	m_dict = m_obj_set.CreateFromJson(json);
+}
+
+
 ConversionOptions::~ConversionOptions()
 {
 }

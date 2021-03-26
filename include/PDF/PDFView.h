@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFPDFView
@@ -186,6 +186,22 @@ public:
 	 * @param mode is the specific transform to be applied
 	 */
 	void SetColorPostProcessMode(PDFRasterizer::ColorPostProcessMode mode);
+    
+    
+    /**
+     *
+     * Sets the color post processing transformation. This transform is applied
+     * to the rasterized bitmap as the final step in the rasterization process,
+     * and is applied directly to the resulting bitmap (disregarding any color
+     * space information). Color post processing only supported for RGBA output.
+     *
+     * This mode will map the brightness of the original rasterized bitmap to a
+     * gradient in image_file_contents from left to right.
+     *
+     * @param image_file_contents A filter with image file contents.
+     *
+     */
+    void SetColorPostProcessMapFile(Filters::Filter image_file_contents);
     
     /**
      * Sets the color post processing transformation. This transform is
@@ -706,6 +722,22 @@ public:
 	 * @note this method is typically used only in PDFNet for C++
 	 */
 	 int GetBufferStride() const;
+    
+    /**
+     * Disable rendering of a particular annotation. This does not change the
+     * annotation itself, just how it is displayed in this viewer instance.
+     *
+     * @param annot The annotation object to cease drawing for.
+     */
+    void HideAnnotation(Annot annot);
+    
+    /**
+     * Enable rendering of a particular annotation. Only has an effect if
+     * HideAnnotation() has previously been called on the same annot.
+     *
+     * @param annot The annotation object to resume rendering.
+     */
+    void ShowAnnotation(Annot annot);
 
 	/**
 	 * Enable or disable annotation and forms rendering. By default, all annotations 
@@ -749,7 +781,17 @@ public:
 	 * @param highlight_fields true to highlight, false otherwise. 
 	 */
 	void SetHighlightFields(bool highlight_fields);
-
+	
+	/**
+	* Set the border color for required fields 
+	* 
+	* This option only has an effect if field highlighting is turned on using
+	* `SetHighlightFields(true)`. 
+	* 
+	* @param new_border_color the new border color, in rgba form.
+	*/
+	void SetRequiredFieldBorderColor(const ColorPt& new_border_color);
+	
 	/**
 	 * Enable or disable anti-aliasing. 
 	 * 
@@ -1423,6 +1465,20 @@ public:
      *
      */
     std::vector<Annot> GetAnnotationsOnPage(int page_num);
+
+    /**
+     * Returns a vector of annotations under the line (x1, y1, x2, y2) expressed in screen coordinates.
+	 * Does not include form field annotations.
+     *
+     * @param x1 The x-coordinate of the first point of the line.
+	 * @param y1 The y-coordinate of the first point of the line.
+	 * @param x2 The x-coordinate of the second point of the line.
+	 * @param y2 The y-coordinate of the second point of the line.
+     *
+     * @returns A vector of annotations under the line (x1, y1, x2, y2) expressed in screen coordinates.
+     *
+     */
+    std::vector<Annot> GetAnnotationListAt(int x1, int y1, int x2, int y2);
     
     void EnableUndoRedo();
     UString Undo();

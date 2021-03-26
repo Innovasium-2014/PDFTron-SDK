@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPSDFSDFDoc
@@ -316,11 +316,28 @@ public:
 	 * @note - All object in the import list must belong to the same source document. 
 	 * @note - The function does not perform the shallow copy since ImportObj() can be used instead.
 	 * 
-	 * @param obj - a list of root objects to import. All directly or indirectly objects will be 
+	 * @param obj_list - a list of root objects to import. All directly or indirectly objects will be
 	 * imported as well.
-	 * @return - a list of imported root objects in this document
+	 * @return - a list of imported root objects in this document.
 	 */
 	 std::vector<Obj> ImportObjs(const std::vector<Obj>& obj_list);
+    
+    /**
+     * The function performs a deep copy of all objects specified in the 'obj_list'.
+     * If objects in the list are directly or indirectly referring to the same object/s,
+     * only one copy of the shared object/s will be copied. Therefore, unlike repeated calls
+     * to ImportObj, this method will import only one copy of shared objects (objects
+     * representing an intersection of graphs specified through 'obj_list' of root pointers.
+     *
+     * @note - All object in the import list must belong to the same source document.
+     * @note - The function does not perform the shallow copy since ImportObj() can be used instead.
+     *
+     * @param obj_list - a list of root objects to import. All directly or indirectly objects will be
+     * imported as well.
+     * @param exclude_list - a list of objects to not include in the deep copy.
+     * @return - a list of imported root objects in this document.
+     */
+     std::vector<Obj> ImportObjs(const std::vector<Obj>& obj_list, const std::vector<Obj>& exclude_list);
 
 	/**
 	 * @return - The size of cross reference table
@@ -342,6 +359,35 @@ public:
 		e_compatibility = 0x20      // Save the document in a manner that maximizes compatibility with older PDF consumers (e.g. the file will not use compressed object and xref streams).
 	};
 
+#ifndef SWIG
+     /**
+      * Saves the document to a file.
+      *
+      * If a full save is requested to the original path, the file is saved to a file
+      * system-determined temporary file, the old file is deleted, and the temporary file
+      * is renamed to path.
+      *
+      * A full save with remove unused or linearization option may re-arrange object in
+      * the cross reference table. Therefore all pointers and references to document objects
+      * and resources should be re acquired in order to continue document editing.
+      *
+      * In order to use incremental save the specified path must match original path and
+      * e_incremental flag bit should be set.
+      *
+      * @param path - The full path name to which the file is saved.
+      * @param flags - A bit field composed of an OR of the SDFDoc::SaveOptions values.
+      * @param progress - A pointer to the progress interface. NULL if progress tracking is not required.
+      * @param header - File header. A new file header is set only during full save.
+      *
+      * @exception - if the file can't be opened for saving or if there is a problem during Save
+      *	an Exception object will be thrown.
+      *
+      * @note - Save will modify the SDFDoc object's internal representation.  As such,
+      *			  the user should acquire a write lock before calling save.
+      */
+	 void Save(const UString& path, UInt32 flags, Common::ProgressMonitor* progress, const char* header);
+#endif
+
 	/**
 	 * Saves the document to a file. 
 	 * 
@@ -358,7 +404,6 @@ public:
 	 * 
 	 * @param path - The full path name to which the file is saved.
 	 * @param flags - A bit field composed of an OR of the SDFDoc::SaveOptions values. 
-	 * @param progress - A pointer to the progress interface. NULL if progress tracking is not required.
 	 * @param header - File header. A new file header is set only during full save.
 	 * 
 	 * @exception - if the file can't be opened for saving or if there is a problem during Save 
@@ -369,22 +414,14 @@ public:
 	 */
 	 void Save(const UString& path, UInt32 flags, const char* header);
 
-#ifndef SWIG
-	 void Save(const UString& path, UInt32 flags, Common::ProgressMonitor* progress, const char* header);
-#endif
-	 
 	/**
 	 * Saves the document to a memory buffer.
 	 * 
-	 * @param out_buf a pointer to the buffer containing the serialized version of the 
-	 * document. (C++ Note) The buffer is owned by a document and the client doesn't need to 
-	 * do any initialization or cleanup.
-	 * @param out_buf_size the size of the serialized document (i.e. out_buf) in bytes.
-	 * 
 	 * @param flags - A bit field composed of an OR of the SDFDoc::SaveOptions values. 
 	 * Note that this method ignores e_incremental flag. 
-	 * @param progress - A pointer to the progress interface. NULL if progress tracking is not required.
 	 * @param header - File header. A new file header is set only during full save.
+	 *
+	 * @return the buffer containing the serialized version of the document.
 	 *
 	 * @exception - if there is a problem during Save an Exception object will be thrown.
 	 *
@@ -394,6 +431,24 @@ public:
 	 std::vector<unsigned char> Save(UInt32 flags, const char* header);
 
 #ifndef SWIG
+	 /**
+	  * Saves the document to a memory buffer.
+	  *
+	  * @param out_buf a pointer to the buffer containing the serialized version of the
+	  * document. (C++ Note) The buffer is owned by a document and the client doesn't need to
+	  * do any initialization or cleanup.
+	  * @param out_buf_size the size of the serialized document (i.e. out_buf) in bytes.
+	  *
+	  * @param flags - A bit field composed of an OR of the SDFDoc::SaveOptions values.
+	  * Note that this method ignores e_incremental flag.
+	  * @param progress - A pointer to the progress interface. NULL if progress tracking is not required.
+	  * @param header - File header. A new file header is set only during full save.
+	  *
+	  * @exception - if there is a problem during Save an Exception object will be thrown.
+	  *
+	  * @note - Save will modify the SDFDoc object's internal representation.  As such,
+	  *			  the user should acquire a write lock before calling save.
+	  */
 	 void Save(const char* &out_buf, size_t& out_buf_size, UInt32 flags, Common::ProgressMonitor* progress, const char* header); 
 #endif
 

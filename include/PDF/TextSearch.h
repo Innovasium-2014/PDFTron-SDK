@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFTextSearch
@@ -62,14 +62,17 @@ public:
 	 */ 
 	Highlights GetHighlights() const;
 
-
-// @cond PRIVATE_DOC
+
+
+// @cond PRIVATE_DOC
+
 #ifndef SWIGHIDDEN
 	SearchResult();
 	SearchResult(const SearchResult& b);
 	SearchResult(int, TRN_TextSearchResultCode rc, UString r, UString a, Highlights h);
 #endif
-// @endcond
+// @endcond
+
 private:
 	int page_num;
 	TRN_TextSearchResultCode resCode;
@@ -210,7 +213,10 @@ public:
 		//tells the search process to compute the ambient string of the found pattern.
 		//This is useful if a user wants to examine or display what surrounds the
 		//found pattern.
-		e_ambient_string = e_highlight << 1
+		e_ambient_string = e_highlight << 1,
+
+		//refrain from replacing newlines with spaces
+		e_raw_text_search = e_ambient_string << 1
 	};
 
 	/** 
@@ -287,16 +293,31 @@ public:
 	int GetCurrentPage() const;
 
 	/**
+	* Sets the Optional Content Group (OCG) context that should be used when
+	* processing the document. This function can be used to change the current
+	* OCG context. Optional content (such as PDF layers) will be selectively
+	* processed based on the states of optional content groups in the given
+	* context.
+	*
+	* @param ctx Optional Content Group (OCG) context, or NULL if TextSearch
+	* should process all content on the page.
+	*/
+	void SetOCGContext(OCG::Context* context);
+
+	/**
 	 * Frees the native memory of the object.
 	 */
 	void Destroy();
-
-// @cond PRIVATE_DOC
+
+
+// @cond PRIVATE_DOC
+
 private:
 	TRN_TextSearch mp_textsearch;
 	TextSearch(const TextSearch&);
 	TextSearch& operator= (const TextSearch&);
-// @endcond
+// @endcond
+
 };
 
 

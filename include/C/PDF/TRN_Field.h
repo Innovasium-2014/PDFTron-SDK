@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPDFField
@@ -36,20 +36,20 @@ enum TRN_FieldType
 };
 
 TRN_API TRN_FieldGetType(const TRN_Field* field, enum TRN_FieldType* result);
-TRN_API TRN_FieldGetValue(TRN_Field* field,TRN_Obj* result);
-TRN_API TRN_FieldGetValueAsString(TRN_Field* field, TRN_UString* result);
-TRN_API TRN_FieldGetDefaultValueAsString(TRN_Field* field, TRN_UString* result);
+TRN_API TRN_FieldGetValue(const TRN_Field* field,TRN_Obj* result);
+TRN_API TRN_FieldGetValueAsString(const TRN_Field* field, TRN_UString* result);
+TRN_API TRN_FieldGetDefaultValueAsString(const TRN_Field* field, TRN_UString* result);
 TRN_API TRN_FieldSetValueAsString(TRN_Field* field, TRN_UString value, TRN_ViewChangeCollection* result);
 TRN_API TRN_FieldSetValue(TRN_Field* field, TRN_Obj value, TRN_ViewChangeCollection* result);
 TRN_API TRN_FieldSetValueAsBool(TRN_Field* field, TRN_Bool value, TRN_ViewChangeCollection* result);
-TRN_API TRN_FieldGetTriggerAction(TRN_Field* field, enum TRN_FieldEventType trigger, TRN_Obj* result);
+TRN_API TRN_FieldGetTriggerAction(const TRN_Field* field, enum TRN_FieldEventType trigger, TRN_Obj* result);
 
 TRN_API TRN_FieldGetValueAsBool(const TRN_Field* field, TRN_Bool* result);
 TRN_API TRN_FieldRefreshAppearance(TRN_Field* field);
 TRN_API TRN_FieldEraseAppearance(TRN_Field* field);
-TRN_API TRN_FieldGetDefaultValue(TRN_Field* field, TRN_Obj* result);
-TRN_API TRN_FieldGetName(TRN_Field* field, TRN_UString* result);
-TRN_API TRN_FieldGetPartialName(TRN_Field* field, TRN_UString* result);
+TRN_API TRN_FieldGetDefaultValue(const TRN_Field* field, TRN_Obj* result);
+TRN_API TRN_FieldGetName(const TRN_Field* field, TRN_UString* result);
+TRN_API TRN_FieldGetPartialName(const TRN_Field* field, TRN_UString* result);
 TRN_API TRN_FieldRename(TRN_Field* field, const TRN_UString field_name);
 TRN_API TRN_FieldIsAnnot(const TRN_Field* field, TRN_Bool* result);
 

@@ -464,7 +464,7 @@ inline Action Action::CreateLaunch(SDF::SDFDoc& doc, const char* path)
 inline Action Action::CreateHideField(SDF::SDFDoc& doc, int list_length, const char** field_list)
 {
 	TRN_Action result;
-	REX(TRN_ActionCreateHideField(doc.mp_doc, list_length, field_list, &result));
+	REX(TRN_ActionCreateHideField(doc.mp_doc, field_list, list_length, &result));
 	return Action(result);
 }
 
@@ -1004,7 +1004,22 @@ inline void Annot::Resize(const Rect& p) {
 	REX(TRN_AnnotResize(mp_annot,(const TRN_Rect*)&p));
 }
 
+inline UString Annot::GetCustomData(const UString& key) const
+{
+	TRN_UString result;
+	REX(TRN_AnnotGetCustomData(mp_annot, key.mp_impl, &result));
+	return UString(result);
+}
 
+inline void Annot::SetCustomData(const UString& key, const UString& value)
+{
+	REX(TRN_AnnotSetCustomData(mp_annot, key.mp_impl, value.mp_impl));
+}
+
+inline void Annot::DeleteCustomData(const UString& key)
+{
+	REX(TRN_AnnotDeleteCustomData(mp_annot, key.mp_impl));
+}
 
 // BorderStyle
 inline BorderStyle::BorderStyle(Style s, double b_width, double b_hr, double b_vr)
@@ -1228,9 +1243,18 @@ inline void Annot::SetRotation(int rotation)
 	REX(TRN_AnnotSetRotation(mp_annot, rotation));
 }
 
-inline void Annot::RefreshAppearance() //Maybe able to substitude annn to this later(so one less parameter). 
+inline void Annot::RefreshAppearance() //Maybe able to substitute annn to this later(so one less parameter). 
 {
 	REX(TRN_AnnotRefreshAppearance(mp_annot));
+}
+
+inline void Annot::RefreshAppearance(const RefreshOptions& opts)
+{
+	TRN_optionbase opt_in;
+	opt_in.type = e_option_type_sdf;
+	RefreshOptions* opt = const_cast<RefreshOptions*>(&opts);
+	opt_in.impl = opt ? opt->GetInternalObj().mp_obj : 0;
+	REX(TRN_AnnotRefreshAppearanceRefreshOptions(mp_annot, &opt_in));
 }
 
 inline Annot::Annot(TRN_Annot annot) : mp_annot(annot)
@@ -1616,6 +1640,19 @@ inline bool Ink::Erase(const Point& pt1, const Point& pt2, double width)
 {
 	TRN_Bool result;
 	REX(TRN_InkAnnotErase(mp_annot, (const TRN_Point*)&pt1, (const TRN_Point*)&pt2, width, &result));
+	return TBToB(result);
+}
+
+inline void Ink::SetHighlightIntent(bool highlight)
+{
+	REX(TRN_InkAnnotSetHighlightIntent(mp_annot, BToTB(highlight)));
+}
+
+
+inline bool Ink::GetHighlightIntent()
+{
+	TRN_Bool result;
+	REX(TRN_InkAnnotGetHighlightIntent(mp_annot, &result));
 	return TBToB(result);
 }
 					
@@ -2159,9 +2196,18 @@ inline RubberStamp RubberStamp::Create(SDF::SDFDoc& doc, const Rect& pos, Icon i
 {
 	TRN_Annot result;
 	REX(TRN_RubberStampAnnotCreate(doc.mp_doc,(const TRN_Rect*)&pos, &result));
-	return RubberStamp(result);
+	RubberStamp ret(result);
+	ret.SetIcon(icon);
+	return ret;
 }
 
+inline RubberStamp RubberStamp::Create(SDF::SDFDoc& doc, const Rect& pos, SDF::Obj* formxo)
+{
+	TRN_Annot result;
+	REX(TRN_RubberStampAnnotCreateCustom(doc.mp_doc,(const TRN_Rect*)&pos, formxo->mp_obj, &result));
+	RubberStamp ret(result);
+	return ret;
+}
 
 inline RubberStamp::Icon RubberStamp::GetIcon() const
 {

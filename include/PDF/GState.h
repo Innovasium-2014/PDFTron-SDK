@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFGState
@@ -460,8 +460,8 @@ public:
 	 * 
 	 * @param a - horizontal 'scaling' component of the new text matrix.
 	 * @param b - 'rotation' component of the new text matrix.
-	 * @param c - vertical 'scaling' component of the new text matrix.
-	 * @param d - 'rotation' component of the new text matrix.
+	 * @param c - 'rotation' component of the new text matrix.
+	 * @param d - vertical 'scaling' component of the new text matrix.
 	 * @param h - horizontal translation component of the new text matrix.
 	 * @param v - vertical translation component of the new text matrix.
 	 */
@@ -477,8 +477,8 @@ public:
 	 * matrix of this element.
 	 * @param a - horizontal 'scaling' component of the new text matrix.
 	 * @param b - 'rotation' component of the new text matrix.
-	 * @param c - vertical 'scaling' component of the new text matrix.
-	 * @param d - 'rotation' component of the new text matrix.
+	 * @param c - 'rotation' component of the new text matrix.
+	 * @param d - vertical 'scaling' component of the new text matrix.
 	 * @param h - horizontal translation component of the new text matrix.
 	 * @param v - vertical translation component of the new text matrix.
 	 */

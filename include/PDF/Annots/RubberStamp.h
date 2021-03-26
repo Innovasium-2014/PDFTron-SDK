@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFAnnotsRubberStamp
@@ -64,6 +64,31 @@ class RubberStamp : public Markup
 	 * @return A newly created blank RubberStamp annotation.
 	*/
 	static RubberStamp Create(SDF::SDFDoc& doc, const Rect& pos, Icon icon= e_Draft);
+
+	/** 
+	 * Creates a new RubberStamp annotation in the specified document.
+	 * 
+	 * @param doc A document to which the annotation is added.
+	 * @param pos A rectangle specifying the annotation's bounds in default user space units.
+	 * @param form_xobject An object specifying a custom appearance for the annotation, containing
+	 *    TEXT as string (mandatory): The text to be displayed in rubber stamp
+	 *    TEXT_BELOW as string (optional): The text to be displayed below the first text
+	 *    FILL_COLOR as an array of three or four numbers between 0.0 to 1.0 (optional): The fill color
+	 *    TEXT_COLOR as an array of three or four numbers between 0.0 to 1.0 (optional): The text color
+	 *    BORDER_COLOR as an array of three or four numbers between 0.0 to 1.0 (optional): The border color
+	 *    FILL_COLOR_START as an array of three or four numbers between 0.0 to 1.0 (optional):
+	 *       The start fill color if background is gradient
+	 *    FILL_COLOR_END as an array of three or four numbers between 0.0 to 1.0 (optional):
+	 *       The end fill color if background is gradient
+	 *    FILL_OPACITY as a number (optional): the fill opacity
+	 *    TEXT_OPACITY as a number (optional): the text opacity
+	 *    ROTATION as a number (optional): rotation. valid numbers are {0, 90, 180, 270}
+	 *    POINTING_LEFT as a boolean (optional): if the stamp is pointing left
+	 *    POINTING_RIGHT as a boolean (optional): if the stamp is pointing right
+	 * 
+	 * @return A newly created RubberStamp annotation.
+	*/
+	static RubberStamp Create(SDF::SDFDoc& doc, const Rect& pos, SDF::Obj* form_xobject);
 
 	/** 
 	 * Returns the type of the icon associated with the RubberStamp annotation. 

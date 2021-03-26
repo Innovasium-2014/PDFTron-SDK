@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFHTML2PDF
@@ -316,7 +316,8 @@ public:
 	 */
 	 void Destroy();
 
-	// @cond PRIVATE_DOC
+	// @cond PRIVATE_DOC
+
 	#ifndef SWIGHIDDEN
 	TRN_HTML2PDF mp_html2pdf;
 	#endif
@@ -324,7 +325,8 @@ public:
 private:
 	HTML2PDF(const HTML2PDF&);
 	HTML2PDF& operator= (const HTML2PDF&);
-	// @endcond
+	// @endcond
+
 };
 
 
@@ -389,11 +391,13 @@ public:
 	 */
 	void Destroy();
 
-	// @cond PRIVATE_DOC
+	// @cond PRIVATE_DOC
+
 #ifndef SWIGHIDDEN
 	TRN_HTML2PDF_Proxy mp_impl;
 #endif
-	// @endcond
+	// @endcond
+
 };
 
 /**
@@ -601,11 +605,13 @@ public:
 	 */
 	void Destroy();
 
-	// @cond PRIVATE_DOC
+	// @cond PRIVATE_DOC
+
 #ifndef SWIGHIDDEN
 	TRN_HTML2PDF_WebPageSettings mp_impl;
 #endif
-	// @endcond
+	// @endcond
+
 };
 
 /**
@@ -674,11 +680,13 @@ public:
 	 */
 	void Destroy();
 
-	// @cond PRIVATE_DOC
+	// @cond PRIVATE_DOC
+
 #ifndef SWIGHIDDEN
 	TRN_HTML2PDF_TOCSettings mp_impl;
 #endif
-	// @endcond
+	// @endcond
+
 };
 
 	};	// namespace PDF

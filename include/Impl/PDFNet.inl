@@ -56,6 +56,20 @@ inline void PDFNet::SetDefaultDeviceRGBProfile(const UString& icc_filename)
 	REX(TRN_PDFNetSetDefaultDeviceRGBProfile(icc_filename.mp_impl));
 }
 
+inline void PDFNet::SetDefaultDeviceCMYKProfile(Filters::Filter stream)
+{
+	stream.m_owner = false;
+	REX(TRN_PDFNetSetDefaultDeviceCMYKProfileFromFilter(stream.m_impl));
+	stream.m_impl = 0; 
+}
+
+inline void PDFNet::SetDefaultDeviceRGBProfile(Filters::Filter stream)
+{
+	stream.m_owner = false;
+	REX(TRN_PDFNetSetDefaultDeviceRGBProfileFromFilter(stream.m_impl));
+	stream.m_impl = 0; 
+}
+
 inline void PDFNet::SetDefaultDiskCachingEnabled( bool use_disk )
 {
 	REX(TRN_PDFNetSetDefaultDiskCachingEnabled(use_disk));
@@ -121,4 +135,9 @@ inline void PDFNet::SetNumberReadProc(TRN_Bool (*read_proc) (const TRN_UChar *bu
 inline void PDFNet::SetLogLevel(LogLevel level)
 {
 	TRN_PDFNetSetLogLevel(static_cast<TRN_PDFNetLogLevel>(level));
+}
+
+inline UString PDFNet::GetSystemFontList()
+{
+	RetStr(TRN_PDFNetGetSystemFontList(&result));
 }

@@ -23,7 +23,7 @@ inline ComboBoxWidget ComboBoxWidget::Create(PDFDoc& doc, const Rect& pos, const
 inline ComboBoxWidget ComboBoxWidget::Create(PDFDoc& doc, const Rect& pos, const Field& field)
 {
 	TRN_Annot result;
-	REX(TRN_ComboBoxWidgetCreateWithField(doc.mp_doc, (const TRN_Rect*)&pos, (TRN_Field*)&field, &result));
+	REX(TRN_ComboBoxWidgetCreateWithField(doc.mp_doc, (const TRN_Rect*)&pos, (const TRN_Field*)&field, &result));
 	return ComboBoxWidget(result);
 }
 

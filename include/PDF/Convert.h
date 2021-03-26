@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFConvert
@@ -191,7 +191,7 @@ public:
 	*
 	* @param in_filename the path to the plain text document to convert
 	*
-	* @note in_options the conversion options. The availble options are:
+	* @param in_options the conversion options. The available options are:
 	*
 	*| Option Name             | Type    | Note                                                    |
 	*|-------------------------|---------|---------------------------------------------------------|
@@ -293,9 +293,9 @@ public:
 	/**
 	 * Convert the input file to XOD format and save to the specified path
 	 *
-	 * @param in_inputFilename the file to convert to XOD
+	 * @param in_filename the file to convert to XOD
 	 *
-	 * @param in_outputFilename the path to the XOD file to create
+	 * @param out_filename the path to the XOD file to create
 	 *
 	 * @param options the conversion options 
 	 *
@@ -314,7 +314,7 @@ public:
 	 *
 	 * @param in_pdfdoc the PDFDoc to convert to XOD
 	 *
-	 * @param in_outputFilename the path to the XOD file to create
+	 * @param out_filename the path to the XOD file to create
 	 *
 	 * @param options the conversion options 
 	 *
@@ -329,7 +329,7 @@ public:
 	/**
 	 * Convert a file to HTML and save to the specified path
 	 *
-	 * @param in_inputFilename the file to convert to HTML
+	 * @param in_filename the file to convert to HTML
 	 *
 	 * @param out_path the path to where generated content will be stored 
 	 *
@@ -346,6 +346,16 @@ public:
 	static void ToHtml(const UString & in_filename, const UString & out_path, const HTMLOutputOptions& options);
 	static void ToHtml(const UString & in_filename, const UString & out_path);
 
+
+	/**
+	 * Convert a page to HTML and return a string of the html
+	 *
+	 * @param page the page to convert to HTML
+	 *
+	 * @return a string containing the page's html  
+	 *
+	 */
+	static UString PageToHtml(const Page & page);
 	/**
 	 * Convert the PDF to HTML and save to the specified path
 	 *
@@ -366,11 +376,13 @@ public:
 	/**
 	 * Convert a file to EPUB format and save to the specified path
 	 *
-	 * @param in_inputFilename the file to convert to EPUB
+	 * @param in_filename the file to convert to EPUB
 	 *
-	 * @param out_path the path to where generated content will be stored
+	 * @param out_path the path to the EPUB file to create
 	 *
-	 * @param options the conversion options 
+	 * @param html_options the conversion options 
+	 *
+	 * @param epub_options the conversion options
 	 *
 	 * @see HTMLOutputOptions
 	 *
@@ -382,18 +394,20 @@ public:
 	 * that ToPdf also requires.
 	 *
 	 */
-	static void ToEpub(const UString & in_filename, const UString & out_path);
-	static void ToEpub(const UString & in_filename, const UString & out_path, const HTMLOutputOptions& html_options);
 	static void ToEpub(const UString & in_filename, const UString & out_path, const HTMLOutputOptions& html_options, const EPUBOutputOptions& epub_options);
+	static void ToEpub(const UString & in_filename, const UString & out_path, const HTMLOutputOptions& html_options);
+	static void ToEpub(const UString & in_filename, const UString & out_path);
 
 	/**
 	 * Convert the PDFDoc to EPUB format and save to the specified path
 	 *
 	 * @param in_pdfdoc the PDFDoc to convert to EPUB
 	 *
-	 * @param out_path the path to where generated content will be stored
+	 * @param out_path the path to the EPUB file to create
 	 *
-	 * @param options the conversion options 
+	 * @param html_options the conversion options 
+	 *
+	 * @param epub_options the conversion options
 	 *
 	 * @see HTMLOutputOptions
 	 *
@@ -402,16 +416,16 @@ public:
 	 * @see ToPdf()
 	 *
 	 */
-	static void ToEpub(PDFDoc & in_pdfdoc, const UString & out_path);
-	static void ToEpub(PDFDoc & in_pdfdoc, const UString & out_path, const HTMLOutputOptions& html_options);
 	static void ToEpub(PDFDoc & in_pdfdoc, const UString & out_path, const HTMLOutputOptions& html_options, const EPUBOutputOptions& epub_options);
+	static void ToEpub(PDFDoc & in_pdfdoc, const UString & out_path, const HTMLOutputOptions& html_options);
+	static void ToEpub(PDFDoc & in_pdfdoc, const UString & out_path);
 
 	/**
 	 * Convert a file to multipage TIFF and save to the specified path
 	 *
-	 * @param in_inputFilename the file to convert to multipage TIFF
+	 * @param in_filename the file to convert to multipage TIFF
 	 *
-	 * @param out_path the path to where generated content will be stored 
+	 * @param out_path the path to the TIFF file to create
 	 *
 	 * @param options the conversion options 
 	 *
@@ -426,7 +440,7 @@ public:
 	 *
 	 * @param in_pdfdoc the PDF doc to convert to multipage TIFF
 	 *
-	 * @param out_path the path to where generated content will be stored 
+	 * @param out_path the path to the TIFF file to create
 	 *
 	 * @param options the conversion options 
 	 *
@@ -439,9 +453,7 @@ public:
 	/**
 	 * Generate a stream that incrementally converts the input file to XOD format.
 	 *
-	 * @param in_inputFilename the file to convert to XOD
-	 *
-	 * @param in_outputFilename the path to the XOD file to create
+	 * @param in_filename the file to convert to XOD
 	 *
 	 * @param options the conversion options 
 	 *
@@ -462,8 +474,6 @@ public:
 	 *
 	 * @param in_pdfdoc the PDFDoc to convert to XOD
 	 *
-	 * @param in_outputFilename the path to the XOD file to create
-	 *
 	 * @param options the conversion options 
 	 *
 	 * @return A filter from which the file can be read incrementally.
@@ -477,12 +487,11 @@ public:
 	static Filters::Filter ToXod(PDFDoc & in_pdfdoc);
 	//////////////////////////////////////////////////////////////////////////
 	// Experimental - Developer use only
-	static ConversionMonitor ToXodWithMonitor(PDFDoc & in_pdfdoc);
 	static ConversionMonitor ToXodWithMonitor(PDFDoc & in_pdfdoc, const XODOutputOptions& options);
-	//////////////////////////////////////////////////////////////////////////
+	static ConversionMonitor ToXodWithMonitor(PDFDoc & in_pdfdoc);
 
 
-    /**
+	/**
 	 * Convert the a Word document (in .docx format) to pdf and append to the specified PDF document.
 	 * This conversion is performed entirely within PDFNet, and does not rely on Word
 	 * interop or any other external functionality.
@@ -490,7 +499,7 @@ public:
 	 * @note Font requirements: on some systems you may need to specify extra font resources to aid
 	 * in conversion. Please see http://www.pdftron.com/kb_fonts_and_builtin_office_conversion
 	 *
-	 * @param out_doc the conversion result will be appended to this pdf.
+	 * @param in_pdfdoc the conversion result will be appended to this pdf.
 	 *
 	 * @param in_filename the path to the source document. The source must be in .docx format.
 	 *
@@ -520,11 +529,11 @@ public:
 	 * @note Font requirements: on some systems you may need to specify extra font resources to aid
 	 * in conversion. Please see http://www.pdftron.com/kb_fonts_and_builtin_office_conversion
 	 *
-	 * @param out_doc, the conversion result will be appended to this pdf.
+	 * @param in_pdfdoc the conversion result will be appended to this pdf.
 	 *
-	 * @param in_filename, the path to the source document. The source must be in .docx format.
+	 * @param in_filename the path to the source document. The source must be in .docx format.
 	 *
-	 * @param options, the conversion options 
+	 * @param options the conversion options 
 	 *
 	 * @return A DocumentConversion object which encapsulates this particular conversion.
 	 *
@@ -541,7 +550,7 @@ public:
 	 * @note Font requirements: on some systems you may need to specify extra font resources to aid
 	 * in conversion. Please see http://www.pdftron.com/kb_fonts_and_builtin_office_conversion
 	 *
-	 * @param out_doc the conversion result will be appended to this pdf.
+	 * @param in_pdfdoc the conversion result will be appended to this pdf.
 	 *
 	 * @param in_stream the source document data. The source must be in .docx format.
 	 *
@@ -571,11 +580,11 @@ public:
 	 * @note Font requirements: on some systems you may need to specify extra font resources to aid
 	 * in conversion. Please see http://www.pdftron.com/kb_fonts_and_builtin_office_conversion
 	 *
-	 * @param out_doc, the conversion result will be appended to this pdf.
+	 * @param in_pdfdoc the conversion result will be appended to this pdf.
 	 *
-	 * @param in_stream, the source document data. The source must be in .docx format.
+	 * @param in_stream the source document data. The source must be in .docx format.
 	 *
-	 * @param options, the conversion options 
+	 * @param options the conversion options 
 	 *
 	 * @return A DocumentConversion object which encapsulates this particular conversion.
 	 *
@@ -592,7 +601,7 @@ public:
 	 * @note Font requirements: on some systems you may need to specify extra font resources to aid
 	 * in conversion. Please see http://www.pdftron.com/kb_fonts_and_builtin_office_conversion
 	 *
-	 * @param out_doc the conversion result will be appended to this pdf.
+	 * @param in_pdfdoc the conversion result will be appended to this pdf.
 	 *
 	 * @param in_filename the path to the source document.
 	 *
@@ -621,11 +630,11 @@ public:
 	 * @note Font requirements: on some systems you may need to specify extra font resources to aid
 	 * in conversion. Please see http://www.pdftron.com/kb_fonts_and_builtin_office_conversion
 	 *
-	 * @param out_doc, the conversion result will be appended to this pdf.
+	 * @param in_pdfdoc the conversion result will be appended to this pdf.
 	 *
-	 * @param in_filename, the path to the source document.
+	 * @param in_filename the path to the source document.
 	 *
-	 * @param options, the conversion options 
+	 * @param options the conversion options 
 	 *
 	 * @return A DocumentConversion object which encapsulates this particular conversion.
 	 *
@@ -648,9 +657,9 @@ public:
 	 * @note Font requirements: on some systems you may need to specify extra font resources to aid
 	 * in conversion. Please see http://www.pdftron.com/kb_fonts_and_builtin_office_conversion
 	 *
-	 * @param in_filename, the path to the source document.
+	 * @param in_filename the path to the source document.
 	 *
-	 * @param options, the conversion options 
+	 * @param options the conversion options 
 	 *
 	 * @return A DocumentConversion object which encapsulates this particular conversion.
 	 *
@@ -667,7 +676,7 @@ public:
 	 * @note Font requirements: on some systems you may need to specify extra font resources to aid
 	 * in conversion. Please see http://www.pdftron.com/kb_fonts_and_builtin_office_conversion
 	 *
-	 * @param out_doc the conversion result will be appended to this pdf.
+	 * @param in_pdfdoc the conversion result will be appended to this pdf.
 	 *
 	 * @param in_stream the source document data.
 	 *
@@ -696,11 +705,11 @@ public:
 	 * @note Font requirements: on some systems you may need to specify extra font resources to aid
 	 * in conversion. Please see http://www.pdftron.com/kb_fonts_and_builtin_office_conversion
 	 *
-	 * @param out_doc, the conversion result will be appended to this pdf.
+	 * @param in_pdfdoc the conversion result will be appended to this pdf.
 	 *
-	 * @param in_stream, the source document data.
+	 * @param in_stream the source document data.
 	 *
-	 * @param options, the conversion options 
+	 * @param options the conversion options 
 	 *
 	 * @return A DocumentConversion object which encapsulates this particular conversion.
 	 *
@@ -723,9 +732,9 @@ public:
 	 * @note Font requirements: on some systems you may need to specify extra font resources to aid
 	 * in conversion. Please see http://www.pdftron.com/kb_fonts_and_builtin_office_conversion
 	 *
-	 * @param in_stream, the source document data.
+	 * @param in_stream the source document data.
 	 *
-	 * @param options, the conversion options 
+	 * @param options the conversion options 
 	 *
 	 * @return A DocumentConversion object which encapsulates this particular conversion.
 	 *
@@ -766,6 +775,14 @@ public:
 	 * @param opts The options to use when converting.
 	*/
 	static void FromCAD(PDFDoc& in_pdfdoc, const UString& in_filename, CADConvertOptions* opts = 0);
+
+	/**
+	 * Convert the specified TIFF filter to PDF and append converted pages to the specified PDF document.
+	 *
+	 * @param in_pdfdoc the PDFDoc to append to
+	 * @param in_data, the source TIFF data.
+	*/
+	static void FromTiff(PDFDoc& in_pdfdoc, Filters::Filter in_data);
 
 	/**
 	 * Utility function to determine if ToPdf or ToXps will require the PDFNet
@@ -841,7 +858,7 @@ public:
 	 * the output color space and supported colorants (i.e. CMYK, CMYK+spot, RGB, etc).
 	 * Default is e_op_pdfx_on.
 	 *
-	 * @param op e_op_on: always enabled; e_op_off: always disabled; e_op_pdfx_on: enabled for PDF/X files only.
+	 * @param mode e_op_on: always enabled; e_op_off: always disabled; e_op_pdfx_on: enabled for PDF/X files only.
 	 */
 	void SetOverprint(enum OverprintPreviewMode mode);
 
@@ -875,7 +892,7 @@ public:
 		e_internal_xfdf,				// include the annotation file in the XOD output. This is the default option
 		e_external_xfdf,				// output the annotation file externally to the same output path with extension .xfdf. 
 										// This is not available when using streaming conversion
-										e_flatten                      // flatten all annotations that are not link annotations
+		e_flatten                       // flatten all annotations that are not link annotations
 	};
 
 	/**

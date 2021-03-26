@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 
@@ -33,6 +33,8 @@ extern "C" {
 	TRN_API TRN_ReflowProcessorCancelAllRequests();
 	TRN_API TRN_ReflowProcessorCancelRequest(const TRN_Page page);
 	TRN_API TRN_ReflowProcessorClearCache();
+	TRN_API TRN_SetNoReflowContent(TRN_UString content);
+	TRN_API TRN_SetReflowFailedContent(TRN_UString content);
 
 #ifdef __cplusplus
 }

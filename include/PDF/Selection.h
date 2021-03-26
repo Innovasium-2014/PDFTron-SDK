@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPSelection
@@ -67,7 +67,8 @@ namespace pdftron {
 		 void GetAsUnicode(UString& out_str) const;
 #endif // !defined(SWIG)
 
-		// @cond PRIVATE_DOC
+		// @cond PRIVATE_DOC
+
 #ifndef SWIGHIDDEN
 		 ~Selection();
 		 Selection();
@@ -77,7 +78,8 @@ namespace pdftron {
 	private:
 		TRN_PDFViewSelection mp_selection;
 #endif
-		// @endcond
+		// @endcond
+
 	};
 
 	inline Selection::Selection()

@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPDFTextSearch
@@ -39,6 +39,7 @@ TRN_API TRN_TextSearchGetMode(TRN_TextSearch ts, TRN_UInt32* result);
 TRN_API TRN_TextSearchSetMode(TRN_TextSearch ts, TRN_UInt32 mode);
 TRN_API TRN_TextSearchSetRightToLeftLanguage(TRN_TextSearch ts, TRN_Bool flag);
 TRN_API TRN_TextSearchGetCurrentPage(TRN_TextSearch ts, int* result);
+TRN_API TRN_TextSearchSetOCGContext(TRN_TextSearch te, TRN_OCGContext ctx);
 
 #ifdef __cplusplus
 }

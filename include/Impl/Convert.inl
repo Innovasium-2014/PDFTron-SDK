@@ -1,6 +1,6 @@
+#include <Impl/Utils.inl>
 void SetFlattenContentImpl(TRN_Obj obj, enum Convert::FlattenFlag flatten, TRN_Obj* result);
 void SetFlattenThresholdImpl(TRN_Obj obj, enum Convert::FlattenThresholdFlag threshold, TRN_Obj* result);
-void SetOverprintImpl(TRN_Obj obj, enum PDFRasterizer::OverprintPreviewMode mode, TRN_Obj* result);
 
 inline void Convert::FromXps(PDFDoc & in_pdfdoc, const UString & in_filename)
 {
@@ -712,6 +712,13 @@ inline void Convert::ToHtml(const UString & in_filename, const UString & out_pat
 	Convert::ToHtml( in_filename, out_path, options);
 }
 
+inline UString Convert::PageToHtml(const Page & page)
+{
+	TRN_UString result;
+	REX(TRN_ConvertPageToHtml(page.mp_page, &result));
+	return UString(result);
+}
+
 inline void Convert::ToHtml(const UString & in_filename, const UString & out_path, const HTMLOutputOptions& options)
 {
 	REX(TRN_ConvertFileToHtml(in_filename.mp_impl, out_path.mp_impl, options.m_obj));
@@ -900,6 +907,14 @@ inline void Convert::FromCAD(PDFDoc & in_pdfdoc, const UString & in_filename, CA
 	REX(TRN_ConvertFromCAD(in_pdfdoc.mp_doc, in_filename.mp_impl, opt_ptr));
 }
 
+inline void Convert::FromTiff(PDFDoc & in_pdfdoc, Filters::Filter in_data)
+{
+	// make sure the filter doesn't double-delete as it leaves this method scope 
+	// (the conversion will take care of deletion)
+	in_data.m_owner = false;
+	REX(TRN_ConvertFromTiff(in_pdfdoc.mp_doc, in_data.m_impl));
+}
+
 inline bool Convert::RequiresPrinter(const UString & in_filename)
 {
 	RetBool(TRN_ConvertRequiresPrinter(in_filename.mp_impl, &result));
@@ -978,22 +993,6 @@ void SetFlattenThresholdImpl(TRN_Obj obj, enum Convert::FlattenThresholdFlag thr
 			break;
 		case Convert::e_keep_all:
 			REX(TRN_ObjPutName(obj, "FLATTEN_THRESHOLD", "KEEP_ALL", result));
-			break;
-	}
-}
-
-void SetOverprintImpl(TRN_Obj obj, enum PDFRasterizer::OverprintPreviewMode mode, TRN_Obj* result)
-{
-	switch (mode)
-	{
-		case PDFRasterizer::e_op_off:
-			REX(TRN_ObjPutName(obj, "OVERPRINT_MODE", "OFF", result));
-			break;
-		case PDFRasterizer::e_op_on:
-			REX(TRN_ObjPutName(obj, "OVERPRINT_MODE", "ON", result));
-			break;
-		case PDFRasterizer::e_op_pdfx_on:
-			REX(TRN_ObjPutName(obj, "OVERPRINT_MODE", "PDFX", result));
 			break;
 	}
 }

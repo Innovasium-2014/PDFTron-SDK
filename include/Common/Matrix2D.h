@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPCommonMatrix2D
@@ -211,22 +211,38 @@ public:
 	 Matrix2D Inverse () const;
 
 	/**
-	 * The Translate method updates this matrix with the product of itself and a 
+	 * Updates this matrix with the product of itself and a 
 	 * translation matrix (i.e. it is equivalent to this.m_h += h; this.m_v += v).
 	 * 
 	 * @param h the horizontal component of the translation. 
 	 * @param v the vertical component of the translation. 
-	 *
-	 * @return updated this matrix
+	 * @note This method is deprecated. Please use PreTranslate or PostTranslate instead. The behavior of this method is identical to PreTranslate, but
+	 * PostTranslate will be more suitable for some use cases. 
 	 */
 	 void Translate (double h, double v);
+
+	/**
+	 * Updates this matrix to the concatenation of a translation matrix and the original matrix.
+	 * M' = T(h, v) * M. It is equivalent to this.m_h += h; this.m_v += v.
+	 *
+	 * @param h the horizontal component of the translation.
+	 * @param v the vertical component of the translation.
+	 */
+	 void PreTranslate(double h, double v);
+
+	/**
+	  * Updates this matrix by concatenating a translation matrix.
+	  * M' = M * T(h, v). It is equivalent to this.Concat(1,0,0,1,h,v).
+	  *
+	  * @param h the horizontal component of the translation.
+	  * @param v the vertical component of the translation.
+	  */
+	  void PostTranslate(double h, double v);
 
 	/**
 	 * The Scale method updates this matrix with the product of itself and a scaling matrix.
 	 * @param h the horizontal scale factor. 
 	 * @param v the vertical scale factor
-	 *
-	 * @return updated this matrix
 	 */
 	 void Scale (double h, double v);
 

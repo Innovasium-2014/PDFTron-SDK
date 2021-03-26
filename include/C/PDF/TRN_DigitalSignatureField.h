@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 
@@ -12,8 +12,10 @@ extern "C" {
 
 #include <C/Common/TRN_Types.h>
 #include <C/Common/TRN_Exception.h>
-
+#include <C/PDF/TRN_X509Certificate.h>
+#include <C/PDF/TRN_TimestampingConfiguration.h>
 /* enums:  */
+
 enum TRN_DigitalSignatureField_SubFilterType 
 {
 	e_DigitalSignatureField_adbe_x509_rsa_sha1,
@@ -61,18 +63,26 @@ TRN_API TRN_DigitalSignatureFieldClearSignature(TRN_DigitalSignatureField* self)
 /* methods that were not originally codegened: */
 // C version of: DigitalSignatureField(const PDF::Field& in_field)
 TRN_API TRN_DigitalSignatureFieldCreateFromField(const TRN_Field* d, TRN_DigitalSignatureField* result);
-TRN_API TRN_DigitalSignatureFieldGetSigningTime(const TRN_DigitalSignatureField* self, TRN_Date* in_date);
+TRN_API TRN_DigitalSignatureFieldGetSigningTime(const TRN_DigitalSignatureField* self, TRN_Date* result);
 TRN_API TRN_DigitalSignatureFieldGetCert(const TRN_DigitalSignatureField* self, TRN_UInt32 in_index, TRN_Vector* result);
-TRN_API TRN_DigitalSignatureFieldSetFieldPermissions(TRN_DigitalSignatureField* self, const enum TRN_DigitalSignatureField_FieldPermissions in_action, const TRN_UString in_field_names_list[], TRN_UInt32 in_field_names_size);
-// C version of: void SignOnNextSave(const trn::UInt8* in_pkcs12_buffer, const size_t in_pkcs12_buf_size, const UString& in_password);
-TRN_API TRN_DigitalSignatureFieldSignOnNextSaveFromBuffer(TRN_DigitalSignatureField* self, const TRN_UInt8* in_pkcs12_buffer, const TRN_UInt32 in_pkcs12_buf_size, const TRN_UString in_password);
+TRN_API TRN_DigitalSignatureFieldSetFieldPermissions(TRN_DigitalSignatureField* self, const enum TRN_DigitalSignatureField_FieldPermissions in_action, const TRN_UString* in_field_names_list, TRN_UInt32 in_field_names_list_size);
+// C version of: void SignOnNextSave(const trn::UChar* in_pkcs12_buffer, const size_t in_pkcs12_buf_size, const UString& in_password);
+TRN_API TRN_DigitalSignatureFieldSignOnNextSaveFromBuffer(TRN_DigitalSignatureField* self, const TRN_UChar* in_pkcs12_buffer, const TRN_UInt32 in_pkcs12_buf_size, const TRN_UString in_password);
 TRN_API TRN_DigitalSignatureFieldSignOnNextSaveWithCustomHandler(TRN_DigitalSignatureField* self, const TRN_SignatureHandlerId in_signature_handler_id);
-// C version of: void CertifyOnNextSave(const trn::UInt8* in_pkcs12_buffer, const size_t in_pkcs12_buf_size, const UString& in_password);
-TRN_API TRN_DigitalSignatureFieldCertifyOnNextSaveFromBuffer(TRN_DigitalSignatureField* self, const TRN_UInt8* in_pkcs12_buffer, const TRN_UInt32 in_pkcs12_buf_size, const TRN_UString in_password);
+// C version of: void CertifyOnNextSave(const trn::UChar* in_pkcs12_buffer, const size_t in_pkcs12_buf_size, const UString& in_password);
+TRN_API TRN_DigitalSignatureFieldCertifyOnNextSaveFromBuffer(TRN_DigitalSignatureField* self, const TRN_UChar* in_pkcs12_buffer, const TRN_UInt32 in_pkcs12_buf_size, const TRN_UString in_password);
 TRN_API TRN_DigitalSignatureFieldCertifyOnNextSaveWithCustomHandler(TRN_DigitalSignatureField* self, const TRN_SignatureHandlerId in_signature_handler_id);
 TRN_API TRN_DigitalSignatureFieldGetSDFObj(const TRN_DigitalSignatureField* self, TRN_Obj* result);
 TRN_API TRN_DigitalSignatureFieldGetLockedFields(const TRN_DigitalSignatureField* self, TRN_Vector* result);
-
+TRN_API TRN_DigitalSignatureFieldVerify(const TRN_DigitalSignatureField* self, const TRN_VerificationOptions in_opts, TRN_VerificationResult* result);
+TRN_API TRN_DigitalSignatureFieldIsCertification(const TRN_DigitalSignatureField* self, TRN_Bool* result);
+TRN_API TRN_DigitalSignatureFieldGetSignerCertFromCMS(const TRN_DigitalSignatureField* self, TRN_X509Certificate* result);
+TRN_API TRN_DigitalSignatureFieldGetByteRanges(const TRN_DigitalSignatureField* self, TRN_Vector* result);
+TRN_API TRN_DigitalSignatureFieldGetCertPathsFromCMS(const TRN_DigitalSignatureField* self, TRN_Vector* result, TRN_UInt32 index);
+TRN_API TRN_DigitalSignatureFieldGetCertPathsFromCMS_GetOutterVecSize(const TRN_DigitalSignatureField* self, TRN_UInt32* result);
+TRN_API TRN_DigitalSignatureFieldEnableLTVOfflineVerification(const TRN_DigitalSignatureField* self, TRN_VerificationResult in_veri_res, TRN_Bool* result);
+TRN_API TRN_DigitalSignatureFieldTimestampOnNextSave(const TRN_DigitalSignatureField* self, TRN_TimestampingConfiguration in_timestamping_config, TRN_VerificationOptions in_timestamp_response_verification_options);
+TRN_API TRN_DigitalSignatureFieldUseSubFilter(TRN_DigitalSignatureField* self, const enum TRN_DigitalSignatureField_SubFilterType in_subfilter_type, const TRN_Bool in_make_mandatory);
 
 #ifdef __cplusplus
 } // extern C

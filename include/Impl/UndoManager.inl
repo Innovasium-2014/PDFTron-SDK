@@ -17,7 +17,7 @@ inline void UndoManager::Destroy()
 {
 	if(m_owner)
 	{
-		DREX(m_impl, TRN_UndoManagerDestroy(&m_impl));
+		DREX(m_impl, TRN_UndoManagerDestroy(m_impl));
 		m_owner = false;
 	}
 }
@@ -36,10 +36,12 @@ inline UndoManager& pdftron::SDF::UndoManager::operator= (const UndoManager& oth
 	return *this;
 }
 
+#ifdef SWIG
 inline UndoManager::UndoManager()
 	: m_impl(0)
 	, m_owner(false)
 {}
+#endif
 
 inline UndoManager::UndoManager(TRN_UndoManager impl)
 	: m_impl(impl)

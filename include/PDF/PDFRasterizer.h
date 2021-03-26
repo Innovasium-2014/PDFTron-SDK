@@ -1,11 +1,10 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPPPDFRasterizer
 #define PDFTRON_H_CPPPDFRasterizer
 
-#include <PDF/PDFDoc.h>
 #include <PDF/Page.h>
 #include <C/PDF/TRN_PDFRasterizer.h>
 #include <PDF/OCG/Context.h>
@@ -36,6 +35,7 @@ enum DownloadedType
 	e_downloadedtype_opened
 };
 
+class PDFDoc;
 /** 
  * Download event handling.
  * A type of callback function (or a delegate in .NET terminology) that is called

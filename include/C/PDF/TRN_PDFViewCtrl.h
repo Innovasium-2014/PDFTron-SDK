@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPDFPDFViewCtrl
@@ -106,8 +106,11 @@ TRN_API TRN_PDFViewCtrlUpdate2(TRN_PDFViewCtrl view, const TRN_Rect* rect);
 TRN_API TRN_PDFViewCtrlUpdate3(TRN_PDFViewCtrl view, TRN_Annot annot, int num_page);
 TRN_API TRN_PDFViewCtrlUpdateField(TRN_PDFViewCtrl view, const TRN_Field* field);
 TRN_API TRN_PDFViewCtrlUpdatePageLayout(TRN_PDFViewCtrl view);
+TRN_API TRN_PDFViewCtrlHideAnnotation(TRN_PDFViewCtrl view, TRN_Annot annot);
+TRN_API TRN_PDFViewCtrlShowAnnotation(TRN_PDFViewCtrl view, TRN_Annot annot);
 TRN_API TRN_PDFViewCtrlSetDrawAnnotations(TRN_PDFViewCtrl view,  TRN_Bool render_annots);
 TRN_API TRN_PDFViewCtrlSetHighlightFields(TRN_PDFViewCtrl view,  TRN_Bool highlight);
+TRN_API TRN_PDFViewCtrlSetRequiredFieldBorderColor(TRN_PDFViewCtrl view, const TRN_ColorPt* col);
 TRN_API TRN_PDFViewCtrlSetGamma(TRN_PDFViewCtrl view, double gamma);
 TRN_API TRN_PDFViewCtrlSetOverprint(TRN_PDFViewCtrl view, enum TRN_PDFRasterizerOverprintPreviewMode op);
 TRN_API TRN_PDFViewCtrlSetAntiAliasing(TRN_PDFViewCtrl view,  TRN_Bool enable_aa);

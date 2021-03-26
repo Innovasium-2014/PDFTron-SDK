@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2019 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2020 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 #ifndef PDFTRON_H_CPDFAction
@@ -19,7 +19,7 @@ TRN_API TRN_ActionCreateURI(TRN_SDFDoc sdfdoc, const char* uri, TRN_Action* resu
 TRN_API TRN_ActionCreateURIWithUString(TRN_SDFDoc sdfdoc, const TRN_UString current, TRN_Action* result);
 TRN_API TRN_ActionCreateSubmitForm(const TRN_FileSpec url, TRN_Action* result);
 TRN_API TRN_ActionCreateLaunch(TRN_SDFDoc sdfdoc, const char* path, TRN_Action* result);
-TRN_API TRN_ActionCreateHideField(TRN_SDFDoc sdfdoc, int list_length, const char** field_list, TRN_Action* result);
+TRN_API TRN_ActionCreateHideField(TRN_SDFDoc sdfdoc, const char** field_names_list, int field_names_list_size, TRN_Action* result);
 TRN_API TRN_ActionCreateImportData(TRN_SDFDoc sdfdoc, const char* path, TRN_Action* result);
 TRN_API TRN_ActionCreateResetForm(TRN_SDFDoc sdfdoc, TRN_Action* result);
 TRN_API TRN_ActionCreateJavaScript(TRN_SDFDoc sdfdoc, const char* script, TRN_Action* result);

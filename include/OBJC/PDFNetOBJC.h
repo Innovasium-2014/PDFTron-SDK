@@ -51,6 +51,12 @@ typedef enum PTFunctionType {  e_ptsampled = 0,
   e_ptstitching = 3,
   e_ptpostscript = 4}PTFunctionType;
 
+typedef enum PTGeometryCollectionSnappingMode {  e_ptDefaultSnapMode = 14,
+  e_ptPointOnLine = 1,
+  e_ptLineMidpoint = 2,
+  e_ptLineIntersection = 4,
+  e_ptPathEndpoint = 8}PTGeometryCollectionSnappingMode;
+
 typedef enum PTColorSpaceType {  e_ptdevice_gray,
   e_ptdevice_rgb,
   e_ptdevice_cmyk,
@@ -200,6 +206,63 @@ typedef enum PTFieldFlag {  e_ptread_only,
 typedef enum PTTextJustification {  e_ptleft_justified,
   e_ptcentered,
   e_ptright_justified}PTTextJustification;
+
+typedef enum PTPredefined {  e_ptcommonName = 0,
+  e_ptsurname = 1,
+  e_ptcountryName = 2,
+  e_ptlocalityName = 3,
+  e_ptstateOrProvinceName = 4,
+  e_ptstreetAddress = 5,
+  e_ptorganizationName = 6,
+  e_ptorganizationalUnitName = 7}PTPredefined;
+
+typedef enum PTDisallowedChangeType {  e_ptform_filled = 0,
+  e_ptdigital_signature_signed = 1,
+  e_ptpage_template_instantiated = 2,
+  e_ptannotation_created_or_updated_or_deleted = 3,
+  e_ptother = 4,
+  e_ptdct_unknown = 5}PTDisallowedChangeType;
+
+typedef enum PTVerificationOptionsSecurityLevel {  e_ptcompatibility_and_archiving = 0,
+  e_ptmaximum = 1}PTVerificationOptionsSecurityLevel;
+
+typedef enum PTVerificationOptionsTimeMode {  e_ptsigning = 0,
+  e_pttimestamp = 1,
+  e_ptcurrent = 2}PTVerificationOptionsTimeMode;
+
+typedef enum PTVerificationResultDocumentStatus {  e_ptno_error = 0,
+  e_ptcorrupt_file = 1,
+  e_ptunsigned = 2,
+  e_ptbad_byteranges = 3,
+  e_ptcorrupt_cryptographic_contents = 4}PTVerificationResultDocumentStatus;
+
+typedef enum PTVerificationResultDigestStatus {  e_ptdigest_invalid = 0,
+  e_ptdigest_verified = 1,
+  e_ptdigest_verification_disabled = 2,
+  e_ptweak_digest_algorithm_but_digest_verifiable = 3,
+  e_ptno_digest_status = 4,
+  e_ptunsupported_encoding = 5,
+  e_ptunsupported_digest_algorithm = 6}PTVerificationResultDigestStatus;
+
+typedef enum PTVerificationResultTrustStatus {  e_pttrust_verified = 0,
+  e_ptuntrusted = 1,
+  e_pttrust_verification_disabled = 2,
+  e_ptno_trust_status = 3,
+  e_ptunsupported_trust_features = 4}PTVerificationResultTrustStatus;
+
+typedef enum PTVerificationResultModificationPermissionsStatus {  e_ptinvalidated_by_disallowed_changes = 0,
+  e_pthas_allowed_changes = 1,
+  e_ptunmodified = 2,
+  e_ptpermissions_verification_disabled = 3,
+  e_ptno_permissions_status = 4,
+  e_ptunsupported_permissions_features = 5}PTVerificationResultModificationPermissionsStatus;
+
+typedef enum PTDigestAlgorithmType {  e_ptsha1 = 0,
+  e_ptsha256 = 1,
+  e_ptsha384 = 2,
+  e_ptsha512 = 3,
+  e_ptripemd160 = 4,
+  e_ptunknown_digest_algorithm = 5}PTDigestAlgorithmType;
 
 typedef enum PTDigitalSignatureFieldSubFilterType {  e_ptadbe_x509_rsa_sha1 = 0,
   e_ptadbe_pkcs7_detached = 1,
@@ -665,35 +728,21 @@ typedef enum PTContentItemType {  e_ptMCR,
   e_ptOBJR,
   e_ptc_Unknown}PTContentItemType;
 
-typedef enum PTResult {  e_ptSuccess = 0,
-  e_ptIncomplete = 1,
-  e_ptFailure = 2}PTResult;
-
-typedef enum PTFlattenThresholdFlag {  e_ptvery_strict,
-  e_ptstrict,
-  e_ptdefault,
-  e_ptkeep_most,
-  e_ptkeep_all}PTFlattenThresholdFlag;
-
-typedef enum PTFlattenFlag {  e_ptflatten_off,
-  e_ptflatten_simple,
-  e_ptflatten_fast,
-  e_pthigh_quality}PTFlattenFlag;
-
-typedef enum PTXPSOverprintPreviewMode {  e_ptxps_op_off = 0,
-  e_ptxps_op_on,
-  e_ptcps_op_pdfx_on}PTXPSOverprintPreviewMode;
-
-typedef enum PTAnnotationOutputFlag {  e_ptinternal_xfdf,
-  e_ptexternal_xfdf,
-  e_ptflatten}PTAnnotationOutputFlag;
-
 typedef enum PTPathSegmentType {  e_ptmoveto = 1,
   e_ptlineto,
   e_ptcubicto,
   e_ptconicto,
   e_ptrect,
   e_ptclosepath}PTPathSegmentType;
+
+typedef enum PTShapingStatus {  e_ptFullShaping = 0,
+  e_ptPartialShaping = 1,
+  e_ptNoShaping = 2}PTShapingStatus;
+
+typedef enum PTShapingFailureReason {  e_ptNoFailure = 0,
+  e_ptUnsupportedFontType = 1,
+  e_ptNotIndexEncoded = 2,
+  e_ptFontDataNotFound = 3}PTShapingFailureReason;
 
 typedef enum PTStandardType1Font {  e_pttimes_roman = 0,
   e_pttimes_bold,
@@ -780,7 +829,8 @@ typedef enum PTDownsampleMode {  e_ptoff,
 
 typedef enum PTMonoCompressionMode {  e_ptmn_jbig2,
   e_ptmn_flate,
-  e_ptmn_none}PTMonoCompressionMode;
+  e_ptmn_none,
+  e_ptmn_ccitt}PTMonoCompressionMode;
 
 typedef enum PTMonoDownsampleMode {  e_ptmn_off,
   e_ptmn_default}PTMonoDownsampleMode;
@@ -818,21 +868,6 @@ typedef enum PTViewerPref {  e_ptHideToolbar,
   e_ptCenterWindow,
   e_ptDisplayDocTitle}PTViewerPref;
 
-typedef enum PTPDFDocActionTriggerEvent {  e_ptaction_trigger_doc_will_close = 17,
-  e_ptaction_trigger_doc_will_save = 18,
-  e_ptaction_trigger_doc_did_save = 19,
-  e_ptaction_trigger_doc_will_print = 20,
-  e_ptaction_trigger_doc_did_print = 21}PTPDFDocActionTriggerEvent;
-
-typedef enum PTInsertFlag {  e_ptinsert_none,
-  e_ptinsert_bookmark,
-  e_insert_goto_bookmark}PTInsertFlag;
-
-typedef enum PTExtractFlag {  e_ptforms_only,
-  e_ptannots_only,
-  e_ptboth,
-  e_ptannots_only_no_links = 5}PTExtractFlag;
-
 typedef enum PTDownloadedType {  e_ptdownloadedtype_page = 0,
   e_ptdownloadedtype_thumb,
   e_ptdownloadedtype_named_dests,
@@ -853,6 +888,27 @@ typedef enum PTColorPostProcessMode {  e_ptpostprocess_none = 0,
   e_ptpostprocess_gradient_map,
   e_ptpostprocess_night_mode}PTColorPostProcessMode;
 
+typedef enum PTPDFDocActionTriggerEvent {  e_ptaction_trigger_doc_will_close = 17,
+  e_ptaction_trigger_doc_will_save = 18,
+  e_ptaction_trigger_doc_did_save = 19,
+  e_ptaction_trigger_doc_will_print = 20,
+  e_ptaction_trigger_doc_did_print = 21}PTPDFDocActionTriggerEvent;
+
+typedef enum PTInsertFlag {  e_ptinsert_none,
+  e_ptinsert_bookmark,
+  e_ptinsert_goto_bookmark}PTInsertFlag;
+
+typedef enum PTExtractFlag {  e_ptforms_only,
+  e_ptannots_only,
+  e_ptboth,
+  e_ptannots_only_no_links = 5}PTExtractFlag;
+
+typedef enum PTSignaturesVerificationStatus {  e_ptdoc_unsigned,
+  e_ptdoc_failure,
+  e_ptdoc_untrusted,
+  e_ptdoc_unsupported,
+  e_ptdoc_verified}PTSignaturesVerificationStatus;
+
 typedef enum PTPixelFormat {  e_ptrgba,
   e_ptbgra,
   e_ptrgb,
@@ -860,6 +916,29 @@ typedef enum PTPixelFormat {  e_ptrgba,
   e_ptgray,
   e_ptgray_alpha,
   e_ptcmyk}PTPixelFormat;
+
+typedef enum PTResult {  e_ptSuccess = 0,
+  e_ptIncomplete = 1,
+  e_ptFailure = 2}PTResult;
+
+typedef enum PTFlattenThresholdFlag {  e_ptvery_strict,
+  e_ptstrict,
+  e_ptdefault,
+  e_ptkeep_most,
+  e_ptkeep_all}PTFlattenThresholdFlag;
+
+typedef enum PTFlattenFlag {  e_ptflatten_off,
+  e_ptflatten_simple,
+  e_ptflatten_fast,
+  e_pthigh_quality}PTFlattenFlag;
+
+typedef enum PTXPSOverprintPreviewMode {  e_ptxps_op_off = 0,
+  e_ptxps_op_on,
+  e_ptcps_op_pdfx_on}PTXPSOverprintPreviewMode;
+
+typedef enum PTAnnotationOutputFlag {  e_ptinternal_xfdf,
+  e_ptexternal_xfdf,
+  e_ptflatten}PTAnnotationOutputFlag;
 
 typedef enum PTCMSType {  e_ptlcms,
   e_pticm,
@@ -1088,7 +1167,8 @@ typedef enum PTProcessingFlags {  e_ptno_ligature_exp = 1,
   e_ptno_dup_remove = 2,
   e_ptpunct_break = 4,
   e_ptremove_hidden_text = 8,
-  e_ptno_invisible_text = 16}PTProcessingFlags;
+  e_ptno_invisible_text = 16,
+  e_ptno_watermarks = 128}PTProcessingFlags;
 
 typedef enum PTXMLOutputFlags {  e_ptwords_as_elements = 1,
   e_ptoutput_bbox = 2,
@@ -1100,7 +1180,8 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
   e_ptsearch_up = e_ptwhole_word << 1,
   e_ptpage_stop = e_ptsearch_up << 1,
   e_pthighlight = e_ptpage_stop << 1,
-  e_ptambient_string = e_pthighlight << 1}PTTextSearchModes;
+  e_ptambient_string = e_pthighlight << 1,
+  e_ptraw_text_search = e_ptambient_string << 1}PTTextSearchModes;
 
 
 
@@ -1261,8 +1342,8 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (char)getUT_hour;
 - (void)setUT_minutes: (char)value;
 - (char)getUT_minutes;
-- (void)setMp_obj: (SWIGTYPE_p_TRN_obj_*)value;
-- (SWIGTYPE_p_TRN_obj_*)getMp_obj;
+- (void)setMp_obj: (void *)value;
+- (void *)getMp_obj;
 - (id)init;
 @end
 
@@ -1345,6 +1426,22 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 @end
 
 
+@interface PTByteRange : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (unsigned long long)GetStartOffset;
+- (unsigned long long)GetEndOffset;
+- (unsigned long long)GetSize;
+- (id)init;
+@end
+
+
 @interface PTRecentlyUsedCache : NSObject
 {
 	void *swigCPtr;
@@ -1376,6 +1473,8 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (PTPDFPoint*)Mult: (PTPDFPoint*)pt;
 - (PTMatrix2D*)Inverse;
 - (void)Translate: (double)h v:  (double)v;
+- (void)PreTranslate: (double)h v:  (double)v;
+- (void)PostTranslate: (double)h v:  (double)v;
 - (void)Scale: (double)h v:  (double)v;
 + (PTMatrix2D*)ZeroMatrix;
 + (PTMatrix2D*)IdentityMatrix;
@@ -1412,7 +1511,7 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (void)dealloc;
 - (void)Destroy;
 - (void)Next;
-- (SWIGTYPE_p_unsigned_int*)Current;
+- (unsigned int)Current;
 - (BOOL)HasNext;
 - (id)init;
 @end
@@ -1553,6 +1652,17 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 @end
 
 
+@interface PTMemoryFilter : PTFilter
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (NSData*)GetBuffer;
+- (void)SetAsInputFilter;
+- (id)initWithBuf_sz: (unsigned long)buf_sz is_input:  (BOOL)is_input;
+@end
+
+
 @interface PTSDFDoc : NSObject
 {
 	void *swigCPtr;
@@ -1573,6 +1683,7 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (PTObj*)GetObj: (unsigned int)obj_num;
 - (PTObj*)ImportObj: (PTObj*)obj deep_copy:  (BOOL)deep_copy;
 - (PTVectorObj*)ImportObjs: (PTVectorObj*)obj_list;
+- (PTVectorObj*)ImportObjsWithExcludeList: (PTVectorObj*)obj_list exclude_list:  (PTVectorObj*)exclude_list;
 - (unsigned int)XRefSize;
 - (void)ClearMarks;
 - (void)SaveSDFDocToFile: (NSString *)path flags:  (unsigned int)flags header:  (NSString *)header;
@@ -1768,7 +1879,7 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (BOOL)GetAuthorizationData: (PTPermission)req_opr;
 - (BOOL)EditSecurityData: (PTSDFDoc*)doc;
 - (PTObj*)FillEncryptDict: (PTSDFDoc*)doc;
-- (PTSecurityHandler*)Clone: (SWIGTYPE_TRN_SecurityHandler*)base;
+- (PTSecurityHandler*)Clone: (void *)base;
 - (void)InitPasswordASCII: (NSString *)password;
 - (void)InitPasswordWithLength: (NSString *)password pwd_length:  (unsigned long)pwd_length;
 - (void)InitPassword: (NSString *)password;
@@ -1875,7 +1986,7 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (unsigned int)GetHash;
 - (BOOL)IsValid;
 - (BOOL)Equals: (PTSDFDocSnapshot*)snapshot;
-- (id)init;
+- (id)initWithImpl: (void *)impl;
 @end
 
 
@@ -1893,7 +2004,7 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (PTSDFDocSnapshot*)PreviousState;
 - (BOOL)IsOk;
 - (BOOL)IsNullTransition;
-- (id)init;
+- (id)initWithImpl: (void *)impl;
 @end
 
 
@@ -1915,7 +2026,7 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (BOOL)CanRedo;
 - (PTSDFDocSnapshot*)GetNextRedoSnapshot;
 - (PTSDFResultSnapshot*)TakeSnapshot;
-- (id)init;
+- (id)initWithImpl: (void *)impl;
 @end
 
 
@@ -1935,6 +2046,22 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (PTObj*)GetSDFObj;
 - (void)Destroy;
 - (id)initWithFunct_dict: (PTObj*)funct_dict;
+@end
+
+
+@interface PTGeometryCollection : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (void)Destroy;
+- (PTPDFPoint*)SnapToNearest: (double)x y:  (double)y mode:  (unsigned int)mode;
+- (PTPDFPoint*)SnapToNearestPixel: (double)x y:  (double)y dpi:  (double)dpi mode:  (unsigned int)mode;
+- (id)init;- (id)initWithOther: (PTGeometryCollection*)other;
 @end
 
 
@@ -2021,6 +2148,23 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (void)SetX2: (double)x2;
 - (void)SetY2: (double)y2;
 - (id)init;- (id)initWithRect: (PTObj*)rect;- (id)initWithX1: (double)x1 y1:  (double)y1 x2:  (double)x2 y2:  (double)y2;
+@end
+
+
+@interface PTPDFRectCollection : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (void)AddRect: (PTPDFRect*)to_add;
+- (PTPDFRect*)GetRectAt: (unsigned long)index;
+- (unsigned long)GetNumRects;
+- (void)Clear;
+- (id)init;
 @end
 
 
@@ -2289,7 +2433,6 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (BOOL)GetValueAsBool;
 - (PTViewChangeCollection*)SetValueWithString: (NSString *)value;
 - (PTViewChangeCollection*)SetValueWithObj: (PTObj*)value;
-- (PTViewChangeCollection*)SetValue: (NSString *)value;
 - (PTViewChangeCollection*)SetValueWithBool: (BOOL)value;
 - (PTObj*)GetTriggerAction: (PTFieldActionTriggerEvent)trigger;
 - (void)RefreshAppearance;
@@ -2337,6 +2480,261 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 @end
 
 
+@interface PTObjectIdentifier : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (void)Destroy;
+- (NSArray<NSNumber *> *)GetRawValue;
+- (id)initWithIn_oid_enum: (PTPredefined)in_oid_enum;
+@end
+
+
+@interface PTX501AttributeTypeAndValue : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (void)Destroy;
+- (PTObjectIdentifier*)GetAttributeTypeOID;
+- (NSString *)GetStringValue;
+- (id)init;
+@end
+
+
+@interface PTX501DistinguishedName : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (void)Destroy;
+- (BOOL)HasAttribute: (PTObjectIdentifier*)in_oid;
+- (NSArray<NSString *> *)GetStringValuesForAttribute: (PTObjectIdentifier*)in_oid;
+- (NSArray<PTX501AttributeTypeAndValue *> *)GetAllAttributesAndValues;
+- (id)init;
+@end
+
+
+@interface PTX509Extension : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (void)Destroy;
+- (BOOL)IsCritical;
+- (PTObjectIdentifier*)GetObjectIdentifier;
+- (NSString *)ToString;
+- (NSData*)GetData;
+- (id)init;
+@end
+
+
+@interface PTX509Certificate : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (void)Destroy;
+- (PTX501DistinguishedName*)GetIssuerField;
+- (PTX501DistinguishedName*)GetSubjectField;
+- (long long)GetNotBeforeEpochTime;
+- (long long)GetNotAfterEpochTime;
+- (unsigned int)GetRawX509VersionNumber;
+- (NSString *)ToString;
+- (NSString *)GetFingerprint: (PTDigestAlgorithmType)in_digest_algorithm;
+- (NSData*)GetSerialNumber;
+- (NSArray<PTX509Extension *> *)GetExtensions;
+- (NSData*)GetData;
+- (id)init;
+@end
+
+
+@interface PTDisallowedChange : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (void)Destroy;
+- (unsigned int)GetObjNum;
+- (PTDisallowedChangeType)GetType;
+- (NSString *)GetTypeAsString;
+- (id)init;
+@end
+
+
+@interface PTVerificationOptions : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (void)Destroy;
+- (void)AddTrustedCertificateWithBuf: (NSData*)in_certificate_buf in_buf_size:  (unsigned long)in_buf_size;
+- (void)AddTrustedCertificateWithFilePath: (NSString *)in_filepath;
+- (void)AddTrustedCertificates: (NSData*)in_P7C_binary_DER_certificates_file_data in_size:  (unsigned long)in_size;
+- (void)EnableModificationVerification: (BOOL)in_on_or_off;
+- (void)EnableDigestVerification: (BOOL)in_on_or_off;
+- (void)EnableTrustVerification: (BOOL)in_on_or_off;
+- (void)EnableOnlineCRLRevocationChecking: (BOOL)in_on_or_off;
+- (void)EnableOnlineOCSPRevocationChecking: (BOOL)in_on_or_off;
+- (void)EnableOnlineRevocationChecking: (BOOL)in_on_or_off;
+- (id)initWithImpl: (void *)impl;- (id)initWithLevel: (PTVerificationOptionsSecurityLevel)level;
+@end
+
+
+@interface PTTrustVerificationResult : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (void)Destroy;
+- (BOOL)WasSuccessful;
+- (NSString *)GetResultString;
+- (long long)GetTimeOfTrustVerification;
+- (PTVerificationOptionsTimeMode)GetTimeOfTrustVerificationEnum;
+- (BOOL)HasEmbeddedTimestampVerificationResult;
+- (PTEmbeddedTimestampVerificationResult*)GetEmbeddedTimestampVerificationResult;
+- (NSArray<PTX509Certificate *> *)GetCertPath;
+- (id)init;
+@end
+
+
+@interface PTVerificationResult : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (void)Destroy;
+- (BOOL)GetVerificationStatus;
+- (PTVerificationResultDocumentStatus)GetDocumentStatus;
+- (PTVerificationResultDigestStatus)GetDigestStatus;
+- (PTVerificationResultTrustStatus)GetTrustStatus;
+- (PTVerificationResultModificationPermissionsStatus)GetPermissionsStatus;
+- (BOOL)HasTrustVerificationResult;
+- (PTTrustVerificationResult*)GetTrustVerificationResult;
+- (NSArray<PTDisallowedChange *> *)GetDisallowedChanges;
+- (PTDigestAlgorithmType)GetDigestAlgorithm;
+- (NSString *)GetDocumentStatusAsString;
+- (NSString *)GetDigestStatusAsString;
+- (NSString *)GetTrustStatusAsString;
+- (NSString *)GetPermissionsStatusAsString;
+- (NSArray<NSString *> *)GetUnsupportedFeatures;
+- (id)init;
+@end
+
+
+@interface PTEmbeddedTimestampVerificationResult : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (void)Destroy;
+- (BOOL)GetVerificationStatus;
+- (PTVerificationResultDigestStatus)GetCMSDigestStatus;
+- (PTVerificationResultDigestStatus)GetMessageImprintDigestStatus;
+- (PTVerificationResultTrustStatus)GetTrustStatus;
+- (NSString *)GetCMSDigestStatusAsString;
+- (NSString *)GetMessageImprintDigestStatusAsString;
+- (NSString *)GetTrustStatusAsString;
+- (BOOL)HasTrustVerificationResult;
+- (PTTrustVerificationResult*)GetTrustVerificationResult;
+- (PTDigestAlgorithmType)GetCMSSignatureDigestAlgorithm;
+- (PTDigestAlgorithmType)GetMessageImprintDigestAlgorithm;
+- (NSArray<NSString *> *)GetUnsupportedFeatures;
+- (id)init;
+@end
+
+
+@interface PTTimestampingTestResult : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (void)Destroy;
+- (BOOL)GetStatus;
+- (NSString *)GetString;
+- (BOOL)HasResponseVerificationResult;
+- (PTEmbeddedTimestampVerificationResult*)GetResponseVerificationResult;
+- (id)init;
+@end
+
+
+@interface PTTimestampingConfiguration : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (void)Destroy;
+- (void)SetTimestampAuthorityServerURL: (NSString *)in_url;
+- (void)SetTimestampAuthorityServerUsername: (NSString *)in_username;
+- (void)SetTimestampAuthorityServerPassword: (NSString *)in_password;
+- (void)SetUseNonce: (BOOL)in_use_nonce;
+- (PTTimestampingTestResult*)TestConfiguration: (PTVerificationOptions*)in_opts;
+- (id)initWithIn_url: (NSString *)in_url;- (id)init;
+@end
+
+
+@interface PTDigestAlgorithm : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (id)init;
+@end
+
+
 @interface PTDigitalSignatureField : NSObject
 {
 	void *swigCPtr;
@@ -2370,6 +2768,14 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (NSArray<NSString *> *)GetLockedFields;
 - (PTDigitalSignatureFieldDocumentPermissions)GetDocumentPermissions;
 - (void)ClearSignature;
+- (PTVerificationResult*)Verify: (PTVerificationOptions*)in_opts;
+- (BOOL)IsCertification;
+- (PTX509Certificate*)GetSignerCertFromCMS;
+- (NSArray<PTByteRange *> *)GetByteRanges;
+- (NSArray<NSArray<PTX509Certificate *> *> *)GetCertPathsFromCMS;
+- (BOOL)EnableLTVOfflineVerification: (PTVerificationResult*)in_verification_result;
+- (void)TimestampOnNextSave: (PTTimestampingConfiguration*)in_timestamping_config in_timestamp_response_verification_options:  (PTVerificationOptions*)in_timestamp_response_verification_options;
+- (void)UseSubFilter: (PTDigitalSignatureFieldSubFilterType)in_subfilter_type in_make_mandatory:  (BOOL)in_make_mandatory;
 - (id)initWithIn_field: (PTField*)in_field;
 @end
 
@@ -2410,6 +2816,27 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (void)SetDesc: (NSString *)desc;
 - (PTObj*)GetSDFObj;
 - (id)initWithF: (PTObj*)f;
+@end
+
+
+@interface PTRefreshOptions : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (BOOL)GetDrawBackgroundOnly;
+- (PTRefreshOptions*)SetDrawBackgroundOnly: (BOOL)value;
+- (BOOL)GetRefreshExisting;
+- (PTRefreshOptions*)SetRefreshExisting: (BOOL)value;
+- (BOOL)GetUseNonStandardRotation;
+- (PTRefreshOptions*)SetUseNonStandardRotation: (BOOL)value;
+- (BOOL)GetUseRoundedCorners;
+- (PTRefreshOptions*)SetUseRoundedCorners: (BOOL)value;
+- (id)init;
 @end
 
 
@@ -2462,6 +2889,10 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (int)GetRotation;
 - (void)SetRotation: (int)angle;
 - (void)RefreshAppearance;
+- (void)RefreshAppearanceWithOptions: (PTRefreshOptions*)options;
+- (NSString *)GetCustomData: (NSString *)key;
+- (void)SetCustomData: (NSString *)key value:  (NSString *)value;
+- (void)DeleteCustomData: (NSString *)key;
 - (void)Resize: (PTPDFRect*)newrect;
 + (PTAnnot*)CreateInternal: (unsigned long long)impl;
 - (unsigned long long)GetHandleInternal;
@@ -2603,6 +3034,8 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (PTPDFPoint*)GetPoint: (unsigned int)pathindex pointindex:  (unsigned int)pointindex;
 - (void)SetPoint: (unsigned int)pathindex pointindex:  (unsigned int)pointindex pt:  (PTPDFPoint*)pt;
 - (BOOL)Erase: (PTPDFPoint*)pt1 pt2:  (PTPDFPoint*)pt2 width:  (double)width;
+- (BOOL)GetHighlightIntent;
+- (void)SetHighlightIntent: (BOOL)highlight;
 - (id)initWithD: (PTObj*)d;- (id)init;- (id)initWithAnn: (PTAnnot*)ann;
 @end
 
@@ -2775,6 +3208,23 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 @end
 
 
+@interface PTOCROptions : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (PTOCROptions*)AddIgnoreZonesForPage: (PTPDFRectCollection*)regions page_num:  (int)page_num;
+- (PTOCROptions*)AddLang: (NSString *)lang;
+- (PTOCROptions*)AddTextZonesForPage: (PTPDFRectCollection*)regions page_num:  (int)page_num;
+- (PTOCROptions*)AddDPI: (int)dpi;
+- (id)init;
+@end
+
+
 @interface PTOCRModule : NSObject
 {
 	void *swigCPtr;
@@ -2785,14 +3235,55 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (void)setSwigCMemOwn: (BOOL) own;
 - (void)dealloc;
 + (BOOL)IsModuleAvailable;
-+ (void)ImageToPDF: (PTPDFDoc*)dst src:  (NSString *)src options:  (SWIGTYPE_p_OCROptions*)options;
-+ (void)ProcessPDF: (PTPDFDoc*)dst options:  (SWIGTYPE_p_OCROptions*)options;
-+ (NSString *)GetOCRJsonFromImage: (PTPDFDoc*)dst src:  (NSString *)src options:  (SWIGTYPE_p_OCROptions*)options;
-+ (NSString *)GetOCRJsonFromPDF: (PTPDFDoc*)src options:  (SWIGTYPE_p_OCROptions*)options;
++ (void)ImageToPDF: (PTPDFDoc*)dst src:  (NSString *)src options:  (PTOCROptions*)options;
++ (void)ProcessPDF: (PTPDFDoc*)dst options:  (PTOCROptions*)options;
++ (NSString *)GetOCRJsonFromImage: (PTPDFDoc*)dst src:  (NSString *)src options:  (PTOCROptions*)options;
++ (NSString *)GetOCRJsonFromPDF: (PTPDFDoc*)src options:  (PTOCROptions*)options;
 + (void)ApplyOCRJsonToPDF: (PTPDFDoc*)dst json:  (NSString *)json;
-+ (NSString *)GetOCRXmlFromImage: (PTPDFDoc*)dst src:  (NSString *)src options:  (SWIGTYPE_p_OCROptions*)options;
-+ (NSString *)GetOCRXmlFromPDF: (PTPDFDoc*)src options:  (SWIGTYPE_p_OCROptions*)options;
++ (NSString *)GetOCRXmlFromImage: (PTPDFDoc*)dst src:  (NSString *)src options:  (PTOCROptions*)options;
++ (NSString *)GetOCRXmlFromPDF: (PTPDFDoc*)src options:  (PTOCROptions*)options;
 + (void)ApplyOCRXmlToPDF: (PTPDFDoc*)dst xml:  (NSString *)xml;
+- (id)init;
+@end
+
+
+@interface PTCADConvertOptions : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (BOOL)GetAllowThinLines;
+- (PTCADConvertOptions*)SetAllowThinLines: (BOOL)value;
+- (BOOL)GetAutoRotate;
+- (PTCADConvertOptions*)SetAutoRotate: (BOOL)value;
+- (PTColorPt*)GetBackgroundColor;
+- (PTCADConvertOptions*)SetBackgroundColor: (PTColorPt*)value;
+- (PTCADConvertOptions*)SetColorMode: (NSString *)value;
+- (double)GetPageHeight;
+- (PTCADConvertOptions*)SetPageHeight: (double)value;
+- (double)GetPageWidth;
+- (PTCADConvertOptions*)SetPageWidth: (double)value;
+- (double)GetRasterDPI;
+- (PTCADConvertOptions*)SetRasterDPI: (double)value;
+- (PTCADConvertOptions*)AddSheets: (NSString *)value;
+- (id)init;
+@end
+
+
+@interface PTCADModule : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
++ (BOOL)IsModuleAvailable;
 - (id)init;
 @end
 
@@ -3019,6 +3510,7 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (void)setSwigCMemOwn: (BOOL) own;
 - (void)dealloc;
 + (PTRubberStamp*)Create: (PTSDFDoc*)doc pos:  (PTPDFRect*)pos icon:  (PTRubberStampIcon)icon;
++ (PTRubberStamp*)CreateCustom: (PTSDFDoc*)doc pos:  (PTPDFRect*)pos form_xobject:  (PTObj*)form_xobject;
 - (PTRubberStampIcon)GetIcon;
 - (void)SetRubberStampIconType: (PTRubberStampIcon)type;
 - (void)SetIcon;
@@ -3304,7 +3796,7 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (PTRadioButtonWidget*)GetButton: (unsigned int)index;
 - (PTField*)GetField;
 - (void)AddGroupButtonsToPage: (PTPage*)page;
-- (id)initWithField: (PTField*)field;- (id)initWithGroup: (PTRadioButtonGroup*)group;- (id)initWithImpl: (SWIGTYPE_TRN_RadioButtonGroup*)impl;
+- (id)initWithField: (PTField*)field;- (id)initWithGroup: (PTRadioButtonGroup*)group;- (id)initWithImpl: (void *)impl;
 @end
 
 
@@ -3457,6 +3949,7 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (unsigned long)GetRefObjCount: (PTErrorCode)id;
 - (unsigned long)GetRefObj: (PTErrorCode)id err_idx:  (unsigned long)err_idx;
 + (NSString *)GetPDFAErrorMessage: (PTErrorCode)id;
++ (PTConformance)GetDeclaredConformance: (PTPDFDoc*)in_doc;
 - (void)Destroy;
 - (id)initWithConvert: (BOOL)convert file_path:  (NSString *)file_path password:  (NSString *)password conf:  (PTConformance)conf exceptions:  (int)exceptions num_exceptions:  (int)num_exceptions max_ref_objs:  (int)max_ref_objs first_stop:  (BOOL)first_stop;- (id)initWithConvert: (BOOL)convert file_path:  (NSString *)file_path password:  (NSString *)password conf:  (PTConformance)conf exceptions:  (int)exceptions num_exceptions:  (int)num_exceptions max_ref_objs:  (int)max_ref_objs;- (id)initWithConvert: (BOOL)convert buf:  (NSString *)buf buf_size:  (unsigned long)buf_size password:  (NSString *)password conf:  (PTConformance)conf exceptions:  (int)exceptions num_exceptions:  (int)num_exceptions max_ref_objs:  (int)max_ref_objs first_stop:  (BOOL)first_stop;
 @end
@@ -3650,300 +4143,6 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 @end
 
 
-@interface PTConversionOptions : NSObject
-{
-	void *swigCPtr;
-	BOOL swigCMemOwn;
-}
-- (void*)getCptr;
-- (instancetype)initWithCptr: (void*) cptr;
-- (void)setSwigCMemOwn: (BOOL) own;
-- (void)dealloc;
-- (id)init;
-@end
-
-
-@interface PTOfficeToPDFOptions : PTConversionOptions
-- (void*)getCptr;
-- (instancetype)initWithCptr: (void*) cptr;
-- (void)setSwigCMemOwn: (BOOL) own;
-- (void)dealloc;
-- (NSString *)GetLayoutResourcesPluginPath;
-- (PTOfficeToPDFOptions*)SetLayoutResourcesPluginPath: (NSString *)value;
-- (NSString *)GetResourceDocPath;
-- (PTOfficeToPDFOptions*)SetResourceDocPath: (NSString *)value;
-- (NSString *)GetSmartSubstitutionPluginPath;
-- (PTOfficeToPDFOptions*)SetSmartSubstitutionPluginPath: (NSString *)value;
-- (double)GetExcelDefaultCellBorderWidth;
-- (PTOfficeToPDFOptions*)SetExcelDefaultCellBorderWidth: (double)width;
-- (id)init;
-@end
-
-
-@interface PTWordToPDFOptions : PTConversionOptions
-- (void*)getCptr;
-- (instancetype)initWithCptr: (void*) cptr;
-- (void)setSwigCMemOwn: (BOOL) own;
-- (void)dealloc;
-- (NSString *)GetLayoutResourcesPluginPath;
-- (PTWordToPDFOptions*)SetLayoutResourcesPluginPath: (NSString *)value;
-- (NSString *)GetResourceDocPath;
-- (PTWordToPDFOptions*)SetResourceDocPath: (NSString *)value;
-- (NSString *)GetSmartSubstitutionPluginPath;
-- (PTWordToPDFOptions*)SetSmartSubstitutionPluginPath: (NSString *)value;
-- (id)init;
-@end
-
-
-@interface PTDocumentConversion : NSObject
-{
-	void *swigCPtr;
-	BOOL swigCMemOwn;
-}
-- (void*)getCptr;
-- (instancetype)initWithCptr: (void*) cptr;
-- (void)setSwigCMemOwn: (BOOL) own;
-- (void)dealloc;
-- (void)Destroy;
-- (PTResult)TryConvert;
-- (void)Convert;
-- (void)ConvertNextPage;
-- (PTPDFDoc*)GetDoc;
-- (PTResult)GetConversionStatus;
-- (void)CancelConversion;
-- (BOOL)IsCancelled;
-- (BOOL)HasProgressTracking;
-- (double)GetProgress;
-- (NSString *)GetProgressLabel;
-- (unsigned int)GetNumConvertedPages;
-- (NSString *)GetErrorString;
-- (unsigned int)GetNumWarnings;
-- (NSString *)GetWarningString: (unsigned int)index;
-+ (PTDocumentConversion*)CreateInternal: (unsigned long long)impl;
-- (unsigned long long)GetHandleInternal;
-- (id)init;
-@end
-
-
-@interface PTConversionMonitor : NSObject
-{
-	void *swigCPtr;
-	BOOL swigCMemOwn;
-}
-- (void*)getCptr;
-- (instancetype)initWithCptr: (void*) cptr;
-- (void)setSwigCMemOwn: (BOOL) own;
-- (void)dealloc;
-- (BOOL)Next;
-- (BOOL)Ready;
-- (unsigned int)Progress;
-- (PTFilter*)Filter;
-- (void)Destroy;
-- (id)init;
-@end
-
-
-@interface PTConvert : NSObject
-{
-	void *swigCPtr;
-	BOOL swigCMemOwn;
-}
-- (void*)getCptr;
-- (instancetype)initWithCptr: (void*) cptr;
-- (void)setSwigCMemOwn: (BOOL) own;
-- (void)dealloc;
-+ (void)FromXpsWithFilename: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename;
-+ (void)FromXpsWithBuffer: (PTPDFDoc*)in_pdfdoc buf:  (NSString *)buf buf_sz:  (unsigned long)buf_sz;
-+ (void)FromEmf: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename;
-+ (void)FromText: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename in_options:  (PTObj*)in_options;
-+ (void)ToEmfWithPDFDoc: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename;
-+ (void)ToEmfWithPage: (PTPage*)in_page in_filename:  (NSString *)in_filename;
-+ (void)ToSvgWithPDFDoc: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename in_options:  (PTSVGOutputOptions*)in_options;
-+ (void)ToSvg: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename;
-+ (void)ToSvgWithPage: (PTPage*)in_page in_filename:  (NSString *)in_filename in_options:  (PTSVGOutputOptions*)in_options;
-+ (void)ToXpsWithPDFDoc: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename options:  (PTXPSOutputOptions*)options;
-+ (void)ToXps: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename;
-+ (void)ToXpsWithFilename: (NSString *)in_inputFilename in_outputFilename:  (NSString *)in_outputFilename options:  (PTXPSOutputOptions*)options;
-+ (void)ToXodWithFilename: (NSString *)in_filename out_filename:  (NSString *)out_filename options:  (PTXODOutputOptions*)options;
-+ (void)ToXod: (NSString *)in_filename out_filename:  (NSString *)out_filename;
-+ (void)ToXodWithPDFDoc: (PTPDFDoc*)in_pdfdoc out_filename:  (NSString *)out_filename options:  (PTXODOutputOptions*)options;
-+ (void)ToHtmlWithFilename: (NSString *)in_filename out_path:  (NSString *)out_path options:  (PTHTMLOutputOptions*)options;
-+ (void)ToHtml: (NSString *)in_filename out_path:  (NSString *)out_path;
-+ (void)ToHtmlWithPDFDoc: (PTPDFDoc*)in_pdfdoc out_path:  (NSString *)out_path options:  (PTHTMLOutputOptions*)options;
-+ (void)ToEpub: (NSString *)in_filename out_path:  (NSString *)out_path;
-+ (void)ToEpubWithFilename: (NSString *)in_filename out_path:  (NSString *)out_path html_options:  (PTHTMLOutputOptions*)html_options epub_options:  (PTEPUBOutputOptions*)epub_options;
-+ (void)ToEpubWithPDFDoc: (PTPDFDoc*)in_pdfdoc out_path:  (NSString *)out_path html_options:  (PTHTMLOutputOptions*)html_options epub_options:  (PTEPUBOutputOptions*)epub_options;
-+ (void)ToTiff: (NSString *)in_filename out_path:  (NSString *)out_path options:  (PTTiffOutputOptions*)options;
-+ (PTFilter*)ToXodWithFilenameToStream: (NSString *)in_filename options:  (PTXODOutputOptions*)options;
-+ (PTFilter*)ToXodWithPDFDocToStream: (PTPDFDoc*)in_pdfdoc options:  (PTXODOutputOptions*)options;
-+ (PTConversionMonitor*)ToXodWithMonitor: (PTPDFDoc*)in_pdfdoc;
-+ (PTConversionMonitor*)ToXodWithMonitorAndOptions: (PTPDFDoc*)in_pdfdoc options:  (PTXODOutputOptions*)options;
-+ (void)WordToPDF: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename options:  (PTWordToPDFOptions*)options;
-+ (PTDocumentConversion*)WordToPDFConversion: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename options:  (PTWordToPDFOptions*)options;
-+ (void)OfficeToPDF: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename options:  (PTConversionOptions*)options;
-+ (PTDocumentConversion*)StreamingPDFConversionWithDoc: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename options:  (PTConversionOptions*)options;
-+ (PTDocumentConversion*)StreamingPDFConversion: (NSString *)in_filename options:  (PTConversionOptions*)options;
-+ (void)ToPdf: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename;
-+ (void)FromCAD: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename opts:  (SWIGTYPE_p_CADConvertOptions*)opts;
-+ (BOOL)RequiresPrinter: (NSString *)in_filename;
-
-@end
-
-
-@interface PTXPSOutputCommonOptions : NSObject
-{
-	void *swigCPtr;
-	BOOL swigCMemOwn;
-}
-- (void*)getCptr;
-- (instancetype)initWithCptr: (void*) cptr;
-- (void)setSwigCMemOwn: (BOOL) own;
-- (void)dealloc;
-- (void)SetPrintMode: (BOOL)print_mode;
-- (void)SetDPI: (unsigned int)dpi;
-- (void)SetRenderPages: (BOOL)render;
-- (void)SetThickenLines: (BOOL)thicken;
-- (void)GenerateURLLinks: (BOOL)generate;
-- (void)SetOverprint: (PTXPSOverprintPreviewMode)mode;
-- (void)setM_obj: (SWIGTYPE_p_TRN_obj_*)value;
-- (SWIGTYPE_p_TRN_obj_*)getM_obj;
-- (id)init;
-@end
-
-
-@interface PTXPSOutputOptions : PTXPSOutputCommonOptions
-- (void*)getCptr;
-- (instancetype)initWithCptr: (void*) cptr;
-- (void)setSwigCMemOwn: (BOOL) own;
-- (void)dealloc;
-- (void)SetOpenXps: (BOOL)openxps;
-- (id)init;
-@end
-
-
-@interface PTXODOutputOptions : PTXPSOutputCommonOptions
-- (void*)getCptr;
-- (instancetype)initWithCptr: (void*) cptr;
-- (void)setSwigCMemOwn: (BOOL) own;
-- (void)dealloc;
-- (void)SetOutputThumbnails: (BOOL)include_thumbs;
-- (void)SetThumbnailSize: (unsigned int)size;
-- (void)SetElementLimit: (unsigned int)element_limit;
-- (void)SetOpacityMaskWorkaround: (BOOL)opacity_render;
-- (void)SetMaximumImagePixels: (unsigned int)max_pixels;
-- (void)SetFlattenContent: (PTFlattenFlag)flatten;
-- (void)SetFlattenThreshold: (PTFlattenThresholdFlag)threshold;
-- (void)SetPreferJPG: (BOOL)prefer_jpg;
-- (void)SetJPGQuality: (unsigned int)quality;
-- (void)SetSilverlightTextWorkaround: (BOOL)workaround;
-- (void)SetAnnotationOutput: (PTAnnotationOutputFlag)annot_output;
-- (void)SetExternalParts: (BOOL)generate;
-- (void)SetEncryptPassword: (NSString *)pass;
-- (void)UseSilverlightFlashCompatible: (BOOL)compatible;
-- (id)init;
-@end
-
-
-@interface PTHTMLOutputOptions : NSObject
-{
-	void *swigCPtr;
-	BOOL swigCMemOwn;
-}
-- (void*)getCptr;
-- (instancetype)initWithCptr: (void*) cptr;
-- (void)setSwigCMemOwn: (BOOL) own;
-- (void)dealloc;
-- (void)SetPreferJPG: (BOOL)prefer_jpg;
-- (void)SetJPGQuality: (unsigned int)quality;
-- (void)SetDPI: (unsigned int)dpi;
-- (void)SetMaximumImagePixels: (unsigned int)max_pixels;
-- (void)SetReflow: (BOOL)reflow;
-- (void)SetScale: (double)scale;
-- (void)SetExternalLinks: (BOOL)enable;
-- (void)SetInternalLinks: (BOOL)enable;
-- (void)SetSimplifyText: (BOOL)enable;
-- (void)SetReportFile: (NSString *)path;
-- (id)init;
-@end
-
-
-@interface PTEPUBOutputOptions : NSObject
-{
-	void *swigCPtr;
-	BOOL swigCMemOwn;
-}
-- (void*)getCptr;
-- (instancetype)initWithCptr: (void*) cptr;
-- (void)setSwigCMemOwn: (BOOL) own;
-- (void)dealloc;
-- (void)SetExpanded: (BOOL)expanded;
-- (void)SetReuseCover: (BOOL)reuse;
-- (id)init;
-@end
-
-
-@interface PTSVGOutputOptions : NSObject
-{
-	void *swigCPtr;
-	BOOL swigCMemOwn;
-}
-- (void*)getCptr;
-- (instancetype)initWithCptr: (void*) cptr;
-- (void)setSwigCMemOwn: (BOOL) own;
-- (void)dealloc;
-- (void)SetEmbedImages: (BOOL)embed_images;
-- (void)SetNoFonts: (BOOL)no_fonts;
-- (void)SetSvgFonts: (BOOL)svg_fonts;
-- (void)SetEmbedFonts: (BOOL)embed_fonts;
-- (void)SetNoUnicode: (BOOL)no_unicode;
-- (void)SetIndividualCharPlacement: (BOOL)individual_char_placement;
-- (void)SetRemoveCharPlacement: (BOOL)remove_char_placement;
-- (void)SetFlattenContent: (PTFlattenFlag)flatten;
-- (void)SetFlattenThreshold: (PTFlattenThresholdFlag)threshold;
-- (void)SetFlattenDPI: (unsigned int)dpi;
-- (void)SetFlattenMaximumImagePixels: (unsigned int)max_pixels;
-- (void)SetCompress: (BOOL)svgz;
-- (void)SetOutputThumbnails: (BOOL)include_thumbs;
-- (void)SetThumbnailSize: (unsigned int)size;
-- (void)SetCreateXmlWrapper: (BOOL)xml;
-- (void)SetDtd: (BOOL)dtd;
-- (void)SetAnnots: (BOOL)annots;
-- (void)SetOverprint: (SWIGTYPE_PDFRasterizer__OverprintPreviewMode*)mode;
-- (id)init;
-@end
-
-
-@interface PTTiffOutputOptions : NSObject
-{
-	void *swigCPtr;
-	BOOL swigCMemOwn;
-}
-- (void*)getCptr;
-- (instancetype)initWithCptr: (void*) cptr;
-- (void)setSwigCMemOwn: (BOOL) own;
-- (void)dealloc;
-- (void)SetBox: (PTBox)type;
-- (void)SetRotate: (PTRotate)rotation;
-- (void)SetClip: (double)x1 y1:  (double)y1 x2:  (double)x2 y2:  (double)y2;
-- (void)SetPages: (NSString *)page_desc;
-- (void)SetOverprint: (int)mode;
-- (void)SetCMYK: (BOOL)enable;
-- (void)SetDither: (BOOL)enable;
-- (void)SetGray: (BOOL)enable;
-- (void)SetMono: (BOOL)enable;
-- (void)SetAnnots: (BOOL)enable;
-- (void)SetSmooth: (BOOL)enable;
-- (void)SetPrintmode: (BOOL)enable;
-- (void)SetTransparentPage: (BOOL)enable;
-- (void)SetPalettized: (BOOL)enable;
-- (void)SetDPI: (double)dpi;
-- (void)SetGamma: (double)gamma;
-- (void)SetHRes: (int)hres;
-- (void)SetVRes: (int)vres;
-- (id)init;
-@end
-
-
 @interface PTPathData : NSObject
 {
 	void *swigCPtr;
@@ -3959,6 +4158,28 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (NSMutableArray*)GetPoints;
 - (BOOL)IsDefined;
 - (int)GetGlyphIndex;
+- (id)init;
+@end
+
+
+@interface PTShapedText : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (void)Destroy;
+- (double)GetScale;
+- (PTShapingStatus)GetShapingStatus;
+- (PTShapingFailureReason)GetFailureReason;
+- (NSString *)GetText;
+- (int)GetNumGlyphs;
+- (unsigned int)GetGlyph: (unsigned int)index;
+- (double)GetGlyphXPos: (unsigned int)index;
+- (double)GetGlyphYPos: (unsigned int)index;
 - (id)init;
 @end
 
@@ -3996,6 +4217,7 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (double)GetMissingWidth;
 - (PTUInt32Iterator*)GetCharCodeIterator;
 - (PTPathData*)GetGlyphPath: (unsigned int)char_code conics2cubics:  (BOOL)conics2cubics transform:  (PTMatrix2D*)transform;
+- (PTShapedText*)GetShapedText: (NSString *)text_to_shape;
 - (NSString *)MapToUnicode: (unsigned int)char_code;
 - (BOOL)IsEmbedded;
 - (NSString *)GetEmbeddedFontName;
@@ -4159,6 +4381,7 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (PTElement*)CreateTextRunWithFont: (NSString *)text_data font:  (PTFont*)font font_sz:  (double)font_sz;
 - (PTElement*)CreateTextRun: (NSString *)text_data;
 - (PTElement*)CreateUnicodeTextRun: (unsigned short*)text_data text_data_sz:  (unsigned int)text_data_sz;
+- (PTElement*)CreateShapedTextRun: (PTShapedText*)text_data;
 - (PTElement*)CreateTextNewLineWithOffset: (double)dx dy:  (double)dy;
 - (PTElement*)CreateTextNewLine;
 - (PTElement*)CreatePath: (NSMutableArray*)points seg_types:  (NSData*)seg_types;
@@ -4231,6 +4454,7 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (void)Flush;
 - (void)WriteBuffer: (NSData*)data;
 - (void)WriteString: (NSString *)str;
+- (void)WriteGStateChanges: (PTElement*)element;
 - (void)SetDefaultGState: (PTElementReader*)reader;
 - (void)Destroy;
 - (id)init;
@@ -4349,8 +4573,8 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 + (void)StaticDeluxeCreateTileProc: (void *)me buffer:  (NSString *)buffer width:  (unsigned int)width height:  (unsigned int)height stride:  (unsigned int)stride page_num:  (unsigned int)page_num x_page_loc:  (unsigned long long)x_page_loc y_page_loc:  (unsigned long long)y_page_loc zoomed_page_width:  (unsigned int)zoomed_page_width zoomed_page_height:  (unsigned int)zoomed_page_height tile_id:  (unsigned int)tile_id x_in_page:  (unsigned int)x_in_page y_in_page:  (unsigned int)y_in_page canvas_id:  (int)canvas_id remaining_tiles:  (int)remaining_tiles tile_type:  (int)tile_type sequence_number:  (int)sequence_number;
 - (void)RemoveTileProc: (int)canvasNumber cellNumber:  (long long)cellNumber thumbnailId:  (int)thumbnailId sequenceNumber:  (int)sequenceNumber;
 + (void)StaticRemoveTileProc: (void *)customData canvasNumber:  (int)canvasNumber cellNumber:  (long long)cellNumber thumbnailId:  (int)thumbnailId sequenceNumber:  (int)sequenceNumber;
-- (void)PartDownloadedProc: (int)dlType doc:  (SWIGTYPE_TRN_PDFDoc*)doc pageNum:  (unsigned int)pageNum objNum:  (unsigned int)objNum message:  (NSString *)message;
-+ (void)StaticPartDownloadedProc: (int)dlType doc:  (SWIGTYPE_TRN_PDFDoc*)doc pageNum:  (unsigned int)pageNum objNum:  (unsigned int)objNum message:  (NSString *)message customData:  (void *)customData;
+- (void)PartDownloadedProc: (int)dlType doc:  (void *)doc pageNum:  (unsigned int)pageNum objNum:  (unsigned int)objNum message:  (NSString *)message;
++ (void)StaticPartDownloadedProc: (int)dlType doc:  (void *)doc pageNum:  (unsigned int)pageNum objNum:  (unsigned int)objNum message:  (NSString *)message customData:  (void *)customData;
 - (id)init;
 @end
 
@@ -4622,6 +4846,75 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 @end
 
 
+@interface PTSeparation : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (unsigned char)C;
+- (unsigned char)M;
+- (unsigned char)Y;
+- (unsigned char)K;
+- (unsigned int)GetDataSize;
+- (NSString *)GetSeparationName;
+- (NSData*)GetData;
+- (id)init;
+@end
+
+
+@interface PTPDFRasterizer : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (NSData*)Rasterize: (PTPage*)page width:  (int)width height:  (int)height stride:  (int)stride num_comps:  (int)num_comps demult:  (BOOL)demult device_mtx:  (PTMatrix2D*)device_mtx clip:  (PTPDFRect*)clip scrl_clip_regions:  (PTPDFRect*)scrl_clip_regions;
+- (NSMutableArray*)RasterizeSeparations: (PTPage*)page width:  (int)width height:  (int)height mtx:  (PTMatrix2D*)mtx clip:  (PTPDFRect*)clip cancel:  (BOOL *)cancel;
+- (void)SetDrawAnnotations: (BOOL)render_annots;
+- (void)SetHighlightFields: (BOOL)highlight_fields;
+- (void)SetAntiAliasing: (BOOL)enable_aa;
+- (void)SetPathHinting: (BOOL)enable_hinting;
+- (void)SetThinLineAdjustment: (BOOL)pixel_grid_fit stroke_adjust:  (BOOL)stroke_adjust;
+- (void)SetImageSmoothing: (BOOL)smoothing_enabled hq_image_resampling:  (BOOL)hq_image_resampling;
+- (void)SetCaching: (BOOL)enabled;
+- (void)SetGamma: (double)expgamma;
+- (void)SetOCGContext: (PTContext*)ctx;
+- (void)SetPrintMode: (BOOL)is_printing;
+- (void)SetOverprint: (PTOverprintPreviewMode)op;
+- (void)SetErrorReportProc: (PTCallback*)instance;
+- (void)SetRasterizerType: (PTRasterizerType)type;
+- (PTRasterizerType)GetRasterizerType;
+- (void)SetColorPostProcessMode: (PTColorPostProcessMode)mode;
+- (PTColorPostProcessMode)GetColorPostProcessMode;
+- (void)UpdateBuffer;
+- (void)Destroy;
+- (id)initWithType: (PTRasterizerType)type;
+@end
+
+
+@interface PTViewerOptimizedOptions : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (void)SetThumbnailRenderingThreshold: (unsigned int)threshold;
+- (void)SetThumbnailSize: (unsigned int)size;
+- (void)SetOverprint: (PTOverprintPreviewMode)mode;
+- (id)init;
+@end
+
+
 @interface PTPDFDoc : NSObject
 {
 	void *swigCPtr;
@@ -4656,8 +4949,8 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (BOOL)HasRepairedXRef;
 - (BOOL)IsLinearized;
 - (BOOL)HasDownloader;
-- (int)GetDownloadedByteCount;
-- (int)GetTotalRemoteByteCount;
+- (unsigned long long)GetDownloadedByteCount;
+- (unsigned long long)GetTotalRemoteByteCount;
 - (void)SaveToFile: (NSString *)path flags:  (unsigned int)flags;
 - (NSData*)SaveToBuf: (unsigned int)flags;
 - (void)Save: (PTFilter*)stream flags:  (unsigned int)flags;
@@ -4686,6 +4979,7 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (PTField*)FieldCreate: (NSString *)field_name type:  (PTFieldType)type field_value:  (PTObj*)field_value;
 - (PTField*)FieldCreateWithString: (NSString *)field_name type:  (PTFieldType)type field_value:  (NSString *)field_value def_field_value:  (NSString *)def_field_value;
 - (void)RefreshFieldAppearances;
+- (void)RefreshAnnotAppearances: (PTRefreshOptions*)options;
 - (void)FlattenAnnotations: (BOOL)forms_only;
 - (PTObj*)GetAcroForm;
 - (PTFDFDoc*)FDFExtract: (PTExtractFlag)flag;
@@ -4723,62 +5017,11 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (NSString *)GetFileName;
 - (void)GenerateThumbnails: (unsigned int)size;
 - (void)AppendVisualDiff: (PTPage*)p1 p2:  (PTPage*)p2 opts:  (PTDiffOptions*)opts;
+- (void)SaveViewerOptimized: (NSString *)path opts:  (PTViewerOptimizedOptions*)opts;
+- (PTSignaturesVerificationStatus)VerifySignedDigitalSignatures: (PTVerificationOptions*)in_opts;
 + (PTPDFDoc*)CreateInternal: (unsigned long long)impl;
 - (unsigned long long)GetHandleInternal;
 - (id)init;- (id)initWithSdfdoc: (PTSDFDoc*)sdfdoc;- (id)initWithFilepath: (NSString *)filepath;- (id)initWithStream: (PTFilter*)stream;- (id)initWithBuf: (NSData*)buf buf_size:  (unsigned long)buf_size;
-@end
-
-
-@interface PTSeparation : NSObject
-{
-	void *swigCPtr;
-	BOOL swigCMemOwn;
-}
-- (void*)getCptr;
-- (instancetype)initWithCptr: (void*) cptr;
-- (void)setSwigCMemOwn: (BOOL) own;
-- (void)dealloc;
-- (unsigned char)C;
-- (unsigned char)M;
-- (unsigned char)Y;
-- (unsigned char)K;
-- (unsigned int)GetDataSize;
-- (NSString *)GetSeparationName;
-- (NSData*)GetData;
-- (id)init;
-@end
-
-
-@interface PTPDFRasterizer : NSObject
-{
-	void *swigCPtr;
-	BOOL swigCMemOwn;
-}
-- (void*)getCptr;
-- (instancetype)initWithCptr: (void*) cptr;
-- (void)setSwigCMemOwn: (BOOL) own;
-- (void)dealloc;
-- (NSData*)Rasterize: (PTPage*)page width:  (int)width height:  (int)height stride:  (int)stride num_comps:  (int)num_comps demult:  (BOOL)demult device_mtx:  (PTMatrix2D*)device_mtx clip:  (PTPDFRect*)clip scrl_clip_regions:  (PTPDFRect*)scrl_clip_regions;
-- (NSMutableArray*)RasterizeSeparations: (PTPage*)page width:  (int)width height:  (int)height mtx:  (PTMatrix2D*)mtx clip:  (PTPDFRect*)clip cancel:  (SWIGTYPE_p_bool*)cancel;
-- (void)SetDrawAnnotations: (BOOL)render_annots;
-- (void)SetHighlightFields: (BOOL)highlight_fields;
-- (void)SetAntiAliasing: (BOOL)enable_aa;
-- (void)SetPathHinting: (BOOL)enable_hinting;
-- (void)SetThinLineAdjustment: (BOOL)pixel_grid_fit stroke_adjust:  (BOOL)stroke_adjust;
-- (void)SetImageSmoothing: (BOOL)smoothing_enabled hq_image_resampling:  (BOOL)hq_image_resampling;
-- (void)SetCaching: (BOOL)enabled;
-- (void)SetGamma: (double)expgamma;
-- (void)SetOCGContext: (PTContext*)ctx;
-- (void)SetPrintMode: (BOOL)is_printing;
-- (void)SetOverprint: (PTOverprintPreviewMode)op;
-- (void)SetErrorReportProc: (PTCallback*)instance;
-- (void)SetRasterizerType: (PTRasterizerType)type;
-- (PTRasterizerType)GetRasterizerType;
-- (void)SetColorPostProcessMode: (PTColorPostProcessMode)mode;
-- (PTColorPostProcessMode)GetColorPostProcessMode;
-- (void)UpdateBuffer;
-- (void)Destroy;
-- (id)initWithType: (PTRasterizerType)type;
 @end
 
 
@@ -4844,6 +5087,305 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 @end
 
 
+@interface PTConversionOptions : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (id)init;- (id)initWithValue: (NSString *)value;
+@end
+
+
+@interface PTOfficeToPDFOptions : PTConversionOptions
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (NSString *)GetLayoutResourcesPluginPath;
+- (PTOfficeToPDFOptions*)SetLayoutResourcesPluginPath: (NSString *)value;
+- (NSString *)GetResourceDocPath;
+- (PTOfficeToPDFOptions*)SetResourceDocPath: (NSString *)value;
+- (NSString *)GetSmartSubstitutionPluginPath;
+- (PTOfficeToPDFOptions*)SetSmartSubstitutionPluginPath: (NSString *)value;
+- (double)GetExcelDefaultCellBorderWidth;
+- (PTOfficeToPDFOptions*)SetExcelDefaultCellBorderWidth: (double)width;
+- (PTOfficeToPDFOptions*)SetAutoFillDict: (NSString *)dict;
+- (BOOL)GetApplyPageBreaksToSheet;
+- (PTOfficeToPDFOptions*)SetApplyPageBreaksToSheet;
+- (id)init;
+@end
+
+
+@interface PTWordToPDFOptions : PTConversionOptions
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (NSString *)GetLayoutResourcesPluginPath;
+- (PTWordToPDFOptions*)SetLayoutResourcesPluginPath: (NSString *)value;
+- (NSString *)GetResourceDocPath;
+- (PTWordToPDFOptions*)SetResourceDocPath: (NSString *)value;
+- (NSString *)GetSmartSubstitutionPluginPath;
+- (PTWordToPDFOptions*)SetSmartSubstitutionPluginPath: (NSString *)value;
+- (id)init;
+@end
+
+
+@interface PTDocumentConversion : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (void)Destroy;
+- (PTResult)TryConvert;
+- (void)Convert;
+- (void)ConvertNextPage;
+- (PTPDFDoc*)GetDoc;
+- (PTResult)GetConversionStatus;
+- (void)CancelConversion;
+- (BOOL)IsCancelled;
+- (BOOL)HasProgressTracking;
+- (double)GetProgress;
+- (NSString *)GetProgressLabel;
+- (unsigned int)GetNumConvertedPages;
+- (NSString *)GetErrorString;
+- (unsigned int)GetNumWarnings;
+- (NSString *)GetWarningString: (unsigned int)index;
++ (PTDocumentConversion*)CreateInternal: (unsigned long long)impl;
+- (unsigned long long)GetHandleInternal;
+- (id)init;
+@end
+
+
+@interface PTConversionMonitor : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (BOOL)Next;
+- (BOOL)Ready;
+- (unsigned int)Progress;
+- (PTFilter*)Filter;
+- (void)Destroy;
+- (id)init;
+@end
+
+
+@interface PTConvert : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
++ (void)FromXpsWithFilename: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename;
++ (void)FromXpsWithBuffer: (PTPDFDoc*)in_pdfdoc buf:  (NSString *)buf buf_sz:  (unsigned long)buf_sz;
++ (void)FromEmf: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename;
++ (void)FromText: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename in_options:  (PTObj*)in_options;
++ (void)ToEmfWithPDFDoc: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename;
++ (void)ToEmfWithPage: (PTPage*)in_page in_filename:  (NSString *)in_filename;
++ (void)ToSvgWithPDFDoc: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename in_options:  (PTSVGOutputOptions*)in_options;
++ (void)ToSvg: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename;
++ (void)ToSvgWithPage: (PTPage*)in_page in_filename:  (NSString *)in_filename in_options:  (PTSVGOutputOptions*)in_options;
++ (void)ToXpsWithPDFDoc: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename options:  (PTXPSOutputOptions*)options;
++ (void)ToXps: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename;
++ (void)ToXpsWithFilename: (NSString *)in_inputFilename in_outputFilename:  (NSString *)in_outputFilename options:  (PTXPSOutputOptions*)options;
++ (void)ToXodWithFilename: (NSString *)in_filename out_filename:  (NSString *)out_filename options:  (PTXODOutputOptions*)options;
++ (void)ToXod: (NSString *)in_filename out_filename:  (NSString *)out_filename;
++ (void)ToXodWithPDFDoc: (PTPDFDoc*)in_pdfdoc out_filename:  (NSString *)out_filename options:  (PTXODOutputOptions*)options;
++ (void)ToHtmlWithFilename: (NSString *)in_filename out_path:  (NSString *)out_path options:  (PTHTMLOutputOptions*)options;
++ (void)ToHtml: (NSString *)in_filename out_path:  (NSString *)out_path;
++ (NSString *)PageToHtml: (PTPage*)page;
++ (void)ToHtmlWithPDFDoc: (PTPDFDoc*)in_pdfdoc out_path:  (NSString *)out_path options:  (PTHTMLOutputOptions*)options;
++ (void)ToEpubWithFilename: (NSString *)in_filename out_path:  (NSString *)out_path html_options:  (PTHTMLOutputOptions*)html_options epub_options:  (PTEPUBOutputOptions*)epub_options;
++ (void)ToEpub: (NSString *)in_filename out_path:  (NSString *)out_path html_options:  (PTHTMLOutputOptions*)html_options;
++ (void)ToEpubWithPDFDoc: (PTPDFDoc*)in_pdfdoc out_path:  (NSString *)out_path html_options:  (PTHTMLOutputOptions*)html_options epub_options:  (PTEPUBOutputOptions*)epub_options;
++ (void)ToTiff: (NSString *)in_filename out_path:  (NSString *)out_path options:  (PTTiffOutputOptions*)options;
++ (PTFilter*)ToXodWithFilenameToStream: (NSString *)in_filename options:  (PTXODOutputOptions*)options;
++ (PTFilter*)ToXodWithPDFDocToStream: (PTPDFDoc*)in_pdfdoc options:  (PTXODOutputOptions*)options;
++ (PTConversionMonitor*)ToXodWithMonitorAndOptions: (PTPDFDoc*)in_pdfdoc options:  (PTXODOutputOptions*)options;
++ (PTConversionMonitor*)ToXodWithMonitor: (PTPDFDoc*)in_pdfdoc;
++ (void)WordToPDF: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename options:  (PTWordToPDFOptions*)options;
++ (PTDocumentConversion*)WordToPDFConversion: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename options:  (PTWordToPDFOptions*)options;
++ (void)OfficeToPDF: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename options:  (PTConversionOptions*)options;
++ (PTDocumentConversion*)StreamingPDFConversionWithDoc: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename options:  (PTConversionOptions*)options;
++ (PTDocumentConversion*)StreamingPDFConversion: (NSString *)in_filename options:  (PTConversionOptions*)options;
++ (void)ToPdf: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename;
++ (void)FromCAD: (PTPDFDoc*)in_pdfdoc in_filename:  (NSString *)in_filename opts:  (PTCADConvertOptions*)opts;
++ (void)FromTiff: (PTPDFDoc*)in_pdfdoc in_data:  (PTFilter*)in_data;
++ (BOOL)RequiresPrinter: (NSString *)in_filename;
+
+@end
+
+
+@interface PTXPSOutputCommonOptions : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (void)SetPrintMode: (BOOL)print_mode;
+- (void)SetDPI: (unsigned int)dpi;
+- (void)SetRenderPages: (BOOL)render;
+- (void)SetThickenLines: (BOOL)thicken;
+- (void)GenerateURLLinks: (BOOL)generate;
+- (void)SetOverprint: (PTXPSOverprintPreviewMode)mode;
+- (void)setM_obj: (void *)value;
+- (void *)getM_obj;
+- (id)init;
+@end
+
+
+@interface PTXPSOutputOptions : PTXPSOutputCommonOptions
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (void)SetOpenXps: (BOOL)openxps;
+- (id)init;
+@end
+
+
+@interface PTXODOutputOptions : PTXPSOutputCommonOptions
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (void)SetOutputThumbnails: (BOOL)include_thumbs;
+- (void)SetThumbnailSize: (unsigned int)size;
+- (void)SetElementLimit: (unsigned int)element_limit;
+- (void)SetOpacityMaskWorkaround: (BOOL)opacity_render;
+- (void)SetMaximumImagePixels: (unsigned int)max_pixels;
+- (void)SetFlattenContent: (PTFlattenFlag)flatten;
+- (void)SetFlattenThreshold: (PTFlattenThresholdFlag)threshold;
+- (void)SetPreferJPG: (BOOL)prefer_jpg;
+- (void)SetJPGQuality: (unsigned int)quality;
+- (void)SetSilverlightTextWorkaround: (BOOL)workaround;
+- (void)SetAnnotationOutput: (PTAnnotationOutputFlag)annot_output;
+- (void)SetExternalParts: (BOOL)generate;
+- (void)SetEncryptPassword: (NSString *)pass;
+- (void)UseSilverlightFlashCompatible: (BOOL)compatible;
+- (id)init;
+@end
+
+
+@interface PTHTMLOutputOptions : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (void)SetPreferJPG: (BOOL)prefer_jpg;
+- (void)SetJPGQuality: (unsigned int)quality;
+- (void)SetDPI: (unsigned int)dpi;
+- (void)SetMaximumImagePixels: (unsigned int)max_pixels;
+- (void)SetReflow: (BOOL)reflow;
+- (void)SetScale: (double)scale;
+- (void)SetExternalLinks: (BOOL)enable;
+- (void)SetInternalLinks: (BOOL)enable;
+- (void)SetSimplifyText: (BOOL)enable;
+- (void)SetReportFile: (NSString *)path;
+- (id)init;
+@end
+
+
+@interface PTEPUBOutputOptions : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (void)SetExpanded: (BOOL)expanded;
+- (void)SetReuseCover: (BOOL)reuse;
+- (id)init;
+@end
+
+
+@interface PTSVGOutputOptions : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (void)SetEmbedImages: (BOOL)embed_images;
+- (void)SetNoFonts: (BOOL)no_fonts;
+- (void)SetSvgFonts: (BOOL)svg_fonts;
+- (void)SetEmbedFonts: (BOOL)embed_fonts;
+- (void)SetNoUnicode: (BOOL)no_unicode;
+- (void)SetIndividualCharPlacement: (BOOL)individual_char_placement;
+- (void)SetRemoveCharPlacement: (BOOL)remove_char_placement;
+- (void)SetFlattenContent: (PTFlattenFlag)flatten;
+- (void)SetFlattenThreshold: (PTFlattenThresholdFlag)threshold;
+- (void)SetFlattenDPI: (unsigned int)dpi;
+- (void)SetFlattenMaximumImagePixels: (unsigned int)max_pixels;
+- (void)SetCompress: (BOOL)svgz;
+- (void)SetOutputThumbnails: (BOOL)include_thumbs;
+- (void)SetThumbnailSize: (unsigned int)size;
+- (void)SetCreateXmlWrapper: (BOOL)xml;
+- (void)SetDtd: (BOOL)dtd;
+- (void)SetAnnots: (BOOL)annots;
+- (void)SetOverprint: (PTOverprintPreviewMode)mode;
+- (id)init;
+@end
+
+
+@interface PTTiffOutputOptions : NSObject
+{
+	void *swigCPtr;
+	BOOL swigCMemOwn;
+}
+- (void*)getCptr;
+- (instancetype)initWithCptr: (void*) cptr;
+- (void)setSwigCMemOwn: (BOOL) own;
+- (void)dealloc;
+- (void)SetBox: (PTBox)type;
+- (void)SetRotate: (PTRotate)rotation;
+- (void)SetClip: (double)x1 y1:  (double)y1 x2:  (double)x2 y2:  (double)y2;
+- (void)SetPages: (NSString *)page_desc;
+- (void)SetOverprint: (PTOverprintPreviewMode)mode;
+- (void)SetCMYK: (BOOL)enable;
+- (void)SetDither: (BOOL)enable;
+- (void)SetGray: (BOOL)enable;
+- (void)SetMono: (BOOL)enable;
+- (void)SetAnnots: (BOOL)enable;
+- (void)SetSmooth: (BOOL)enable;
+- (void)SetPrintmode: (BOOL)enable;
+- (void)SetTransparentPage: (BOOL)enable;
+- (void)SetPalettized: (BOOL)enable;
+- (void)SetDPI: (double)dpi;
+- (void)SetGamma: (double)gamma;
+- (void)SetHRes: (int)hres;
+- (void)SetVRes: (int)vres;
+- (id)init;
+@end
+
+
 @interface PTPDFNet : NSObject
 {
 	void *swigCPtr;
@@ -4870,6 +5412,7 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 + (BOOL)AddFontSubstWithOrdering: (PTCharacterOrdering)ordering fontpath:  (NSString *)fontpath;
 + (void)SetTempPath: (NSString *)temp_path;
 + (void)SetPersistentCachePath: (NSString *)persistent_path;
++ (NSString *)GetSystemFontList;
 + (void)SetLogLevel: (PTLogLevel)level;
 - (id)init;
 @end
@@ -4897,6 +5440,7 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (void)SetPagePresentationMode: (PTPagePresentationMode)mode;
 - (PTPagePresentationMode)GetPagePresentationMode;
 - (void)SetColorPostProcessMode: (PTColorPostProcessMode)mode;
+- (void)SetColorPostProcessMapFile: (PTFilter*)image_file_contents;
 - (void)SetColorPostProcessColors: (unsigned int)white_color black_color:  (unsigned int)black_color;
 - (PTColorPostProcessMode)GetColorPostProcessMode;
 - (int)GetCurrentPage;
@@ -4907,7 +5451,7 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (BOOL)GotoPreviousPage;
 - (BOOL)SetCurrentPage: (int)page_num;
 - (BOOL)ShowRect: (int)page_num rect:  (PTPDFRect*)rect;
-- (NSMutableArray*)GetVisiblePages;
+- (NSArray<NSNumber *> *)GetVisiblePages;
 - (double)GetZoom;
 - (BOOL)SetZoom: (double)zoom;
 - (BOOL)SetZoomWithCoord: (int)x y:  (int)y zoom:  (double)zoom;
@@ -4951,10 +5495,13 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (int)GetBufferWidth;
 - (int)GetBufferHeight;
 - (int)GetBufferStride;
+- (void)HideAnnotation: (PTAnnot*)annot;
+- (void)ShowAnnotation: (PTAnnot*)annot;
 - (void)SetDrawAnnotations: (BOOL)render_annots;
 - (void)SetUrlExtraction: (BOOL)enabled;
 - (PTLinkInfo*)GetLinkAt: (int)x y:  (int)y;
 - (void)SetHighlightFields: (BOOL)highlight_fields;
+- (void)SetRequiredFieldBorderColor: (PTColorPt*)new_border_color;
 - (void)SetAntiAliasing: (BOOL)enable_aa;
 - (void)SetPathHinting: (BOOL)enable_hinting;
 - (void)SetThinLineAdjustment: (BOOL)pixel_grid_fit stroke_adjust:  (BOOL)stroke_adjust;
@@ -5010,12 +5557,13 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (void)ClearThumbCache;
 - (void)GetThumbAsync: (int)page_num instance:  (PTCallback*)instance;
 - (unsigned long)GetThumbInCacheSize: (int)page_num;
-- (BOOL)GetThumbInCache: (int)page_num buf:  (NSData*)buf out_width:  (SWIGTYPE_p_unsigned_int*)out_width out_height:  (SWIGTYPE_p_unsigned_int*)out_height;
+- (BOOL)GetThumbInCache: (int)page_num buf:  (NSData*)buf out_width:  (unsigned int)out_width out_height:  (unsigned int)out_height;
 - (void)CancelAllThumbRequests;
 - (void)SetRequestRenderInWorkerThreadProc: (PTCallback*)instance;
 - (void)SetFindTextHandler: (PTCallback*)instance;
 - (void)FindTextAsync: (NSString *)search_str match_case:  (BOOL)match_case match_whole_word:  (BOOL)match_whole_word search_up:  (BOOL)search_up reg_exp:  (BOOL)reg_exp;
 - (NSArray<PTAnnot *> *)GetAnnotationsOnPage: (int)page_num;
+- (NSArray<PTAnnot *> *)GetAnnotationListAt: (int)x1 y1:  (int)y1 x2:  (int)x2 y2:  (int)y2;
 - (void)EnableUndoRedo;
 - (NSString *)Undo;
 - (NSString *)Redo;
@@ -5037,7 +5585,7 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (instancetype)initWithCptr: (void*) cptr;
 - (void)setSwigCMemOwn: (BOOL) own;
 - (void)dealloc;
-+ (void)StartPrintJob: (PTPDFDoc*)in_pdfdoc in_printerName:  (NSString *)in_printerName in_jobName:  (NSString *)in_jobName in_outputFileName:  (NSString *)in_outputFileName in_pagesToPrint:  (PTPageSet*)in_pagesToPrint in_printerMode:  (PTPrinterMode*)in_printerMode in_cancel:  (SWIGTYPE_p_bool*)in_cancel in_context:  (PTContext*)in_context;
++ (void)StartPrintJob: (PTPDFDoc*)in_pdfdoc in_printerName:  (NSString *)in_printerName in_jobName:  (NSString *)in_jobName in_outputFileName:  (NSString *)in_outputFileName in_pagesToPrint:  (PTPageSet*)in_pagesToPrint in_printerMode:  (PTPrinterMode*)in_printerMode in_cancel:  (BOOL *)in_cancel in_context:  (PTContext*)in_context;
 - (id)init;
 @end
 
@@ -5223,6 +5771,7 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (void)setSwigCMemOwn: (BOOL) own;
 - (void)dealloc;
 - (void)Begin: (PTPage*)page clip_ptr:  (PTPDFRect*)clip_ptr flags:  (unsigned int)flags;
+- (void)SetOCGContext: (PTContext*)ctx;
 - (int)GetWordCount;
 - (void)SetRightToLeftLanguage: (BOOL)rtl;
 - (BOOL)GetRightToLeftLanguage;
@@ -5251,7 +5800,7 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (int)GetWeight;
 - (BOOL)IsItalic;
 - (BOOL)IsSerif;
-- (NSMutableArray*)GetColor;
+- (NSArray<NSNumber *> *)GetColor;
 - (BOOL)isEqualTo: (PTTextExtractorStyle*)s;
 - (id)init;
 @end
@@ -5345,6 +5894,7 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 - (void)SetMode: (unsigned int)mode;
 - (void)SetRightToLeftLanguage: (BOOL)flag;
 - (int)GetCurrentPage;
+- (void)SetOCGContext: (PTContext*)context;
 - (void)Destroy;
 - (id)init;
 @end
@@ -5383,6 +5933,8 @@ typedef enum PTTextSearchModes {  e_ptreg_expression = 0x0001,
 + (PTPDFDoc*)GenerateLinedPaperDoc: (double)width height:  (double)height line_spacing:  (double)line_spacing line_thickness:  (double)line_thickness red:  (double)red green:  (double)green blue:  (double)blue left_margin_distance:  (double)left_margin_distance left_margin_red:  (double)left_margin_red left_margin_green:  (double)left_margin_green left_margin_blue:  (double)left_margin_blue right_margin_red:  (double)right_margin_red right_margin_green:  (double)right_margin_green right_margin_blue:  (double)right_margin_blue background_red:  (double)background_red background_green:  (double)background_green background_blue:  (double)background_blue top_margin_distance:  (double)top_margin_distance bottom_margin_distance:  (double)bottom_margin_distance;
 + (PTPDFDoc*)GenerateGraphPaperDoc: (double)width height:  (double)height grid_spacing:  (double)grid_spacing line_thickness:  (double)line_thickness weighted_line_thickness:  (double)weighted_line_thickness weighted_line_freq:  (int)weighted_line_freq red:  (double)red green:  (double)green blue:  (double)blue background_red:  (double)background_red background_green:  (double)background_green background_blue:  (double)background_blue;
 + (PTPDFDoc*)GenerateMusicPaperDoc: (double)width height:  (double)height margin:  (double)margin staves:  (int)staves linespace_size_pts:  (double)linespace_size_pts line_thickness:  (double)line_thickness red:  (double)red green:  (double)green blue:  (double)blue background_red:  (double)background_red background_green:  (double)background_green background_blue:  (double)background_blue;
++ (PTPDFDoc*)GenerateDottedPaperDoc: (double)width height:  (double)height dot_spacing:  (double)dot_spacing dot_size:  (double)dot_size red:  (double)red green:  (double)green blue:  (double)blue background_red:  (double)background_red background_green:  (double)background_green background_blue:  (double)background_blue;
++ (PTPDFDoc*)GenerateIsometricDottedPaperDoc: (double)width height:  (double)height dot_spacing:  (double)dot_spacing dot_size:  (double)dot_size red:  (double)red green:  (double)green blue:  (double)blue background_red:  (double)background_red background_green:  (double)background_green background_blue:  (double)background_blue;
 - (id)init;
 @end
 
